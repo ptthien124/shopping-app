@@ -36,7 +36,7 @@ function Form({ title, login, signUp }) {
       if (!userExisted) {
         dispatch(addUser({ ...data, gender }));
         dispatch(loginAuth({ ...data, gender }));
-        navigate("/shopping-app");
+        navigate("/");
       }
     } else if (login) {
       let authData;
@@ -49,7 +49,7 @@ function Form({ title, login, signUp }) {
       }
       if (authData) {
         dispatch(loginAuth(authData));
-        navigate("/shopping-app");
+        navigate("/");
       }
     }
   };

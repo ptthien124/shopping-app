@@ -22,7 +22,7 @@ function CartProduct({ _id, id, image, title, price, createAt, quantity = 1 }) {
   };
 
   const handleReduce = () => {
-    dispatch(removeFromCart({ _id, user }));
+    dispatch(removeFromCart({ _id, quantity, user }));
   };
 
   return (

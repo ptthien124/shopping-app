@@ -16,15 +16,15 @@ function App() {
     <div>
       <Routes>
         <Route
-          path="/shopping-app"
+          path="/"
           element={
             <ProtectedPage user={user}>
               <ProductPage />
             </ProtectedPage>
           }
         />
-        <Route path="/shopping-app/login" element={<LoginPage />} />
-        <Route path="/shopping-app/signUp" element={<SignUpPage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/signUp" element={<SignUpPage />} />
         <Route
           path="/cart"
           element={

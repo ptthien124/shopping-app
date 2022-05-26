@@ -35,6 +35,8 @@ const cartReducer = (state = initialState, action) => {
 
       if (existed != -1) newState[existed].quantity -= 1;
       if (newState[existed].quantity <= 0) newState.splice(existed, 1);
+
+      return [...newState];
     }
     default:
       return state;
