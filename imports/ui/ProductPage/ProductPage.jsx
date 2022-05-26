@@ -35,9 +35,9 @@ function ProductPage() {
     setSort(value);
   };
 
-  useEffect(() => {
-    if (search === "") setFilterList([]);
-  }, [search]);
+  // useEffect(() => {
+  //   if (search === "") setFilterList([]);
+  // }, [search]);
 
   useEffect(() => {
     if (filterList.length > 0) jump(1);

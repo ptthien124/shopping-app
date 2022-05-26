@@ -1,5 +1,5 @@
 const LOGIN = "LOGIN";
-const LOGOUT = "LOGOUt";
+const LOGOUT = "LOGOUT";
 
 export const loginAuth = ({ email, password, fullName, gender }) => ({
   type: LOGIN,

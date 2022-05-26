@@ -27,7 +27,7 @@ function CartPage() {
   return (
     <div className="cartPage">
       <Header />
-      {cartList.length <= 0 ? (
+      {prod.length <= 0 ? (
         <Empty />
       ) : (
         <div
