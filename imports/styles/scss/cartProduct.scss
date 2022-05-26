@@ -1,0 +1,27 @@
+.cartProduct {
+  display: flex;
+
+  img {
+    width: 100px;
+  }
+
+ 
+
+  .container {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+
+    h3 {
+      margin-top: 12px;
+    }
+
+    strong {
+      margin: auto 0;
+    }
+  }
+
+  span {
+    margin: 0 auto;
+  }
+}

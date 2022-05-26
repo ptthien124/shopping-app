@@ -1,0 +1,62 @@
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  position: fixed;
+
+  width: 100%;
+  height: 80px;
+  padding: 2px 20px;
+  z-index: 9999;
+
+  background-color: var(--primary);
+  font-size: 2.4rem;
+  font-weight: 700;
+
+  .left,
+  .right {
+    display: flex;
+    align-items: center;
+    position: relative;
+  }
+
+  .link {
+    color: white;
+    padding: 10px;
+  }
+
+  .avatarWrapper {
+    position: relative;
+    border-radius: 50%;
+    height: 50px;
+    margin-right: 10px;
+    background-color: white;
+    border-radius: 50%;
+
+    .avatar {
+      height: 50px;
+      z-index: 1;
+
+      color: #fac710;
+    }
+  }
+
+  h2 {
+    color: white;
+    font-weight: 700;
+    margin-bottom: 2px;
+  }
+}
+
+.dropdown {
+  min-width: 150px !important;
+
+  ul {
+    .ant-dropdown-menu-item {
+      font-size: 2rem;
+      font-weight: 500;
+      height: 40px;
+    }
+  }
+}

@@ -1,0 +1,24 @@
+.button {
+  background-color: white;
+  border: 2px solid;
+  border-radius: 10px;
+  width: 180px;
+  height: 60px;
+  padding: 0 0 2px;
+  margin: 0 auto;
+  font-size: 2rem;
+  font-weight: 700;
+  cursor: pointer; }
+  .button:hover {
+    filter: brightness(105%); }
+  .button:active {
+    filter: brightness(95%); }
+
+.button.red {
+  color: var(--red); }
+
+.button.primary {
+  color: var(--primary); }
+
+.button.yellow {
+  color: var(--yellow); }

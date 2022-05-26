@@ -1,0 +1,22 @@
+.sharedPage {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  margin-top: 50px; }
+  .sharedPage .something {
+    background-color: lightgray; }
+  .sharedPage .something1 {
+    width: 70%;
+    height: 70px;
+    margin-bottom: 20px; }
+  .sharedPage .something2 {
+    width: 80%;
+    height: 40px;
+    margin: 8px 0; }
+  .sharedPage .something4 {
+    width: 72%;
+    height: 50px;
+    margin: 10px 0; }
+  .sharedPage .something5 {
+    width: 90%;
+    height: 50px; }
