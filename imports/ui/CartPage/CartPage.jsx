@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import Header from "../Header";
 import CartProducts from "./CartProducts";
 import "../../styles/css/cartPage.css";
+import Empty from "./Empty";
 
 function CartPage() {
   const [prod, setProd] = useState([]);
@@ -23,33 +24,36 @@ function CartPage() {
     []
   );
 
-  
-
   return (
     <div className="cartPage">
       <Header />
-      <div
-        className="grid wide cart"
-        style={{ paddingTop: "80px", maxWidth: "1000px" }}
-      >
-        <h2>Your Cart</h2>
-        <CartProducts cartProducts={prod} />
-        <div className="separator"></div>
-        <strong className="total">
-          Total:{" "}
-          <span>
-            {prod.length > 0 &&
-              round(
-                prod.reduce(
-                  (total, product) => total + product.price * product.quantity,
-                  0
-                ),
-                2
-              )}
-            $
-          </span>
-        </strong>
-      </div>
+      {cartList.length <= 0 ? (
+        <Empty />
+      ) : (
+        <div
+          className="grid wide cart"
+          style={{ paddingTop: "80px", maxWidth: "1000px" }}
+        >
+          <h2>Your Cart</h2>
+          <CartProducts cartProducts={prod} />
+          <div className="separator"></div>
+          <strong className="total">
+            Total:{" "}
+            <span>
+              {prod.length > 0 &&
+                round(
+                  prod.reduce(
+                    (total, product) =>
+                      total + product.price * product.quantity,
+                    0
+                  ),
+                  2
+                )}
+              $
+            </span>
+          </strong>
+        </div>
+      )}
     </div>
   );
 }
