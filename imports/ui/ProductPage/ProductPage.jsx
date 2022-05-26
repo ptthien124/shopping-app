@@ -40,7 +40,7 @@ function ProductPage() {
   }, [search]);
 
   useEffect(() => {
-    jump(1);
+    if (filterList.length > 0) jump(1);
   }, [filterList]);
 
   useMemo(() => {
