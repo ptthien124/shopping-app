@@ -50,7 +50,7 @@ function ProductPage() {
       products.forEach((product) => {
         const title = product.title.toLowerCase();
         const index = title.indexOf(value);
-        if (index === 0) setFilterList((prev) => [...prev, product]);
+        if (index !== -1) setFilterList((prev) => [...prev, product]);
       });
     }
   }, [debounced]);
