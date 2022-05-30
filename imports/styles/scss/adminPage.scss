@@ -1,0 +1,47 @@
+.adminPage {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+
+  min-height: 100vh;
+
+  .buttonWrapper {
+    margin-top: 100px;
+    margin-bottom: 50px;
+  }
+
+  .form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  span {
+    margin-bottom: 50px;
+    font-size: 3rem;
+  }
+
+  .inputWrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    width: 100%;
+    margin: 2px 0;
+
+    input {
+      padding-left: 4px;
+    }
+  }
+
+  button {
+    margin-top: 20px;
+    background-color: transparent;
+    border: 2px solid var(--primary);
+    border-radius: 4px;
+    width: 200px;
+    height: 40px;
+    cursor: pointer;
+    color: var(--primary);
+  }
+}

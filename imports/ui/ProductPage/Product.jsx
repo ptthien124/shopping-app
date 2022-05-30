@@ -6,14 +6,13 @@ import { addToCart } from "../../redux/actions/cartAction";
 import "../../styles/css/product.css";
 import Button from "../Button";
 
-function Product({ _id, id, image, title, price, createAt }) {
+function Product({ _id, image, title, price, createAt }) {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth);
 
   const handleAddToCartClick = () => {
     const newCartProduct = {
       _id,
-      id,
       image,
       title,
       price,

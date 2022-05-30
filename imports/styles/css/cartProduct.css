@@ -5,9 +5,14 @@
   .cartProduct .container {
     display: flex;
     flex-direction: column;
-    flex: 1; }
+    flex: 1;
+    padding-right: 20px; }
     .cartProduct .container h3 {
-      margin-top: 12px; }
+      margin-top: 12px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden; }
     .cartProduct .container strong {
       margin: auto 0; }
   .cartProduct span {

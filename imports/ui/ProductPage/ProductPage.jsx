@@ -1,19 +1,15 @@
+import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useTracker } from "meteor/react-meteor-data";
-import React, { useMemo, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useRef, useState } from "react";
 import { ProductsCollection } from "../../api/links";
 import useDebounced from "../../customHooks/useDebounce";
 import usePagination from "../../customHooks/usePagination";
+import "../../styles/css/productPage.css";
 import Header from "../Header";
 import Products from "./Products";
-import "../../styles/css/productPage.css";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
-import { useRef } from "react";
-import { useEffect } from "react";
 
 function ProductPage() {
-  const navigate = useNavigate();
   const products = useTracker(() => ProductsCollection.find().fetch());
 
   const searchInput = useRef();
@@ -35,22 +31,22 @@ function ProductPage() {
     setSort(value);
   };
 
-  // useEffect(() => {
-  //   if (search === "") setFilterList([]);
-  // }, [search]);
-
   useEffect(() => {
     if (filterList.length > 0) jump(1);
   }, [filterList]);
 
-  useMemo(() => {
-    setFilterList([]);
+  useEffect(() => {
     if (search !== "") {
       const value = search.trim().toLowerCase();
+      setFilterList([]);
+
       products.forEach((product) => {
         const title = product.title.toLowerCase();
         const index = title.indexOf(value);
-        if (index !== -1) setFilterList((prev) => [...prev, product]);
+
+        if (index !== -1) {
+          setFilterList((prev) => [...prev, product]);
+        }
       });
     }
   }, [debounced]);
@@ -92,7 +88,7 @@ function ProductPage() {
           </div>
         </div>
 
-        {products.length > 0 && (
+        {(filterList.length > 0 || products.length > 0) && (
           <Products
             sortBy={sort}
             products={currentData}
@@ -100,7 +96,7 @@ function ProductPage() {
           />
         )}
 
-        {products.length > 0 && (
+        {(filterList.length > 0 || products.length > 0) && (
           <div className="flex">
             {/* <button onClick={() => prev()}>prev</button> */}
             {Array(maxPage)
