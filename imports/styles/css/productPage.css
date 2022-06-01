@@ -49,11 +49,13 @@
     outline: none;
     font-weight: 700;
     margin-left: 12px;
+    cursor: pointer;
     -webkit-appearance: none; }
     .productPage .sortWrapper select option {
       -webkit-appearance: none;
       color: #333;
-      text-align: center; }
+      text-align: center;
+      cursor: pointer; }
 
 .productPage .pageButton {
   width: 40px;

@@ -58,8 +58,6 @@ function ProductPage() {
 
   return (
     <div className="productPage">
-      <Header />
-
       <div className="wrapper">
         <div className="searchWrapper grid wide">
           <div className="searchContainer">
@@ -79,7 +77,7 @@ function ProductPage() {
             />
           </div>
           <div className="sortWrapper">
-            Sort by
+            <span>Sort by</span>
             <select id="productsPageSortSelect" onChange={sortOptionSelected}>
               <option value="">--Sort--</option>
               <option value="price">Price</option>

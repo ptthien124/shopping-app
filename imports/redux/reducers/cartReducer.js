@@ -7,8 +7,7 @@ const cartReducer = (state = initialState, action) => {
       for (let i = 0; i < newState.length; i++) {
         if (
           newState[i]._id === action.payload._id &&
-          newState[i].user.email === action.payload.user.email &&
-          newState[i].user.password === action.payload.user.password
+          newState[i].userId === action.payload.userId
         ) {
           existed = i;
           break;
@@ -25,8 +24,7 @@ const cartReducer = (state = initialState, action) => {
       for (let i = 0; i < newState.length; i++) {
         if (
           newState[i]._id === action.payload._id &&
-          newState[i].user.email === action.payload.user.email &&
-          newState[i].user.password === action.payload.user.password
+          newState[i].userId === action.payload.userId
         ) {
           existed = i;
           break;

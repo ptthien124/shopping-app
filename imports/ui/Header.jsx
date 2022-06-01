@@ -1,13 +1,21 @@
 import { faCircleUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Dropdown, Menu, Space } from "antd";
 import React from "react";
-import { Menu, Dropdown, Space } from "antd";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { logoutAuth, logoutRequest } from "../redux/actions/authAction";
 import "../styles/css/header.css";
 
 function Header() {
+  const dispatch = useDispatch();
+
   const user = useSelector((state) => state.auth);
+
+  const handleLogout = (e) => {
+    e.preventDefault();
+    dispatch(logoutRequest());
+  };
 
   const menu = (
     <Menu
@@ -24,7 +32,11 @@ function Header() {
           type: "divider",
         },
         {
-          label: <Link to="/login">Log out</Link>,
+          label: (
+            <Link onClick={handleLogout} to="/login">
+              Log out
+            </Link>
+          ),
           key: "3",
         },
       ]}
@@ -55,7 +67,7 @@ function Header() {
         >
           <a onClick={(e) => e.preventDefault()}>
             <Space>
-              <h2 className="name">{user.fullName}</h2>
+              <h2 className="name">{user?.fullName}</h2>
             </Space>
           </a>
         </Dropdown>

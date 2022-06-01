@@ -18,7 +18,7 @@ function Product({ _id, image, title, price, createAt }) {
       price,
       quantity: 1,
       createAt,
-      user: { ...user },
+      userId: user.userId,
       // createAt: new Date(),
     };
     dispatch(addToCart(newCartProduct));

@@ -3,26 +3,25 @@ import { useDispatch, useSelector } from "react-redux";
 import { addToCart, removeFromCart } from "../../redux/actions/cartAction";
 import "../../styles/css/cartProduct.css";
 
-function CartProduct({ _id, id, image, title, price, createAt, quantity = 1 }) {
+function CartProduct({ _id, image, title, price, createAt, quantity = 1 }) {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth);
 
   const handleIncrease = () => {
     const newCartProduct = {
       _id,
-      id,
       image,
       title,
       price,
       quantity,
       createAt,
-      user: { ...user },
+      userId: user.userId,
     };
     dispatch(addToCart(newCartProduct));
   };
 
   const handleReduce = () => {
-    dispatch(removeFromCart({ _id, quantity, user }));
+    dispatch(removeFromCart({ _id, quantity, userId: user.userId }));
   };
 
   return (

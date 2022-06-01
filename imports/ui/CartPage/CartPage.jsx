@@ -1,8 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import Header from "../Header";
-import CartProducts from "./CartProducts";
 import "../../styles/css/cartPage.css";
+import CartProducts from "./CartProducts";
 import Empty from "./Empty";
 
 function CartPage() {
@@ -11,10 +10,7 @@ function CartPage() {
   const user = useSelector((state) => state.auth);
 
   useEffect(() => {
-    const list = cartList.filter(
-      (item) =>
-        Object.entries(user).toString() === Object.entries(item.user).toString()
-    );
+    const list = cartList.filter((item) => item.userId === user.userId);
     setProd(list);
   }, [cartList]);
 
@@ -26,7 +22,6 @@ function CartPage() {
 
   return (
     <div className="cartPage">
-      <Header />
       {prod.length <= 0 ? (
         <Empty />
       ) : (

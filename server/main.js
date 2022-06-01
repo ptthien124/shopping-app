@@ -1,36 +1,42 @@
 import { Accounts } from "meteor/accounts-base";
 import { Meteor } from "meteor/meteor";
+import "../imports/api/usersMethods";
+import '../imports/api/productsMethods'
 import products from "../products.json";
 import { ProductsCollection } from "/imports/api/links";
-import "/imports/api/productsMethods";
 
 function addProduct(data) {
+  // data.forEach((item) => {
+  //   Meteor.call("products.insert", {
+  //     title: item.title,
+  //     description: item.description,
+  //     image: item.image,
+  //     price: item.price,
+  //     user: {},
+  //   });
   data.forEach((item) => {
     ProductsCollection.insert({ ...item, createAt: new Date() });
   });
 }
 
-// const prod = useTracker(() => ProductsCollection.find().fetch());
-
-// function remove() {
-//   prod.forEach((item) => {
-//     ProductsCollection.remove(item._id);
-//   });
-// }
-
-const SEED_USERNAME = "admin";
-const SEED_PASSWORD = "admin";
+const SEED_USERNAME = "admingmail.com";
+const SEED_PASSWORD = "admintest";
 
 Meteor.startup(() => {
-  // If the Links collection is empty, add some data.
+  if (!Accounts.findUserByUsername(SEED_USERNAME)) {
+    var newUserId = Meteor.users.insert({
+      username: SEED_USERNAME,
+      profile: {
+        fullName: "admin",
+      },
+      createdAt: new Date(),
+    });
+    Accounts.setPassword(newUserId, SEED_PASSWORD);
+  }
+
   if (ProductsCollection.find().count() === 0) {
     addProduct(products);
   }
-
-  if (!Accounts.findUserByUsername(SEED_USERNAME)) {
-    Accounts.createUser({
-      username: SEED_USERNAME,
-      password: SEED_PASSWORD,
-    });
-  }
 });
+
+Meteor.methods({});

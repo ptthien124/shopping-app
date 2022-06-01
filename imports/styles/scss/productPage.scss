@@ -65,12 +65,15 @@
       font-weight: 700;
       margin-left: 12px;
 
+      cursor: pointer;
+
       -webkit-appearance: none;
 
       option {
         -webkit-appearance: none;
         color: #333;
         text-align: center;
+        cursor: pointer;
       }
     }
   }
