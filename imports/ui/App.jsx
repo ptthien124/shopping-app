@@ -1,18 +1,14 @@
 import { Meteor } from "meteor/meteor";
-import { useTracker } from "meteor/react-meteor-data";
 import React, { useEffect } from "react";
-import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Route, Routes, useNavigate } from "react-router-dom";
 import ProtectedPage from "../components/ProtectedPage";
-import { loginSuccess } from "../redux/actions/authAction";
 import AdminPage from "./AdminPage/AdminPage";
 import CartPage from "./CartPage/CartPage";
 import Header from "./Header";
 import LoginPage from "./login&signUp/LoginPage";
 import SignUpPage from "./login&signUp/SignUpPage";
 import ProductPage from "./ProductPage/ProductPage";
-import { Accounts } from "meteor/accounts-base";
 
 function App() {
   // login server admin

@@ -1,8 +1,11 @@
 import { Accounts } from "meteor/accounts-base";
 import { Meteor } from "meteor/meteor";
 import "../imports/api/authMethods";
+import "../imports/api/authPublications";
 import "../imports/api/productsMethods";
+import "../imports/api/productsPublications";
 import "../imports/api/userMethods";
+import "../imports/api/userPublications";
 import products from "../products.json";
 import { ProductsCollection } from "/imports/api/links";
 
@@ -39,5 +42,3 @@ Meteor.startup(() => {
     addProduct(products);
   }
 });
-
-Meteor.methods({});
