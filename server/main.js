@@ -1,7 +1,8 @@
 import { Accounts } from "meteor/accounts-base";
 import { Meteor } from "meteor/meteor";
-import "../imports/api/usersMethods";
-import '../imports/api/productsMethods'
+import "../imports/api/authMethods";
+import "../imports/api/productsMethods";
+import "../imports/api/userMethods";
 import products from "../products.json";
 import { ProductsCollection } from "/imports/api/links";
 

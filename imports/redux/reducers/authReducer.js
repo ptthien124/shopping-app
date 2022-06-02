@@ -1,6 +1,6 @@
 const initialState = {
   _id: "",
-  email: "",
+  username: "",
   fullName: "",
   logging: false,
   isLoggedIn: false,
@@ -43,4 +43,5 @@ const authReducer = (state = initialState, action) => {
       return state;
   }
 };
+
 export default authReducer;

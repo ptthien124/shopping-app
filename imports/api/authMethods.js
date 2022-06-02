@@ -3,7 +3,7 @@ import { check } from "meteor/check";
 import { Accounts } from "meteor/accounts-base";
 
 Meteor.methods({
-  "users._checkPassword": function (args) {
+  "auth._checkPassword": function (args) {
     check(args, Object);
 
     if (!this.userId) {
@@ -14,6 +14,10 @@ Meteor.methods({
 
     const isUserExisted = Accounts._checkPassword(user, args.password);
 
-    return { ...isUserExisted, user };
+
+    if (!isUserExisted) {
+      return { ...user, check: false };
+    }
+    return { ...user, check: true };
   },
 });

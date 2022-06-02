@@ -1,5 +1,5 @@
 import { Meteor } from "meteor/meteor";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -7,9 +7,13 @@ import { loginRequest } from "../../redux/actions/authAction";
 import "../../styles/css/form.css";
 import Button from "../Button";
 
+import { signUpRequest } from "../../redux/actions/userAction";
+
 function Form({ title, login, signUp }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const users = Meteor.users.find({}).fetch();
 
   const [gender, setGender] = useState();
   const [genderChecked, setGenderChecked] = useState(false);
@@ -28,17 +32,16 @@ function Form({ title, login, signUp }) {
 
   const onSubmit = (data) => {
     if (signUp) {
-      // let userExisted = false;
-      // if (users.some((element) => element.email === data.email))
-      //   if (users.some((element) => element.password === data.password))
-      //     userExisted = true;
-      // if (!userExisted) {
-      //   dispatch(addUser({ ...data, gender }));
-      //   dispatch(loginAuth({ ...data, gender }));
-      //   navigate("/");
-      // }
+      const signUpData = {
+        username: data.email,
+        password: data.password,
+        fullName: data.fullName,
+        gender: gender,
+      };
+      dispatch(signUpRequest(signUpData));
     } else if (login) {
-      dispatch(loginRequest(data));
+      const loginData = { username: data.email, password: data.password };
+      dispatch(loginRequest(loginData));
     }
   };
 

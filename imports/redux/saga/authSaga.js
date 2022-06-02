@@ -10,10 +10,10 @@ import {
 
 function* login(payload) {
   try {
-    const indexOfAtSign = payload.payload.email.indexOf("@");
-    const email =
-      payload.payload.email.slice(0, indexOfAtSign) +
-      payload.payload.email.slice(indexOfAtSign + 1);
+    const indexOfAtSign = payload.payload.username.indexOf("@");
+    const username =
+      payload.payload.username.slice(0, indexOfAtSign) +
+      payload.payload.username.slice(indexOfAtSign + 1);
 
     let isUserExisted = null;
 
@@ -28,20 +28,20 @@ function* login(payload) {
         });
       });
 
-    yield call("users._checkPassword", {
-      username: email,
+    yield call("auth._checkPassword", {
+      username,
       password: payload.payload.password,
     })
       .then((result) => (isUserExisted = result))
       .catch((error) => (isUserExisted = error));
 
     const auth = {
-      email: isUserExisted.user.username,
-      fullName: isUserExisted.user.profile.fullName,
-      userId: isUserExisted.userId,
+      username: isUserExisted.username,
+      fullName: isUserExisted.profile.fullName,
+      userId: isUserExisted._id,
     };
 
-    if (!isUserExisted.error) {
+    if (isUserExisted.check) {
       yield put(loginSuccess(auth));
     } else {
       yield put(loginFailed(isUserExisted?.error));

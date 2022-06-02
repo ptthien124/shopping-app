@@ -5,9 +5,9 @@ export const LOGIN_FAILED = "LOGIN_FAILED";
 export const LOGOUT_REQUEST = "LOGOUT_REQUEST";
 export const LOGOUT = "LOGOUT";
 
-export const loginSuccess = ({ email, fullName, userId }) => ({
+export const loginSuccess = ({ username, fullName, userId }) => ({
   type: LOGIN_SUCCESS,
-  payload: { email, fullName, userId },
+  payload: { username, fullName, userId },
 });
 
 export const loginFailed = (error) => ({
@@ -15,9 +15,9 @@ export const loginFailed = (error) => ({
   payload: error,
 });
 
-export const loginRequest = ({ email, password }) => ({
+export const loginRequest = ({ username, password }) => ({
   type: LOGIN_REQUEST,
-  payload: { email, password },
+  payload: { username, password },
 });
 
 export const logoutRequest = () => ({
