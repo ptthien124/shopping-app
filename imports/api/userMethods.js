@@ -1,10 +1,14 @@
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
 import { Accounts } from "meteor/accounts-base";
+import SimpleSchema from "simpl-schema";
 
 Meteor.methods({
   "user.isUserNameExisted": function (args) {
-    check(args, Object);
+    new SimpleSchema({
+      username: { type: String },
+      password: { type: String },
+    }).validate(args);
 
     if (!this.userId) {
       throw new Meteor.Error("Not authorized.");
