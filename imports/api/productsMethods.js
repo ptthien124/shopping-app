@@ -1,8 +1,6 @@
-import { check } from "meteor/check";
 import { Meteor } from "meteor/meteor";
-import { useTracker } from "meteor/react-meteor-data";
-import { ProductsCollection } from "./links";
 import SimpleSchema from "simpl-schema";
+import { ProductsCollection } from "./links";
 
 Meteor.methods({
   "products.insert"(data) {
@@ -11,7 +9,9 @@ Meteor.methods({
       description: { type: String },
       image: { type: String },
       price: { type: Number },
-      user: { type: Object },
+      username: { type: String },
+      fullName: { type: String },
+      userId: { type: String },
     }).validate(data);
 
     if (!this.userId) {
@@ -25,5 +25,17 @@ Meteor.methods({
 
       userId: this.userId,
     });
+  },
+
+  "products.remove"(data) {
+    new SimpleSchema({
+      productId: { type: String },
+    }).validate(data);
+
+    if (!this.userId) {
+      throw new Meteor.Error("Not authorized.");
+    }
+
+    ProductsCollection.remove(data.productId);
   },
 });

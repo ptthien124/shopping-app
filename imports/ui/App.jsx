@@ -20,15 +20,8 @@ function App() {
       Meteor.loginWithPassword(SEED_USERNAME, SEED_PASSWORD);
     }
   }, []);
-  //
-
-  const navigate = useNavigate();
 
   const user = useSelector((state) => state.auth);
-
-  useEffect(() => {
-    if (user.isLoggedIn) navigate("/");
-  }, [user]);
 
   return (
     <div>
@@ -52,7 +45,14 @@ function App() {
             </ProtectedPage>
           }
         />
-        <Route path="/admin" element={<AdminPage />} />
+        <Route
+          path="/admin"
+          element={
+            <ProtectedPage user={user}>
+              <AdminPage />
+            </ProtectedPage>
+          }
+        />
       </Routes>
     </div>
   );

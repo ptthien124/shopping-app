@@ -6,18 +6,20 @@ function RemoveProduct() {
 
   const handleRemove = (e) => {
     e.preventDefault();
-    Meteor.call("products.remove", productId);
+    Meteor.call("products.remove", { productId: productId });
+
+    setProductId("");
   };
 
   return (
-    <form className="form remove" onSubmit={handleRemove}>
+    <form action="" className="form remove" onSubmit={handleRemove}>
       <span>Remove product</span>
       <input
         type="text"
         value={productId}
         onChange={(e) => setProductId(e.target.value)}
       />
-      <button>remove</button>
+      <button type="submit">remove</button>
     </form>
   );
 }

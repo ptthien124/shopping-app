@@ -1,12 +1,20 @@
 import React, { useState } from "react";
 import { Meteor } from "meteor/meteor";
 import { useForm } from "react-hook-form";
+import { useSelector } from "react-redux";
 
 function AddProduct() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [image, setImage] = useState("");
   const [price, setPrice] = useState("");
+
+  const auth = useSelector((state) => state.auth);
+  const user = {
+    username: auth.username,
+    fullName: auth.fullName,
+    userId: auth.userId,
+  };
 
   const {
     register,
@@ -16,22 +24,30 @@ function AddProduct() {
 
   const onSubmit = (data) => {
     const numbPrice = Number(data.price);
-    console.log({
-      title: data.title,
-      description: data.desc,
-      image: data.image,
-      price: numbPrice,
-    });
-    // Meteor.call("products.insert", {
+    // console.log({
     //   title: data.title,
     //   description: data.desc,
     //   image: data.image,
     //   price: numbPrice,
+    //   user,
     // });
+
+    Meteor.call("products.insert", {
+      title: data.title,
+      description: data.desc,
+      image: data.image,
+      price: numbPrice,
+      ...user,
+    });
+
+    setTitle("");
+    setDescription("");
+    setImage("");
+    setPrice("");
   };
 
   return (
-    <form className="form add" onSubmit={handleSubmit(onSubmit)}>
+    <form action="" className="form add" onSubmit={handleSubmit(onSubmit)}>
       <span>Add product</span>
       <div className="inputWrapper">
         <label htmlFor="title">Title</label>
@@ -77,7 +93,7 @@ function AddProduct() {
           onChange={(e) => setPrice(e.target.value)}
         />
       </div>
-      <button>add</button>
+      <button type="submit">add</button>
     </form>
   );
 }

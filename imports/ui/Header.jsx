@@ -28,9 +28,13 @@ function Header() {
           label: "Setting",
           key: "1",
         },
+        user.username === "admingmail.com" && {
+          label: <Link to="/admin">Admin</Link>,
+        },
         {
           type: "divider",
         },
+
         {
           label: (
             <Link onClick={handleLogout} to="/login">
