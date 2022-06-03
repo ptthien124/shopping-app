@@ -1,13 +1,13 @@
 import { Meteor } from "meteor/meteor";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { loginRequest } from "../../redux/actions/authAction";
-import "../../styles/css/form.css";
+import { loginRequest } from "../../../redux/actions/authAction";
+import { signUpRequest } from "../../../redux/actions/userAction";
+import "../../../styles/css/form.css";
 import Button from "../Button";
 
-import { signUpRequest } from "../../redux/actions/userAction";
 
 function Form({ title, login, signUp }) {
   const dispatch = useDispatch();

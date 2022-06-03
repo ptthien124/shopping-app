@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import "../../styles/css/cartPage.css";
+import "../../../styles/css/cartPage.css";
 import CartProducts from "./CartProducts";
 import Empty from "./Empty";
 

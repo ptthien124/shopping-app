@@ -1,7 +1,7 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addToCart, removeFromCart } from "../../redux/actions/cartAction";
-import "../../styles/css/cartProduct.css";
+import { addToCart, removeFromCart } from "../../../redux/actions/cartAction";
+import "../../../styles/css/cartProduct.css";
 
 function CartProduct({ _id, image, title, price, createAt, quantity = 1 }) {
   const dispatch = useDispatch();

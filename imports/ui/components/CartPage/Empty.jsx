@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import '../../styles/css/empty.css'
+import "../../../styles/css/empty.css";
 
 function Empty() {
   return (

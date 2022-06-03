@@ -3,10 +3,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Meteor } from "meteor/meteor";
 import { useTracker } from "meteor/react-meteor-data";
 import React, { useEffect, useRef, useState } from "react";
-import { ProductsCollection } from "../../api/links";
-import useDebounced from "../../customHooks/useDebounce";
-import usePagination from "../../customHooks/usePagination";
-import "../../styles/css/productPage.css";
+import { ProductsCollection } from "../../../api/links";
+import useDebounced from "../../../customHooks/useDebounce";
+import usePagination from "../../../customHooks/usePagination";
+import "../../../styles/css/productPage.css";
 import Products from "./Products";
 
 function ProductPage() {
