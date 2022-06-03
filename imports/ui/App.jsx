@@ -1,14 +1,10 @@
 import { Meteor } from "meteor/meteor";
 import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
-import { Route, Routes } from "react-router-dom";
-import ProtectedPage from "../components/ProtectedPage";
-import CartPage from "./components/CartPage/CartPage";
-import LoginPage from "./components/login&signUp/LoginPage";
-import SignUpPage from "./components/login&signUp/SignUpPage";
-import ProductPage from "./components/ProductPage/ProductPage";
-import Header from "./components/Header";
-import AdminPage from "./components/AdminPage/AdminPage";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import ProtectedRoute from "./components/ProtectedRoute";
+import { DefaultLayout } from "./layouts";
+import { adminRoutes, privateRoutes, publicRoutes } from "./routes";
 
 function App() {
   // login server admin
@@ -24,37 +20,63 @@ function App() {
   const user = useSelector((state) => state.auth);
 
   return (
-    <div>
-      <Header />
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <ProtectedPage user={user}>
-              <ProductPage />
-            </ProtectedPage>
-          }
-        />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/signUp" element={<SignUpPage />} />
-        <Route
-          path="/cart"
-          element={
-            <ProtectedPage user={user}>
-              <CartPage />
-            </ProtectedPage>
-          }
-        />
-        <Route
-          path="/admin"
-          element={
-            <ProtectedPage user={user}>
-              <AdminPage />
-            </ProtectedPage>
-          }
-        />
-      </Routes>
-    </div>
+    <Router>
+      <div className="app">
+        <Routes>
+          {publicRoutes.map((route, index) => {
+            const Layout = route.layout === null ? DefaultLayout : route.layout;
+            const Page = route.component;
+            return (
+              <Route
+                key={index}
+                path={route.path}
+                element={
+                  <Layout>
+                    <Page />
+                  </Layout>
+                }
+              />
+            );
+          })}
+
+          {privateRoutes.map((route, index) => {
+            const Layout = route.layout === null ? DefaultLayout : route.layout;
+            const Page = route.component;
+            return (
+              <Route
+                key={index}
+                path={route.path}
+                element={
+                  <ProtectedRoute>
+                    <Layout>
+                      <Page />
+                    </Layout>
+                  </ProtectedRoute>
+                }
+              />
+            );
+          })}
+
+          {adminRoutes.map((route, index) => {
+            const Layout = route.layout === null ? DefaultLayout : route.layout;
+            const Page = route.component;
+            return (
+              <Route
+                key={index}
+                path={route.path}
+                element={
+                  <ProtectedRoute admin>
+                    <Layout>
+                      <Page />
+                    </Layout>
+                  </ProtectedRoute>
+                }
+              />
+            );
+          })}
+        </Routes>
+      </div>
+    </Router>
   );
 }
 

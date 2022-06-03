@@ -23,4 +23,14 @@ Meteor.methods({
     }
     return { ...user, check: true };
   },
+
+  "auth.loginWithPassword": function (args) {
+    check(args, Object);
+
+    if (!this.userId) {
+      throw new Meteor.Error("Not authorized.");
+    }
+
+    
+  },
 });

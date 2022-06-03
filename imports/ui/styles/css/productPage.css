@@ -1,23 +1,23 @@
-.productPage .wrapper {
+body .productPage .wrapper {
   padding-top: 80px; }
 
-.productPage .searchWrapper {
+body .productPage .searchWrapper {
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin-top: 50px;
   margin-bottom: 50px; }
 
-.productPage .searchContainer {
+body .productPage .searchContainer {
   height: 46px;
   width: 300px;
   display: flex;
   align-items: center;
   border: 4px solid lightgray;
   border-radius: 4px; }
-  .productPage .searchContainer:focus-within {
+  body .productPage .searchContainer:focus-within {
     border-color: #333; }
-  .productPage .searchContainer .searchButton {
+  body .productPage .searchContainer .searchButton {
     height: calc(100% + 2px);
     width: 48px;
     margin-left: -1px;
@@ -27,7 +27,7 @@
     border-bottom-left-radius: 4px;
     background-color: white;
     cursor: pointer; }
-  .productPage .searchContainer .search {
+  body .productPage .searchContainer .search {
     font-size: 2rem;
     font-weight: 500;
     flex: 1;
@@ -39,11 +39,11 @@
     border-top-right-radius: 4px;
     border-bottom-right-radius: 4px; }
 
-.productPage .sortWrapper {
+body .productPage .sortWrapper {
   color: var(--primary);
   font-weight: 700;
   font-size: 2rem; }
-  .productPage .sortWrapper select {
+  body .productPage .sortWrapper select {
     color: var(--yellow);
     border: none;
     outline: none;
@@ -51,13 +51,13 @@
     margin-left: 12px;
     cursor: pointer;
     -webkit-appearance: none; }
-    .productPage .sortWrapper select option {
+    body .productPage .sortWrapper select option {
       -webkit-appearance: none;
       color: #333;
       text-align: center;
       cursor: pointer; }
 
-.productPage .pageButton {
+body .productPage .pageButton {
   width: 40px;
   height: 40px;
   margin: 0 8px 40px;

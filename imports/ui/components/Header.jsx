@@ -3,18 +3,20 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Dropdown, Menu, Space } from "antd";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
-import { logoutAuth, logoutRequest } from "../../redux/actions/authAction";
-import "../../styles/css/header.css";
+import { Link, useNavigate } from "react-router-dom";
+import { logoutAuth, logoutRequest } from "../redux/actions/authAction";
+import "../styles/css/header.css";
 
 function Header() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const user = useSelector((state) => state.auth);
 
   const handleLogout = (e) => {
     e.preventDefault();
     dispatch(logoutRequest());
+    navigate("/login");
   };
 
   const menu = (

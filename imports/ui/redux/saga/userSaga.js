@@ -1,12 +1,10 @@
 import { Meteor } from "meteor/meteor";
 import { fork, put, takeEvery } from "redux-saga/effects";
-import { loginRequest, loginSuccess } from "../actions/authAction";
+import { loginSuccess } from "../actions/authAction";
 import {
-  signingUp,
-  SIGNING_UP,
   signUpFailed,
   signUpSuccess,
-  SIGN_UP_REQUEST,
+  SIGN_UP_REQUEST
 } from "../actions/userAction";
 
 function* signUp(payload) {

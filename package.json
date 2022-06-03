@@ -6,7 +6,7 @@
     "test": "meteor test --once --driver-package meteortesting:mocha",
     "test-app": "TEST_WATCH=1 meteor test --full-app --driver-package meteortesting:mocha",
     "visualize": "meteor --production --extra-packages bundle-visualizer",
-    "scss": "node-sass --watch imports/styles/scss/ --output imports/styles/css/"
+    "scss": "node-sass --watch imports/ui/styles/scss/ --output imports/ui/styles/css/"
   },
   "dependencies": {
     "@babel/runtime": "^7.17.9",

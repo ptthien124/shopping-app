@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import Form from "./Form";
 import SharedPage from "./SharedPage";
-import "../../../styles/css/formPage.css";
+import "../../styles/css/formPage.css";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 

@@ -2,8 +2,8 @@ import { Col } from "antd";
 import "antd/dist/antd.css";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addToCart } from "../../../redux/actions/cartAction";
-import "../../../styles/css/product.css";
+import { addToCart } from "../../redux/actions/cartAction";
+import "../../styles/css/product.css";
 import Button from "../Button";
 
 function Product({ _id, image, title, price, createAt }) {

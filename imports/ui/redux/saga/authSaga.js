@@ -1,11 +1,11 @@
 import { Meteor } from "meteor/meteor";
-import { call, fork, put, take, select, takeEvery } from "redux-saga/effects";
+import { fork, put, takeEvery } from "redux-saga/effects";
 import {
   loginFailed,
   loginSuccess,
   LOGIN_REQUEST,
   logoutAuth,
-  LOGOUT_REQUEST,
+  LOGOUT_REQUEST
 } from "../actions/authAction";
 
 function* login(payload) {

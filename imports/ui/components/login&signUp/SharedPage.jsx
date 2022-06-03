@@ -1,5 +1,5 @@
 import React from "react";
-import "../../../styles/css/sharedFormPage.css";
+import "../../styles/css/sharedFormPage.css";
 
 function SharedPage() {
   return (
