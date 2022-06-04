@@ -1,10 +1,10 @@
 import { Meteor } from "meteor/meteor";
 import { fork, put, takeEvery } from "redux-saga/effects";
-import { loginSuccess } from "../actions/authAction";
+import { loginFailed, loginSuccess } from "../actions/authAction";
 import {
   signUpFailed,
   signUpSuccess,
-  SIGN_UP_REQUEST
+  SIGN_UP_REQUEST,
 } from "../actions/userAction";
 
 function* signUp(payload) {
@@ -20,38 +20,34 @@ function* signUp(payload) {
         });
       });
 
-    let catchError = null;
-    let isUserExisted = null;
+    const username = payload.payload.username.replace("@", "AtSign");
 
-    const indexOfAtSign = payload.payload.username.indexOf("@");
-    const username =
-      payload.payload.username.slice(0, indexOfAtSign) +
-      payload.payload.username.slice(indexOfAtSign + 1);
-
-    yield call("user.isUserNameExisted", {
-      username: username,
+    const data = {
+      username,
       password: payload.payload.password,
-    })
-      .then((result) => (isUserExisted = result))
-      .catch((error) => (catchError = error));
+      fullName: payload.payload.fullName,
+      gender: payload.payload.gender,
+    };
 
-    if (catchError) {
-      yield put(signUpFailed(catchError));
-    } else if (isUserExisted) {
-      if (!isUserExisted.isUserExisted) {
-        let result = null;
-        yield call("user.signUp", {
-          username,
-          password: payload.payload.password,
-          gender: payload.payload.gender,
-          fullName: payload.payload.fullName,
+    const isUserExisted = yield call("user.isUserNameExisted", {
+      username: data.username,
+      password: data.password,
+    });
+
+    if (isUserExisted) {
+      yield put(loginFailed("Username existed"));
+    } else {
+      const newUser = yield call("user.signUp", { ...data });
+
+      yield put(signUpSuccess({ userId: newUser.userId }));
+      yield put(
+        loginSuccess({
+          username: newUser.username,
+          fullName: newUser.fullName,
+          userId: newUser.userId,
+          isAdmin: newUser.isAdmin,
         })
-          .then((res) => (result = res))
-          .catch((error) => (result = error));
-
-        yield put(signUpSuccess(result));
-        yield put(loginSuccess(result));
-      }
+      );
     }
   } catch (error) {
     yield put(signUpFailed(error));

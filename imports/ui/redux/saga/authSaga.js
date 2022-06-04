@@ -5,17 +5,12 @@ import {
   loginSuccess,
   LOGIN_REQUEST,
   logoutAuth,
-  LOGOUT_REQUEST
+  LOGOUT_REQUEST,
 } from "../actions/authAction";
 
 function* login(payload) {
   try {
-    const indexOfAtSign = payload.payload.username.indexOf("@");
-    const username =
-      payload.payload.username.slice(0, indexOfAtSign) +
-      payload.payload.username.slice(indexOfAtSign + 1);
-
-    let isUserExisted = null;
+    const username = payload.payload.username.replace("@", "AtSign");
 
     const call = (methodName, args = {}) =>
       new Promise((resolve, reject) => {
@@ -28,23 +23,43 @@ function* login(payload) {
         });
       });
 
-    yield call("auth._checkPassword", {
-      username,
-      password: payload.payload.password,
-    })
-      .then((result) => (isUserExisted = result))
-      .catch((error) => (isUserExisted = error));
+    const customLogin = (user, password) =>
+      new Promise((resolve, reject) => {
+        Meteor.loginWithPassword(user, password, (error) => {
+          if (error) {
+            reject({ isSuccess: false, error });
+          } else {
+            resolve({ isSuccess: true });
+          }
+        });
+      });
 
-    const auth = {
-      username: isUserExisted.username,
-      fullName: isUserExisted.profile.fullName,
-      userId: isUserExisted._id,
-    };
+    let status = null;
 
-    if (isUserExisted.check) {
-      yield put(loginSuccess(auth));
+    yield customLogin((user = username), (password = payload.payload.password))
+      .then((result) => (status = result))
+      .catch((error) => (status = error));
+
+    if (status.isSuccess) {
+      let user = {};
+
+      yield call("auth.findUser", { username })
+        .then((result) => (user = result))
+        .catch((error) => (user = error));
+
+      if (user._id) {
+        const data = {
+          username: user.username,
+          fullName: user.profile.fullName,
+          userId: user._id,
+          isAdmin: user.profile.isAdmin,
+        };
+        yield put(loginSuccess(data));
+      } else {
+        yield put(loginFailed("Can't find user"));
+      }
     } else {
-      yield put(loginFailed(isUserExisted?.error));
+      yield put(loginFailed(status.error));
     }
   } catch (err) {
     yield put(loginFailed(err));

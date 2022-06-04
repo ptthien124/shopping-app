@@ -1,7 +1,8 @@
+import { Spin } from "antd";
 import { Meteor } from "meteor/meteor";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { loginRequest } from "../../redux/actions/authAction";
 import { signUpRequest } from "../../redux/actions/userAction";
@@ -13,6 +14,8 @@ function Form({ title, login, signUp }) {
   const navigate = useNavigate();
 
   const users = Meteor.users.find({}).fetch();
+
+  const auth = useSelector((state) => state.auth);
 
   const [gender, setGender] = useState();
   const [genderChecked, setGenderChecked] = useState(false);
@@ -167,10 +170,14 @@ function Form({ title, login, signUp }) {
       )}
       <div className="container">
         <div style={{ width: "150px" }}></div>
+        {/* {auth.logging ? (
+          <Spin style={{ margin: "0 auto" }} />
+        ) : ( */}
         <Button
           onClick={() => setSubmitted(true)}
           title={(login && "Login") || (signUp && "Sign Up")}
         ></Button>
+        {/* )} */}
       </div>
     </form>
   );

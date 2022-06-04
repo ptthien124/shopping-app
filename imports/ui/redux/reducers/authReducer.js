@@ -1,5 +1,6 @@
 const initialState = {
   _id: "",
+  isAdmin: false,
   username: "",
   fullName: "",
   logging: false,
@@ -29,11 +30,12 @@ const authReducer = (state = initialState, action) => {
     }
     case "LOGIN_FAILED": {
       console.log("login failed", action.payload);
+      return initialState;
     }
 
     case "LOGOUT_REQUEST":
       console.log("logging out");
-      return state;
+      return initialState;
 
     case "LOGOUT":
       console.log("logout");

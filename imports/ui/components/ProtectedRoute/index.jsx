@@ -6,7 +6,9 @@ function index({ redirectPath = "/login", children, admin }) {
   const user = useSelector((state) => state.auth);
   let isAuthenticated = user.isLoggedIn;
 
-  if (admin && user.username !== "admingmail.com") {
+  const isAdmin = user.isAdmin;
+
+  if (admin && !isAdmin) {
     isAuthenticated = false;
   }
 

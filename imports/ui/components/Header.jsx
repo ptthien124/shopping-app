@@ -30,7 +30,7 @@ function Header() {
           label: "Setting",
           key: "1",
         },
-        user.username === "admingmail.com" && {
+        user.isAdmin && {
           label: <Link to="/admin">Admin</Link>,
         },
         {

@@ -1,8 +1,5 @@
 const initialState = {
-  username: "",
-  password: "",
-  fullName: "",
-  gender: "",
+  userId: "",
   signingUp: false,
   isSignUpSuccess: false,
 };

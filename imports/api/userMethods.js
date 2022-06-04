@@ -1,6 +1,6 @@
-import { Meteor } from "meteor/meteor";
-import { check } from "meteor/check";
 import { Accounts } from "meteor/accounts-base";
+import { check } from "meteor/check";
+import { Meteor } from "meteor/meteor";
 import SimpleSchema from "simpl-schema";
 
 Meteor.methods({
@@ -10,46 +10,41 @@ Meteor.methods({
       password: { type: String },
     }).validate(args);
 
-    if (!this.userId) {
-      throw new Meteor.Error("Not authorized.");
-    }
-
     const user = Accounts.findUserByUsername(args.username);
 
     if (user) {
-      return { isUserExisted: true };
+      return true;
     }
-    return { isUserExisted: false };
+    return false;
   },
 
   "user.signUp": function (args) {
     check(args, Object);
 
-    if (!this.userId) {
-      throw new Meteor.Error("Not authorized.");
-    }
-
-    const newUserId = Meteor.users.insert({
+    const newUser = Meteor.users.insert({
       username: args.username,
       profile: {
         fullName: args.fullName,
         gender: args.gender,
+        isAdmin: false,
       },
-      createdAt: new Date(),
     });
-    Accounts.setPassword(newUserId, args.password);
+    Accounts.setPassword(newUser, args.password);
 
-    const user = Accounts.findUserByUsername(args.username);
+    let user = {};
 
-    console.log({
-      username: args.username,
-      fullName: args.fullName,
-      userId: user._id,
-    });
-    return {
-      username: args.username,
-      fullName: args.fullName,
-      userId: user._id,
-    };
+    const findUser = Accounts.findUserByUsername(args.username);
+
+    if (findUser._id) {
+      user = {
+        username: findUser.username,
+        fullName: findUser.profile.fullName,
+        gender: findUser.profile.gender,
+        userId: findUser._id,
+        isAdmin: findUser.profile.isAdmin,
+      };
+    }
+
+    return user;
   },
 });

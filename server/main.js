@@ -10,20 +10,12 @@ import products from "../products.json";
 import { ProductsCollection } from "/imports/api/links";
 
 function addProduct(data) {
-  // data.forEach((item) => {
-  //   Meteor.call("products.insert", {
-  //     title: item.title,
-  //     description: item.description,
-  //     image: item.image,
-  //     price: item.price,
-  //     user: {},
-  //   });
   data.forEach((item) => {
     ProductsCollection.insert({ ...item, createAt: new Date() });
   });
 }
 
-const SEED_USERNAME = "admingmail.com";
+const SEED_USERNAME = "adminAtSigngmail.com";
 const SEED_PASSWORD = "admintest";
 
 Meteor.startup(() => {
@@ -32,6 +24,7 @@ Meteor.startup(() => {
       username: SEED_USERNAME,
       profile: {
         fullName: "admin",
+        isAdmin: true,
       },
       createdAt: new Date(),
     });

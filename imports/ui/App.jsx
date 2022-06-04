@@ -1,24 +1,10 @@
-import { Meteor } from "meteor/meteor";
-import React, { useEffect } from "react";
-import { useSelector } from "react-redux";
+import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { DefaultLayout } from "./layouts";
 import { adminRoutes, privateRoutes, publicRoutes } from "./routes";
 
 function App() {
-  // login server admin
-  useEffect(() => {
-    if (!Meteor.user()) {
-      const SEED_USERNAME = "admingmail.com";
-      const SEED_PASSWORD = "admintest";
-
-      Meteor.loginWithPassword(SEED_USERNAME, SEED_PASSWORD);
-    }
-  }, []);
-
-  const user = useSelector((state) => state.auth);
-
   return (
     <Router>
       <div className="app">

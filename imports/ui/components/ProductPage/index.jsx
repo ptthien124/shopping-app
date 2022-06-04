@@ -1,5 +1,6 @@
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Spin } from "antd";
 import { Meteor } from "meteor/meteor";
 import { useTracker } from "meteor/react-meteor-data";
 import React, { useEffect, useRef, useState } from "react";
@@ -10,20 +11,6 @@ import "../../styles/css/productPage.css";
 import Products from "./Products";
 
 function ProductPage() {
-  // const products = useTracker(() => ProductsCollection.find().fetch());
-
-  // const data = useTracker(() => {
-  //   const prods = Meteor.subscribe("products");
-  //   let dataFetched = {};
-  //   if (prods.ready()) {
-  //     dataFetched = ProductsCollection.find().fetch();
-  //   }
-  //   console.log("data", dataFetched);
-  //   return {
-  //     dataFetched,
-  //   };
-  // }, []);
-
   const products = useTracker(() => {
     const prods = Meteor.subscribe("products");
     if (prods.ready()) {
@@ -114,6 +101,11 @@ function ProductPage() {
           />
         )}
 
+        {products.length <= 0 && (
+          <div className="flex" style={{ height: "500px" }}>
+            <Spin />
+          </div>
+        )}
         {(filterList.length > 0 || products.length > 0) && (
           <div className="flex">
             {/* <button onClick={() => prev()}>prev</button> */}
