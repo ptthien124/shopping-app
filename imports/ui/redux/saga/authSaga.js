@@ -8,35 +8,46 @@ import {
   LOGOUT_REQUEST,
 } from "../actions/authAction";
 
+const call = (methodName, args = {}) =>
+  new Promise((resolve, reject) => {
+    Meteor.call(methodName, { ...args }, (error, result) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve(result);
+      }
+    });
+  });
+
+const asyncLogin = (user, password) =>
+  new Promise((resolve, reject) => {
+    Meteor.loginWithPassword(user, password, (error) => {
+      if (error) {
+        reject({ isSuccess: false, error });
+      } else {
+        resolve({ isSuccess: true });
+      }
+    });
+  });
+
+const asyncLogout = () =>
+  new Promise((resolve, reject) => {
+    Meteor.logout((error) => {
+      if (error) {
+        reject({ isSuccess: false, error });
+      } else {
+        resolve({ isSuccess: true });
+      }
+    });
+  });
+
 function* login(payload) {
   try {
     const username = payload.payload.username.replace("@", "AtSign");
 
-    const call = (methodName, args = {}) =>
-      new Promise((resolve, reject) => {
-        Meteor.call(methodName, { ...args }, (error, result) => {
-          if (error) {
-            reject(error);
-          } else {
-            resolve(result);
-          }
-        });
-      });
-
-    const customLogin = (user, password) =>
-      new Promise((resolve, reject) => {
-        Meteor.loginWithPassword(user, password, (error) => {
-          if (error) {
-            reject({ isSuccess: false, error });
-          } else {
-            resolve({ isSuccess: true });
-          }
-        });
-      });
-
     let status = null;
 
-    yield customLogin((user = username), (password = payload.payload.password))
+    yield asyncLogin((user = username), (password = payload.payload.password))
       .then((result) => (status = result))
       .catch((error) => (status = error));
 
@@ -67,7 +78,16 @@ function* login(payload) {
 }
 
 function* logout() {
-  yield put(logoutAuth());
+  let logoutSuccess = null;
+  yield asyncLogout()
+    .then((result) => (logoutSuccess = result))
+    .catch((error) => (logoutSuccess = error));
+
+  if (logoutSuccess.isSuccess) {
+    yield put(logoutAuth());
+  } else {
+    console.log("logout failed");
+  }
 }
 
 function* watchLogin() {

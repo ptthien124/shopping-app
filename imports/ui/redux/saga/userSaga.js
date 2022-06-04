@@ -7,19 +7,30 @@ import {
   SIGN_UP_REQUEST,
 } from "../actions/userAction";
 
+const call = (methodName, args = {}) =>
+  new Promise((resolve, reject) => {
+    Meteor.call(methodName, { ...args }, (error, result) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve(result);
+      }
+    });
+  });
+
+const asyncLogin = (user, password) =>
+  new Promise((resolve, reject) => {
+    Meteor.loginWithPassword(user, password, (error) => {
+      if (error) {
+        reject({ isSuccess: false, error });
+      } else {
+        resolve({ isSuccess: true });
+      }
+    });
+  });
+
 function* signUp(payload) {
   try {
-    const call = (methodName, args = {}) =>
-      new Promise((resolve, reject) => {
-        Meteor.call(methodName, { ...args }, (error, result) => {
-          if (error) {
-            reject(error);
-          } else {
-            resolve(result);
-          }
-        });
-      });
-
     const username = payload.payload.username.replace("@", "AtSign");
 
     const data = {
@@ -35,31 +46,20 @@ function* signUp(payload) {
     });
 
     if (isUserExisted) {
-      yield put(loginFailed("Username existed"));
+      yield put(signUpFailed("Username existed"));
     } else {
       const newUser = yield call("user.signUp", { ...data });
 
-      const customLogin = (user, password) =>
-        new Promise((resolve, reject) => {
-          Meteor.loginWithPassword(user, password, (error) => {
-            if (error) {
-              reject({ isSuccess: false, error });
-            } else {
-              resolve({ isSuccess: true });
-            }
-          });
-        });
+      yield put(signUpSuccess({ userId: newUser.userId }));
 
       let status = null;
 
-      yield customLogin(
-        (user = username),
-        (password = payload.payload.password)
-      )
+      yield asyncLogin((user = username), (password = payload.payload.password))
         .then((result) => (status = result))
         .catch((error) => (status = error));
 
       if (status.isSuccess) {
+        // sign up success => login
         let user = {};
 
         yield call("auth.findUser", { username })
@@ -80,8 +80,6 @@ function* signUp(payload) {
       } else {
         yield put(loginFailed(status.error));
       }
-
-      yield put(signUpSuccess({ userId: newUser.userId }));
     }
   } catch (error) {
     yield put(signUpFailed(error));

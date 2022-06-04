@@ -29,7 +29,7 @@ const userReducer = (state = initialState, action) => {
     }
 
     case "SIGN_UP_FAILED": {
-      console.log("sign up failed");
+      console.log("sign up failed", action.payload);
 
       return initialState;
     }
