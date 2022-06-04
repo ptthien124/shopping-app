@@ -4,7 +4,7 @@ import { Dropdown, Menu, Space } from "antd";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { logoutAuth, logoutRequest } from "../redux/actions/authAction";
+import { logoutRequest } from "../redux/actions/authAction";
 import "../styles/css/header.css";
 
 function Header() {

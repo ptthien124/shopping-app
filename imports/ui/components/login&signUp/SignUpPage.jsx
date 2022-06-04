@@ -1,9 +1,9 @@
 import React, { useEffect } from "react";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import "../../styles/css/formPage.css";
 import Form from "./Form";
 import SharedPage from "./SharedPage";
-import "../../styles/css/formPage.css";
-import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
 
 function SignUpPage() {
   const navigate = useNavigate();

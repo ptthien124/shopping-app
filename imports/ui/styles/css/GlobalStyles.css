@@ -32,6 +32,8 @@ body {
   font-size: 1.6rem;
 
   font-family: "Fredoka One", cursive !important;
+
+  overflow-y: overlay;
 }
 
 body img {

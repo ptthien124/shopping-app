@@ -3,7 +3,6 @@ import { Meteor } from "meteor/meteor";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import { loginRequest } from "../../redux/actions/authAction";
 import { signUpRequest } from "../../redux/actions/userAction";
 import "../../styles/css/form.css";
@@ -11,7 +10,6 @@ import Button from "../Button";
 
 function Form({ title, login, signUp }) {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   const users = Meteor.users.find({}).fetch();
 
@@ -162,22 +160,22 @@ function Form({ title, login, signUp }) {
               ))}
             </div>
           </div>
+          {signUp && !genderChecked && submitted && (
+            <p className="genderError">Check your gender!!!</p>
+          )}
         </div>
       )}
 
-      {signUp && !genderChecked && submitted && (
-        <span className="genderError">Check your gender!!!</span>
-      )}
       <div className="container">
         <div style={{ width: "150px" }}></div>
-        {/* {auth.logging ? (
+        {auth.logging ? (
           <Spin style={{ margin: "0 auto" }} />
-        ) : ( */}
-        <Button
-          onClick={() => setSubmitted(true)}
-          title={(login && "Login") || (signUp && "Sign Up")}
-        ></Button>
-        {/* )} */}
+        ) : (
+          <Button
+            onClick={() => setSubmitted(true)}
+            title={(login && "Login") || (signUp && "Sign Up")}
+          ></Button>
+        )}
       </div>
     </form>
   );

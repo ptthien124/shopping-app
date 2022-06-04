@@ -3,13 +3,10 @@ import { check } from "meteor/check";
 import { Meteor } from "meteor/meteor";
 import SimpleSchema from "simpl-schema";
 
+import { hash } from "bcrypt";
+
 Meteor.methods({
   "user.isUserNameExisted": function (args) {
-    new SimpleSchema({
-      username: { type: String },
-      password: { type: String },
-    }).validate(args);
-
     const user = Accounts.findUserByUsername(args.username);
 
     if (user) {
@@ -19,9 +16,7 @@ Meteor.methods({
   },
 
   "user.signUp": function (args) {
-    check(args, Object);
-
-    const newUser = Meteor.users.insert({
+    Meteor.users.insert({
       username: args.username,
       profile: {
         fullName: args.fullName,
@@ -29,11 +24,12 @@ Meteor.methods({
         isAdmin: false,
       },
     });
-    Accounts.setPassword(newUser, args.password);
 
     let user = {};
 
     const findUser = Accounts.findUserByUsername(args.username);
+
+    Accounts.setPassword(findUser._id, args.password);
 
     if (findUser._id) {
       user = {

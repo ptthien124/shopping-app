@@ -1,13 +1,14 @@
 import { Accounts } from "meteor/accounts-base";
 import { Meteor } from "meteor/meteor";
-import "../imports/api/authMethods";
-import "../imports/api/authPublications";
-import "../imports/api/productsMethods";
-import "../imports/api/productsPublications";
-import "../imports/api/userMethods";
-import "../imports/api/userPublications";
+import "../imports/api/methods/authMethods";
+import "../imports/api/methods/productsMethods";
+import "../imports/api/methods/userMethods";
+import ProductsCollection from "../imports/api/ProductsCollection";
+import "../imports/api/publish/authPublications";
+import "../imports/api/publish/productsPublications";
+import "../imports/api/publish/userPublications";
+import "../imports/api/UsersCollection";
 import products from "../products.json";
-import { ProductsCollection } from "/imports/api/links";
 
 function addProduct(data) {
   data.forEach((item) => {

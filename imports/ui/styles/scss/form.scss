@@ -18,6 +18,14 @@
 
   .wrapper {
     height: 90px;
+
+    .genderError {
+      text-align: center;
+      margin-top: 10px;
+      color: var(--red);
+      font-size: 2rem;
+      font-weight: 700;
+    }
   }
 
   .container {
@@ -101,13 +109,6 @@
     &:last-child {
       margin: 0 auto;
     }
-  }
-
-  .genderError {
-    margin: 0 auto;
-    color: var(--red);
-    font-size: 2rem;
-    font-weight: 700;
   }
 
   .genderTitle {

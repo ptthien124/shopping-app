@@ -9,13 +9,6 @@ function AddProduct() {
   const [image, setImage] = useState("");
   const [price, setPrice] = useState("");
 
-  const auth = useSelector((state) => state.auth);
-  const user = {
-    username: auth.username,
-    fullName: auth.fullName,
-    userId: auth.userId,
-  };
-
   const {
     register,
     handleSubmit,
@@ -24,20 +17,12 @@ function AddProduct() {
 
   const onSubmit = (data) => {
     const numbPrice = Number(data.price);
-    // console.log({
-    //   title: data.title,
-    //   description: data.desc,
-    //   image: data.image,
-    //   price: numbPrice,
-    //   user,
-    // });
 
     Meteor.call("products.insert", {
       title: data.title,
       description: data.desc,
       image: data.image,
       price: numbPrice,
-      ...user,
     });
 
     setTitle("");

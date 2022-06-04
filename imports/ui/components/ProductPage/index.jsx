@@ -4,7 +4,7 @@ import { Spin } from "antd";
 import { Meteor } from "meteor/meteor";
 import { useTracker } from "meteor/react-meteor-data";
 import React, { useEffect, useRef, useState } from "react";
-import { ProductsCollection } from "../../../api/links";
+import ProductsCollection from "../../../api/ProductsCollection";
 import useDebounced from "../../hooks/useDebounce";
 import usePagination from "../../hooks/usePagination";
 import "../../styles/css/productPage.css";

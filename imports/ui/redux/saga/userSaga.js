@@ -39,15 +39,49 @@ function* signUp(payload) {
     } else {
       const newUser = yield call("user.signUp", { ...data });
 
+      const customLogin = (user, password) =>
+        new Promise((resolve, reject) => {
+          Meteor.loginWithPassword(user, password, (error) => {
+            if (error) {
+              reject({ isSuccess: false, error });
+            } else {
+              resolve({ isSuccess: true });
+            }
+          });
+        });
+
+      let status = null;
+
+      yield customLogin(
+        (user = username),
+        (password = payload.payload.password)
+      )
+        .then((result) => (status = result))
+        .catch((error) => (status = error));
+
+      if (status.isSuccess) {
+        let user = {};
+
+        yield call("auth.findUser", { username })
+          .then((result) => (user = result))
+          .catch((error) => (user = error));
+
+        if (user._id) {
+          const data = {
+            username: user.username,
+            fullName: user.profile.fullName,
+            userId: user._id,
+            isAdmin: user.profile.isAdmin,
+          };
+          yield put(loginSuccess(data));
+        } else {
+          yield put(loginFailed("Can't find user"));
+        }
+      } else {
+        yield put(loginFailed(status.error));
+      }
+
       yield put(signUpSuccess({ userId: newUser.userId }));
-      yield put(
-        loginSuccess({
-          username: newUser.username,
-          fullName: newUser.fullName,
-          userId: newUser.userId,
-          isAdmin: newUser.isAdmin,
-        })
-      );
     }
   } catch (error) {
     yield put(signUpFailed(error));

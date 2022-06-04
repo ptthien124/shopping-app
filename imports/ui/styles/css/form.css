@@ -14,6 +14,12 @@
     padding-left: 150px; }
   .form .wrapper {
     height: 90px; }
+    .form .wrapper .genderError {
+      text-align: center;
+      margin-top: 10px;
+      color: var(--red);
+      font-size: 2rem;
+      font-weight: 700; }
   .form .container {
     display: flex;
     align-items: center;
@@ -70,11 +76,6 @@
         background-color: white; }
     .form .gender:last-child {
       margin: 0 auto; }
-  .form .genderError {
-    margin: 0 auto;
-    color: var(--red);
-    font-size: 2rem;
-    font-weight: 700; }
   .form .genderTitle {
     width: 150px;
     margin-right: 10px; }

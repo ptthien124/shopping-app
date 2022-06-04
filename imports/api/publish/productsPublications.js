@@ -1,5 +1,5 @@
 import { Meteor } from "meteor/meteor";
-import { ProductsCollection } from "./links";
+import  ProductsCollection  from "../ProductsCollection";
 
 Meteor.publish("products", function publishProducts() {
   const data = ProductsCollection.find();
