@@ -18,7 +18,7 @@ const call = (methodName, args = {}) =>
     });
   });
 
-const asyncLogin = (user, password) =>
+const promiseLogin = (user, password) =>
   new Promise((resolve, reject) => {
     Meteor.loginWithPassword(user, password, (error) => {
       if (error) {
@@ -54,7 +54,10 @@ function* signUp(payload) {
 
       let status = null;
 
-      yield asyncLogin((user = username), (password = payload.payload.password))
+      yield promiseLogin(
+        (user = username),
+        (password = payload.payload.password)
+      )
         .then((result) => (status = result))
         .catch((error) => (status = error));
 

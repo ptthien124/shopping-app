@@ -30,7 +30,7 @@
       height: 50px;
       z-index: 1;
       color: #fac710; }
-  .header h2 {
+  .header .name {
     color: white;
     font-weight: 700;
     margin-bottom: 2px; }

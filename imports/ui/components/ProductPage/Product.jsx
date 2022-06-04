@@ -11,17 +11,19 @@ function Product({ _id, image, title, price, createAt }) {
   const user = useSelector((state) => state.auth);
 
   const handleAddToCartClick = () => {
-    const newCartProduct = {
-      _id,
-      image,
-      title,
-      price,
-      quantity: 1,
-      createAt,
-      userId: user.userId,
-      // createAt: new Date(),
-    };
-    dispatch(addToCart(newCartProduct));
+    if (user.isLoggedIn) {
+      const newCartProduct = {
+        _id,
+        image,
+        title,
+        price,
+        quantity: 1,
+        createAt,
+        userId: user.userId,
+        // createAt: new Date(),
+      };
+      dispatch(addToCart(newCartProduct));
+    }
   };
 
   return (

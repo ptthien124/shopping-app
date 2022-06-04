@@ -19,7 +19,7 @@ const call = (methodName, args = {}) =>
     });
   });
 
-const asyncLogin = (user, password) =>
+const promiseLogin = (user, password) =>
   new Promise((resolve, reject) => {
     Meteor.loginWithPassword(user, password, (error) => {
       if (error) {
@@ -30,7 +30,7 @@ const asyncLogin = (user, password) =>
     });
   });
 
-const asyncLogout = () =>
+const promiseLogout = () =>
   new Promise((resolve, reject) => {
     Meteor.logout((error) => {
       if (error) {
@@ -47,7 +47,7 @@ function* login(payload) {
 
     let status = null;
 
-    yield asyncLogin((user = username), (password = payload.payload.password))
+    yield promiseLogin((user = username), (password = payload.payload.password))
       .then((result) => (status = result))
       .catch((error) => (status = error));
 
@@ -79,7 +79,7 @@ function* login(payload) {
 
 function* logout() {
   let logoutSuccess = null;
-  yield asyncLogout()
+  yield promiseLogout()
     .then((result) => (logoutSuccess = result))
     .catch((error) => (logoutSuccess = error));
 

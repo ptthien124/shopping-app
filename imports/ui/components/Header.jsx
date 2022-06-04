@@ -60,23 +60,31 @@ function Header() {
         </Link>
       </div>
       <div className="right">
-        <div className="avatarWrapper">
-          <FontAwesomeIcon className="avatar" icon={faCircleUser} />
-        </div>
+        {user.isLoggedIn && (
+          <div className="avatarWrapper">
+            <FontAwesomeIcon className="avatar" icon={faCircleUser} />
+          </div>
+        )}
 
-        <Dropdown
-          overlay={menu}
-          trigger={["click"]}
-          placement="bottomRight"
-          arrow
-          overlayClassName="dropdown"
-        >
-          <a onClick={(e) => e.preventDefault()}>
-            <Space>
-              <h2 className="name">{user?.fullName}</h2>
-            </Space>
-          </a>
-        </Dropdown>
+        {user.isLoggedIn ? (
+          <Dropdown
+            overlay={menu}
+            trigger={["click"]}
+            placement="bottomRight"
+            arrow
+            overlayClassName="dropdown"
+          >
+            <a onClick={(e) => e.preventDefault()}>
+              <Space>
+                <h2 className="name">{user?.fullName}</h2>
+              </Space>
+            </a>
+          </Dropdown>
+        ) : (
+          <Link className="link" to="/login">
+            Login
+          </Link>
+        )}
       </div>
     </div>
   );

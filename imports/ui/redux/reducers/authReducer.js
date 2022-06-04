@@ -5,6 +5,7 @@ const initialState = {
   fullName: "",
   logging: false,
   isLoggedIn: false,
+  loginFailed: false,
 };
 
 const authReducer = (state = initialState, action) => {
@@ -15,6 +16,7 @@ const authReducer = (state = initialState, action) => {
         ...action.payload,
         logging: true,
         isLoggedIn: false,
+        loginFailed: false,
       };
 
       return newAuth;
@@ -25,12 +27,13 @@ const authReducer = (state = initialState, action) => {
         ...action.payload,
         logging: false,
         isLoggedIn: true,
+        loginFailed: false,
       };
       return newAuth;
     }
     case "LOGIN_FAILED": {
       console.log("login failed", action.payload);
-      return initialState;
+      return { ...initialState, loginFailed: true };
     }
 
     case "LOGOUT_REQUEST":
