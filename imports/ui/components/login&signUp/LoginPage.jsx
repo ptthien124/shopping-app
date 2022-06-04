@@ -35,8 +35,6 @@ function LoginPage() {
     setConfirmLoading(true);
   };
 
-  
-
   return (
     <div className="loginPage formPage">
       <SharedPage />

@@ -1,6 +1,6 @@
 import { Spin } from "antd";
 import { Meteor } from "meteor/meteor";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { loginRequest } from "../../redux/actions/authAction";
@@ -11,8 +11,6 @@ import Button from "../Button";
 function Form({ title, login, signUp }) {
   const dispatch = useDispatch();
 
-  const users = Meteor.users.find({}).fetch();
-
   const auth = useSelector((state) => state.auth);
 
   const [gender, setGender] = useState();
@@ -22,6 +20,12 @@ function Form({ title, login, signUp }) {
   const [emailFocus, setEmailFocus] = useState(false);
   const [passwordFocus, setPasswordFocus] = useState(false);
   const [nameFocus, setNameFocus] = useState(false);
+
+  useEffect(() => {
+    document.getElementById("email")?.value = "";
+    document.getElementById("password")?.value = "";
+    document.getElementById("fullName")?.value = "";
+  }, []);
 
   //validate input
   const {

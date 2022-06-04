@@ -1,0 +1,25 @@
+.ant-modal-root {
+  .ant-modal-content {
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .ant-modal-title {
+    font-size: 2rem;
+    color: var(--red);
+    font-weight: 600;
+  }
+
+  .ant-modal-body {
+    font-size: 1.6rem;
+    font-weight: 500;
+
+    p {
+      margin: 0;
+    }
+  }
+
+  .ant-modal-close-x {
+    display: none;
+  }
+}
