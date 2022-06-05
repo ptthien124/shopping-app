@@ -59,13 +59,13 @@ function* login(payload) {
         .catch((error) => (user = error));
 
       if (user._id) {
-        const data = {
+        const auth = {
           username: user.username,
           fullName: user.profile.fullName,
           userId: user._id,
           isAdmin: user.profile.isAdmin,
         };
-        yield put(loginSuccess(data));
+        yield put(loginSuccess(auth));
       } else {
         yield put(loginFailed("Can't find user"));
       }

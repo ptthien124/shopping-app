@@ -5,7 +5,7 @@ import { Meteor } from "meteor/meteor";
 import { useTracker } from "meteor/react-meteor-data";
 import React, { useEffect, useRef, useState } from "react";
 import ProductsCollection from "../../../api/ProductsCollection";
-import useDebounced from "../../hooks/useDebounce";
+import useDebounce from "../../hooks/useDebounce";
 import usePagination from "../../hooks/usePagination";
 import "../../styles/css/productPage.css";
 import Products from "./Products";
@@ -24,7 +24,7 @@ function ProductPage() {
   const [sort, setSort] = useState("");
   const [search, setSearch] = useState("");
 
-  const [debounced] = useDebounced(search, 700);
+  const [debounced] = useDebounce(search, 700);
   const [filterList, setFilterList] = useState([]);
 
   const [next, prev, jump, currentData, currentPage, maxPage] = usePagination(

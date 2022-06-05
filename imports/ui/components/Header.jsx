@@ -86,12 +86,6 @@ function Header() {
         )}
       </div>
       <div className="right">
-        {user.isLoggedIn && (
-          <div className="avatarWrapper">
-            <FontAwesomeIcon className="avatar" icon={faCircleUser} />
-          </div>
-        )}
-
         {user.isLoggedIn ? (
           <Dropdown
             overlay={menu}
@@ -102,6 +96,9 @@ function Header() {
           >
             <a onClick={(e) => e.preventDefault()}>
               <Space>
+                <div className="avatarWrapper">
+                  <FontAwesomeIcon className="avatar" icon={faCircleUser} />
+                </div>
                 <h2 className="name">{user?.fullName}</h2>
               </Space>
             </a>

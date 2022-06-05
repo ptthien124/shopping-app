@@ -23,6 +23,7 @@ body .product {
     text-align: center;
     color: var(--primary);
     height: 4.4rem;
+    width: 100%;
     margin: 16px 0 10px;
     display: -webkit-box;
     -webkit-line-clamp: 2;
