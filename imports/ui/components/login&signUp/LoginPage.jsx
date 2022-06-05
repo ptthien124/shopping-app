@@ -19,7 +19,6 @@ function LoginPage() {
 
   const [visible, setVisible] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
-  const [modalText, setModalText] = useState("Wrong username or password.");
 
   useEffect(() => {
     if (user.loginFailed) {
@@ -35,6 +34,11 @@ function LoginPage() {
     setConfirmLoading(true);
   };
 
+  const handleCancel = () => {
+    setVisible(false);
+    handleOk();
+  };
+
   return (
     <div className="loginPage formPage">
       <SharedPage />
@@ -43,8 +47,7 @@ function LoginPage() {
       <Modal
         title="Login failed!"
         visible={visible}
-        onOk={handleOk}
-        maskClosable={false}
+        onCancel={handleCancel}
         centered
         footer={[
           <Button
@@ -57,7 +60,7 @@ function LoginPage() {
           </Button>,
         ]}
       >
-        <p>{modalText}</p>
+        <p>Wrong username or password.</p>
       </Modal>
     </div>
   );
