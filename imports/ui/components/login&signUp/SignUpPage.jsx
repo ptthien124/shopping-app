@@ -38,6 +38,11 @@ function SignUpPage() {
     setConfirmLoading(true);
   };
 
+  const handleCancel = () => {
+    setVisible(false);
+    handleOk();
+  };
+
   return (
     <div className="signUpPage formPage">
       <SharedPage />
@@ -46,8 +51,7 @@ function SignUpPage() {
       <Modal
         title="Sign up failed!"
         visible={visible}
-        onOk={handleOk}
-        maskClosable={false}
+        onCancel={handleCancel}
         centered
         footer={[
           <Button
