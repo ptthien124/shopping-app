@@ -19,7 +19,6 @@ function LoginPage() {
 
   const [visible, setVisible] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
-  const [modalText, setModalText] = useState("Wrong username or password.");
 
   useEffect(() => {
     if (user.loginFailed) {
@@ -61,7 +60,7 @@ function LoginPage() {
           </Button>,
         ]}
       >
-        <p>{modalText}</p>
+        <p>Wrong username or password.</p>
       </Modal>
     </div>
   );

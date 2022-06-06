@@ -1,5 +1,5 @@
 import { Spin } from "antd";
-import React, { useState } from "react";
+import { default as React, default as React, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { loginRequest } from "../../redux/actions/authAction";
@@ -11,8 +11,9 @@ function Form({ title, login, signUp }) {
   const dispatch = useDispatch();
 
   const auth = useSelector((state) => state.auth);
+  const user = useSelector((state) => state.user);
 
-  const [gender, setGender] = useState();
+  const [gender, setGender] = useState("");
   const [genderChecked, setGenderChecked] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
@@ -28,17 +29,19 @@ function Form({ title, login, signUp }) {
   } = useForm();
 
   const onSubmit = (data) => {
-    if (signUp) {
-      const signUpData = {
-        username: data.email,
-        password: data.password,
-        fullName: data.fullName,
-        gender: gender,
-      };
-      dispatch(signUpRequest(signUpData));
-    } else if (login) {
-      const loginData = { username: data.email, password: data.password };
-      dispatch(loginRequest(loginData));
+    if (!auth.isLoggedIn && !user.signingUp && data) {
+      if (signUp && gender !== "") {
+        const signUpData = {
+          username: data.email,
+          password: data.password,
+          fullName: data.fullName,
+          gender: gender,
+        };
+        dispatch(signUpRequest(signUpData));
+      } else if (login) {
+        const loginData = { username: data.email, password: data.password };
+        dispatch(loginRequest(loginData));
+      }
     }
   };
 
@@ -165,7 +168,7 @@ function Form({ title, login, signUp }) {
 
       <div className="container">
         <div style={{ width: "150px" }}></div>
-        {auth.logging ? (
+        {auth.logging || user.signingUp ? (
           <Spin style={{ margin: "0 auto" }} />
         ) : (
           <Button

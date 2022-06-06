@@ -40,13 +40,18 @@ function Product({ _id, image, title, price, createAt }) {
         <img src={image} alt="" />
         <h3>{title}</h3>
         <strong>{price}$</strong>
-        <Button
-          onClick={handleAddToCartClick}
-          primary
-          width={"80%"}
-          height={"40px"}
-          title="Add to cart"
-        ></Button>
+
+        {user.isLoggedIn ? (
+          <Button
+            onClick={handleAddToCartClick}
+            primary
+            width={"80%"}
+            height={"40px"}
+            title="Add to cart"
+          ></Button>
+        ) : (
+          <div style={{ height: "40px" }}></div>
+        )}
       </div>
     </Col>
   );

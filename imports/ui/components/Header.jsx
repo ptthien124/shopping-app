@@ -1,7 +1,7 @@
 import { faCircleUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Dropdown, Menu, Space } from "antd";
-import React from "react";
+import { Dropdown, Menu, Modal, Space } from "antd";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { logoutRequest } from "../redux/actions/authAction";
@@ -17,6 +17,21 @@ function Header() {
     e.preventDefault();
     dispatch(logoutRequest());
     navigate("/login");
+  };
+
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
+  const showModal = () => {
+    setIsModalVisible(true);
+  };
+
+  const handleOk = () => {
+    setIsModalVisible(false);
+    navigate("/login");
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
   };
 
   const menu = (
@@ -55,17 +70,22 @@ function Header() {
         <Link className="link" to="/">
           Products
         </Link>
-        <Link className="link" to="/cart">
-          Cart
-        </Link>
+
+        {user.isLoggedIn ? (
+          <Link className="link" to="/cart">
+            Cart
+          </Link>
+        ) : (
+          <span
+            style={{ cursor: "pointer" }}
+            className="link"
+            onClick={showModal}
+          >
+            Cart
+          </span>
+        )}
       </div>
       <div className="right">
-        {user.isLoggedIn && (
-          <div className="avatarWrapper">
-            <FontAwesomeIcon className="avatar" icon={faCircleUser} />
-          </div>
-        )}
-
         {user.isLoggedIn ? (
           <Dropdown
             overlay={menu}
@@ -76,6 +96,9 @@ function Header() {
           >
             <a onClick={(e) => e.preventDefault()}>
               <Space>
+                <div className="avatarWrapper">
+                  <FontAwesomeIcon className="avatar" icon={faCircleUser} />
+                </div>
                 <h2 className="name">{user?.fullName}</h2>
               </Space>
             </a>
@@ -86,6 +109,17 @@ function Header() {
           </Link>
         )}
       </div>
+
+      <Modal
+        title="Not logged in yet!"
+        visible={isModalVisible}
+        onOk={handleOk}
+        onCancel={handleCancel}
+        centered
+      >
+        <p>You need to login before shopping.</p>
+        <p>Ok to login.</p>
+      </Modal>
     </div>
   );
 }

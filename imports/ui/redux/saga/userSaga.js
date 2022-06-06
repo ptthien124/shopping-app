@@ -50,38 +50,42 @@ function* signUp(payload) {
     } else {
       const newUser = yield call("user.signUp", { ...data });
 
-      yield put(signUpSuccess({ userId: newUser.userId }));
+      if (newUser._id) {
+        yield put(signUpSuccess({ userId: newUser.userId }));
 
-      let status = null;
+        let status = null;
 
-      yield promiseLogin(
-        (user = username),
-        (password = payload.payload.password)
-      )
-        .then((result) => (status = result))
-        .catch((error) => (status = error));
+        yield promiseLogin(
+          (user = username),
+          (password = payload.payload.password)
+        )
+          .then((result) => (status = result))
+          .catch((error) => (status = error));
 
-      if (status.isSuccess) {
-        // sign up success => login
-        let user = {};
+        if (status.isSuccess) {
+          // sign up success => login
+          let user = {};
 
-        yield call("auth.findUser", { username })
-          .then((result) => (user = result))
-          .catch((error) => (user = error));
+          yield call("auth.findUser", { username })
+            .then((result) => (user = result))
+            .catch((error) => (user = error));
 
-        if (user._id) {
-          const data = {
-            username: user.username,
-            fullName: user.profile.fullName,
-            userId: user._id,
-            isAdmin: user.profile.isAdmin,
-          };
-          yield put(loginSuccess(data));
+          if (user._id) {
+            const data = {
+              username: user.username,
+              fullName: user.profile.fullName,
+              userId: user._id,
+              isAdmin: user.profile.isAdmin,
+            };
+            yield put(loginSuccess(data));
+          } else {
+            yield put(loginFailed("Can't find user"));
+          }
         } else {
-          yield put(loginFailed("Can't find user"));
+          yield put(loginFailed(status.error));
         }
       } else {
-        yield put(loginFailed(status.error));
+        console.log("sign up failed");
       }
     }
   } catch (error) {
