@@ -13,11 +13,33 @@ import Products from "./Products";
 const PRODUCTS_PER_PAGE = 12;
 
 function ProductPage() {
-  const [currentPage, setCurrentPage] = useState(1);
+  const searchInput = useRef();
 
-  const products = useTracker(() => {
-    const prods = Meteor.subscribe("products");
-    if (prods.ready()) {
+  const [products, setProducts] = useState([]);
+  const [debounced] = useDebounce(search, 700);
+  const [search, setSearch] = useState("");
+  const [sort, setSort] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [filterList, setFilterList] = useState([]);
+
+  const sortOptionSelected = () => {
+    const select = document.getElementById("productsPageSortSelect");
+    const value = select.options[select.selectedIndex].value;
+    setSort(value);
+  };
+
+  const prods = useTracker(() => {
+    const temp = Meteor.subscribe("products");
+    if (temp.ready()) {
+      setProducts(
+        ProductsCollection.find(
+          {},
+          {
+            skip: (currentPage - 1) * PRODUCTS_PER_PAGE,
+            limit: PRODUCTS_PER_PAGE,
+          }
+        ).fetch()
+      );
       return ProductsCollection.find(
         {},
         {
@@ -36,26 +58,12 @@ function ProductPage() {
     }
   }, []);
 
-  const searchInput = useRef();
-
-  const [sort, setSort] = useState("");
-  const [search, setSearch] = useState("");
-
-  const [debounced] = useDebounce(search, 700);
-  const [filterList, setFilterList] = useState([]);
-
-  const sortOptionSelected = () => {
-    const select = document.getElementById("productsPageSortSelect");
-    const value = select.options[select.selectedIndex].value;
-    setSort(value);
-  };
-
   useEffect(() => {}, [debounced]);
 
-  const onSubmit = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (search !== "") {
+    if (search.trim() !== "") {
       const value = search.trim().toLowerCase();
       setFilterList([]);
 
@@ -79,10 +87,10 @@ function ProductPage() {
     <div className="productPage">
       <div className="wrapper">
         <div className="searchWrapper grid wide">
-          <div className="searchContainer">
+          <form className="searchContainer" onSubmit={handleSubmit}>
             <button
               className="searchButton"
-              onClick={() => searchInput.current.focus()}
+              // onClick={() => searchInput.current.focus()}
             >
               <FontAwesomeIcon icon={faMagnifyingGlass} />
             </button>
@@ -93,9 +101,8 @@ function ProductPage() {
               type="text"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              onSubmit={onSubmit}
             />
-          </div>
+          </form>
           <div className="sortWrapper">
             <span>Sort by</span>
             <select id="productsPageSortSelect" onChange={sortOptionSelected}>

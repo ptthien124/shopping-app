@@ -1,4 +1,4 @@
-import { Col } from "antd";
+import { Col, notification } from "antd";
 import "antd/dist/antd.css";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -9,6 +9,19 @@ import Button from "../Button";
 function Product({ _id, image, title, price, createAt }) {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth);
+
+  const openNotification = () => {
+    notification.open({
+      // message: "",
+      description: `Add ${title} to your cart.`,
+      className: "custom-class",
+      style: {
+        width: 300,
+      },
+      duration: 2.5,
+      
+    });
+  };
 
   const handleAddToCartClick = () => {
     if (user.isLoggedIn) {
@@ -22,7 +35,6 @@ function Product({ _id, image, title, price, createAt }) {
         userId: user.userId,
         // createAt: new Date(),
       };
-      alert(`Add ${title} to your cart.`);
       dispatch(addToCart(newCartProduct));
     }
   };
@@ -44,7 +56,10 @@ function Product({ _id, image, title, price, createAt }) {
 
         {user.isLoggedIn ? (
           <Button
-            onClick={handleAddToCartClick}
+            onClick={() => {
+              handleAddToCartClick();
+              openNotification();
+            }}
             primary
             width={"80%"}
             height={"40px"}

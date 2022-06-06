@@ -2,15 +2,6 @@ import { Accounts } from "meteor/accounts-base";
 import { Meteor } from "meteor/meteor";
 
 Meteor.methods({
-  "user.isUserNameExisted": function (args) {
-    const user = Accounts.findUserByUsername(args.username);
-
-    if (user) {
-      return true;
-    }
-    return false;
-  },
-
   "user.signUp": function (args) {
     const isUserExisted = Accounts.findUserByUsername(args.username);
 

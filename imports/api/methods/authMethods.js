@@ -6,6 +6,7 @@ Meteor.methods({
     const { username, password } = args;
 
     let user = {};
+    
     user = Accounts.findUserByUsername(username);
 
     if (!user._id) {

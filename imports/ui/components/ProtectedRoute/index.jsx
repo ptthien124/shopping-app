@@ -1,12 +1,13 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { Navigate } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import { DefaultLayout } from "../../layouts";
 
 function ProtectedRoute({
   redirectPath = "/login",
   admin,
   publicRoute,
+  path,
   layout,
   component,
 }) {
@@ -22,20 +23,13 @@ function ProtectedRoute({
     }
 
     if (!isAuthenticated) {
-      return (
-        <Route path={path} element={<Navigate to={redirectPath} replace />} />
-      );
+      return <Navigate to={redirectPath} replace />;
     }
   }
   return (
-    <Route
-      path={path}
-      element={
-        <Layout>
-          <Component />
-        </Layout>
-      }
-    />
+    <Layout>
+      <Component />
+    </Layout>
   );
 }
 

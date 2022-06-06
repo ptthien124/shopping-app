@@ -1,10 +1,6 @@
-import React from "react";
-import {
-  BrowserRouter as Router,
-  Route,
-  Routes,
-  Switch,
-} from "react-router-dom";
+import React, { Fragment } from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import ProductPage from "./components/ProductPage";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { DefaultLayout } from "./layouts";
 import { adminRoutes, privateRoutes, publicRoutes } from "./routes";
@@ -15,31 +11,44 @@ function App() {
       <div className="app">
         <Routes>
           {publicRoutes.map((route, index) => (
-            <ProtectedRoute
+            <Route
               key={index}
-              publicRoute
               path={route.path}
-              component={route.component}
-              layout={route.layout}
+              element={
+                <ProtectedRoute
+                  publicRoute
+                  component={route.component}
+                  layout={route.layout}
+                />
+              }
             />
           ))}
 
           {privateRoutes.map((route, index) => (
-            <ProtectedRoute
+            <Route
               key={index}
               path={route.path}
-              component={route.component}
-              layout={route.layout}
+              element={
+                <ProtectedRoute
+                  publicRoute
+                  component={route.component}
+                  layout={route.layout}
+                />
+              }
             />
           ))}
 
           {adminRoutes.map((route, index) => (
-            <ProtectedRoute
+            <Route
               key={index}
-              admin
               path={route.path}
-              component={route.component}
-              layout={route.layout}
+              element={
+                <ProtectedRoute
+                  admin
+                  component={route.component}
+                  layout={route.layout}
+                />
+              }
             />
           ))}
         </Routes>

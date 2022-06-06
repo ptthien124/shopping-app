@@ -57,6 +57,7 @@ function* signUp({ payload }) {
         })
       );
 
+      // login
       yield promiseLogin(username, payload.password);
 
       const user = Meteor.user();
