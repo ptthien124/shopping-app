@@ -1,29 +1,38 @@
-import { Meteor } from "meteor/meteor";
 import React, { useState } from "react";
-import { useForm } from "react-hook-form";
+import { Meteor } from "meteor/meteor";
 
-function AddProduct() {
+function UpdateProduct() {
+  const [productId, setProductId] = useState("");
+  const [idRequired, setIdRequired] = useState(false);
+
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [image, setImage] = useState("");
   const [price, setPrice] = useState("");
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
+  const onSubmit = (e) => {
+    e.preventDefault();
 
-  const onSubmit = (data) => {
-    const numbPrice = Number(data.price);
+    if (productId === "") {
+      console.log("product ID is required!");
+      setIdRequired(true);
+      return;
+    }
 
-    Meteor.call("products.insert", {
-      title: data.title,
-      description: data.desc,
-      image: data.image,
+    let numbPrice = "";
+    if (price.trim() !== "") {
+      numbPrice = Number(price);
+    }
+
+    Meteor.call("products.update", {
+      productId: productId.trim(),
+      title: title.trim(),
+      description: description.trim(),
+      image: image.trim(),
       price: numbPrice,
     });
 
+    setProductId("");
     setTitle("");
     setDescription("");
     setImage("");
@@ -31,15 +40,38 @@ function AddProduct() {
   };
 
   return (
-    <form action="" className="form add" onSubmit={handleSubmit(onSubmit)}>
-      <span>Add product</span>
+    <form action="" className="form update" onSubmit={onSubmit}>
+      <span>Update product</span>
+      <div className="inputWrapper">
+        <label htmlFor="title">Product ID</label>
+        <input
+          name="productId"
+          id="productId"
+          type="text"
+          value={productId}
+          onChange={(e) => {
+            setProductId(e.target.value);
+            setIdRequired(false);
+          }}
+        />
+      </div>
+      {idRequired && (
+        <span
+          style={{
+            color: "var(--red)",
+            margin: "0 0 0 auto",
+            fontSize: "1.8rem",
+          }}
+        >
+          Id is required!
+        </span>
+      )}
       <div className="inputWrapper">
         <label htmlFor="title">Title</label>
         <input
           name="title"
           id="title"
           type="text"
-          {...register("title", { required: true })}
           value={title}
           onChange={(e) => setTitle(e.target.value)}
         />
@@ -50,7 +82,6 @@ function AddProduct() {
           id="desc"
           name="desc"
           type="text"
-          {...register("desc", { required: true })}
           value={description}
           onChange={(e) => setDescription(e.target.value)}
         />
@@ -61,7 +92,6 @@ function AddProduct() {
           id="image"
           name="image"
           type="text"
-          {...register("image", { required: true })}
           value={image}
           onChange={(e) => setImage(e.target.value)}
         />
@@ -72,14 +102,13 @@ function AddProduct() {
           id="price"
           name="price"
           type="text"
-          {...register("price", { required: true })}
           value={price}
           onChange={(e) => setPrice(e.target.value)}
         />
       </div>
-      <button type="submit">add</button>
+      <button type="submit">update</button>
     </form>
   );
 }
 
-export default AddProduct;
+export default UpdateProduct;

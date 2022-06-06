@@ -2,18 +2,22 @@ import React, { useState } from "react";
 import "../../styles/css/adminPage.css";
 import AddProduct from "./AddProduct";
 import RemoveProduct from "./RemoveProduct";
+import UpdateProduct from "./UpdateProduct";
 
 function AdminPage() {
-  const [addOrRemove, setAddOrRemove] = useState("add");
+  const [action, setAction] = useState("add");
 
   return (
     <div className="adminPage">
       <div className="buttonWrapper">
-        <button onClick={() => setAddOrRemove("add")}>add</button>
-        <button onClick={() => setAddOrRemove("remove")}>remove</button>
+        <button onClick={() => setAction("add")}>add</button>
+        <button onClick={() => setAction("update")}>update</button>
+        <button onClick={() => setAction("remove")}>remove</button>
       </div>
 
-      {addOrRemove === "add" ? <AddProduct /> : <RemoveProduct />}
+      {action === "add" && <AddProduct />}
+      {action === "update" && <UpdateProduct />}
+      {action === "remove" && <RemoveProduct />}
     </div>
   );
 }

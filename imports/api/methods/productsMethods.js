@@ -12,6 +12,32 @@ Meteor.methods({
     });
   },
 
+  "products.update"(data) {
+    const product = ProductsCollection.findOne(data.productId);
+
+    if (product) {
+      data.title !== "" &&
+        ProductsCollection.update(product._id, {
+          $set: { title: data.title },
+        });
+
+      data.description !== "" &&
+        ProductsCollection.update(product._id, {
+          $set: { description: data.description },
+        });
+
+      data.image !== "" &&
+        ProductsCollection.update(product._id, {
+          $set: { image: data.image },
+        });
+
+      data.price !== "" &&
+        ProductsCollection.update(product._id, {
+          $set: { price: data.price },
+        });
+    }
+  },
+
   "products.remove"(data) {
     if (!Meteor.user().profile.isAdmin) {
       throw new Meteor.Error("don't have permission");
