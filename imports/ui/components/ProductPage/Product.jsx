@@ -22,6 +22,7 @@ function Product({ _id, image, title, price, createAt }) {
         userId: user.userId,
         // createAt: new Date(),
       };
+      alert(`Add ${title} to your cart.`);
       dispatch(addToCart(newCartProduct));
     }
   };

@@ -10,13 +10,30 @@ import usePagination from "../../hooks/usePagination";
 import "../../styles/css/productPage.css";
 import Products from "./Products";
 
+const PRODUCTS_PER_PAGE = 12;
+
 function ProductPage() {
+  const [currentPage, setCurrentPage] = useState(1);
+
   const products = useTracker(() => {
     const prods = Meteor.subscribe("products");
     if (prods.ready()) {
-      return ProductsCollection.find().fetch();
+      return ProductsCollection.find(
+        {},
+        {
+          skip: (currentPage - 1) * PRODUCTS_PER_PAGE,
+          limit: PRODUCTS_PER_PAGE,
+        }
+      ).fetch();
     }
     return [];
+  }, [currentPage]);
+
+  const productsCount = useTracker(() => {
+    const count = Meteor.subscribe("products");
+    if (count.ready()) {
+      return ProductsCollection.find().count();
+    }
   }, []);
 
   const searchInput = useRef();
@@ -27,20 +44,11 @@ function ProductPage() {
   const [debounced] = useDebounce(search, 700);
   const [filterList, setFilterList] = useState([]);
 
-  const [next, prev, jump, currentData, currentPage, maxPage] = usePagination(
-    debounced !== "" ? filterList : products,
-    12
-  );
-
   const sortOptionSelected = () => {
     const select = document.getElementById("productsPageSortSelect");
     const value = select.options[select.selectedIndex].value;
     setSort(value);
   };
-
-  useEffect(() => {
-    if (filterList.length > 0) jump(1);
-  }, [filterList]);
 
   useEffect(() => {}, [debounced]);
 
@@ -99,11 +107,7 @@ function ProductPage() {
         </div>
 
         {(filterList.length > 0 || products.length > 0) && (
-          <Products
-            sortBy={sort}
-            products={currentData}
-            currentPage={currentPage}
-          />
+          <Products sortBy={sort} products={products} />
         )}
 
         {products.length <= 0 && (
@@ -113,20 +117,19 @@ function ProductPage() {
         )}
         {(filterList.length > 0 || products.length > 0) && (
           <div className="flex">
-            {/* <button onClick={() => prev()}>prev</button> */}
-            {Array(maxPage)
-              .fill()
-              .map((_, index) => (
-                <button
-                  className="pageButton"
-                  style={currentPageStyles(index)}
-                  key={index}
-                  onClick={() => jump(index + 1)}
-                >
-                  {index + 1}
-                </button>
-              ))}
-            {/* <button onClick={() => next()}>next</button> */}
+            {productsCount > 0 &&
+              Array(Math.ceil(productsCount / PRODUCTS_PER_PAGE))
+                .fill()
+                .map((_, index) => (
+                  <button
+                    className="pageButton"
+                    style={currentPageStyles(index)}
+                    key={index}
+                    onClick={() => setCurrentPage(index + 1)}
+                  >
+                    {index + 1}
+                  </button>
+                ))}
           </div>
         )}
       </div>

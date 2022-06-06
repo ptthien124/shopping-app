@@ -4,14 +4,12 @@ import React, { useEffect, useState } from "react";
 import Product from "./Product";
 
 function Products({ sortBy, products, currentPage }) {
-  const [prod, setProd] = useState(products());
-  const [defaultProd, setDefaultProd] = useState(products());
-  const [render, setRender] = useState(false);
+  const [prod, setProd] = useState(products);
+  const [defaultProd, setDefaultProd] = useState(products);
 
   useEffect(() => {
-    setProd(products());
-    setDefaultProd(products());
-    setRender(!render);
+    setProd(products);
+    setDefaultProd(products);
   }, [products]);
 
   useEffect(() => {
@@ -22,7 +20,7 @@ function Products({ sortBy, products, currentPage }) {
         ...prev.sort((a, b) => new Date(b.createAt) - new Date(a.createAt)),
       ]);
     else setProd([...defaultProd]);
-  }, [sortBy, render]);
+  }, [sortBy]);
 
   return (
     <div className="grid wide">
