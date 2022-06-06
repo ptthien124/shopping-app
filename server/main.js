@@ -25,6 +25,7 @@ Meteor.startup(() => {
       username: SEED_USERNAME,
       profile: {
         fullName: "admin",
+        gender: "male",
         isAdmin: true,
       },
       createdAt: new Date(),

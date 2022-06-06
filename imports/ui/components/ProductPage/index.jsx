@@ -19,10 +19,6 @@ function ProductPage() {
     return [];
   }, []);
 
-  cOnst products = useTracker(() => {
-    const prods = Meteor.subscribe("")
-  })
-
   const searchInput = useRef();
 
   const [sort, setSort] = useState("");
