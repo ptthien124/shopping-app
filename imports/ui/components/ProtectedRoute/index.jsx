@@ -22,13 +22,20 @@ function ProtectedRoute({
     }
 
     if (!isAuthenticated) {
-      return <Navigate to={redirectPath} replace />;
+      return (
+        <Route path={path} element={<Navigate to={redirectPath} replace />} />
+      );
     }
   }
   return (
-    <Layout>
-      <Component />
-    </Layout>
+    <Route
+      path={path}
+      element={
+        <Layout>
+          <Component />
+        </Layout>
+      }
+    />
   );
 }
 

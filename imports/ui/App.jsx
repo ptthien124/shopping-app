@@ -1,5 +1,10 @@
 import React from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  Switch,
+} from "react-router-dom";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { DefaultLayout } from "./layouts";
 import { adminRoutes, privateRoutes, publicRoutes } from "./routes";
@@ -10,43 +15,31 @@ function App() {
       <div className="app">
         <Routes>
           {publicRoutes.map((route, index) => (
-            <Route
+            <ProtectedRoute
               key={index}
+              publicRoute
               path={route.path}
-              element={
-                <ProtectedRoute
-                  publicRoute
-                  component={route.component}
-                  layout={route.layout}
-                />
-              }
+              component={route.component}
+              layout={route.layout}
             />
           ))}
 
           {privateRoutes.map((route, index) => (
-            <Route
+            <ProtectedRoute
               key={index}
               path={route.path}
-              element={
-                <ProtectedRoute
-                  component={route.component}
-                  layout={route.layout}
-                />
-              }
+              component={route.component}
+              layout={route.layout}
             />
           ))}
 
           {adminRoutes.map((route, index) => (
-            <Route
+            <ProtectedRoute
               key={index}
+              admin
               path={route.path}
-              element={
-                <ProtectedRoute
-                  admin
-                  component={route.component}
-                  layout={route.layout}
-                />
-              }
+              component={route.component}
+              layout={route.layout}
             />
           ))}
         </Routes>
