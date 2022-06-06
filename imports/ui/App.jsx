@@ -9,57 +9,46 @@ function App() {
     <Router>
       <div className="app">
         <Routes>
-          {publicRoutes.map((route, index) => {
-            const Layout = route.layout === null ? DefaultLayout : route.layout;
-            const Page = route.component;
-            return (
-              <Route
-                key={index}
-                path={route.path}
-                element={
-                  <Layout>
-                    <Page />
-                  </Layout>
-                }
-              />
-            );
-          })}
+          {publicRoutes.map((route, index) => (
+            <Route
+              key={index}
+              path={route.path}
+              element={
+                <ProtectedRoute
+                  publicRoute
+                  component={route.component}
+                  layout={route.layout}
+                />
+              }
+            />
+          ))}
 
-          {privateRoutes.map((route, index) => {
-            const Layout = route.layout === null ? DefaultLayout : route.layout;
-            const Page = route.component;
-            return (
-              <Route
-                key={index}
-                path={route.path}
-                element={
-                  <ProtectedRoute>
-                    <Layout>
-                      <Page />
-                    </Layout>
-                  </ProtectedRoute>
-                }
-              />
-            );
-          })}
+          {privateRoutes.map((route, index) => (
+            <Route
+              key={index}
+              path={route.path}
+              element={
+                <ProtectedRoute
+                  component={route.component}
+                  layout={route.layout}
+                />
+              }
+            />
+          ))}
 
-          {adminRoutes.map((route, index) => {
-            const Layout = route.layout === null ? DefaultLayout : route.layout;
-            const Page = route.component;
-            return (
-              <Route
-                key={index}
-                path={route.path}
-                element={
-                  <ProtectedRoute admin>
-                    <Layout>
-                      <Page />
-                    </Layout>
-                  </ProtectedRoute>
-                }
-              />
-            );
-          })}
+          {adminRoutes.map((route, index) => (
+            <Route
+              key={index}
+              path={route.path}
+              element={
+                <ProtectedRoute
+                  admin
+                  component={route.component}
+                  layout={route.layout}
+                />
+              }
+            />
+          ))}
         </Routes>
       </div>
     </Router>

@@ -1,22 +1,35 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
+import { DefaultLayout } from "../../layouts";
 
-function index({ redirectPath = "/login", children, admin }) {
-  const user = useSelector((state) => state.auth);
-  let isAuthenticated = user.isLoggedIn;
+function ProtectedRoute({
+  redirectPath = "/login",
+  admin,
+  publicRoute,
+  layout,
+  component,
+}) {
+  const Layout = layout === null ? DefaultLayout : layout;
+  const Component = component;
 
-  const isAdmin = user.isAdmin;
+  if (!publicRoute) {
+    const user = useSelector((state) => state.auth);
+    let isAuthenticated = user.isLoggedIn;
 
-  if (admin && !isAdmin) {
-    isAuthenticated = false;
+    if (admin && !user.isAdmin) {
+      isAuthenticated = false;
+    }
+
+    if (!isAuthenticated) {
+      return <Navigate to={redirectPath} replace />;
+    }
   }
-
-  if (!isAuthenticated) {
-    return <Navigate to={redirectPath} replace />;
-  }
-
-  return children;
+  return (
+    <Layout>
+      <Component />
+    </Layout>
+  );
 }
 
-export default index;
+export default ProtectedRoute;

@@ -1,5 +1,5 @@
 import { Meteor } from "meteor/meteor";
-import { fork, put, takeEvery } from "redux-saga/effects";
+import { fork, put, takeLatest } from "redux-saga/effects";
 import {
   loginFailed,
   loginSuccess,
@@ -23,9 +23,9 @@ const promiseLogin = (user, password) =>
   new Promise((resolve, reject) => {
     Meteor.loginWithPassword(user, password, (error) => {
       if (error) {
-        reject({ isSuccess: false, error });
+        reject(error);
       } else {
-        resolve({ isSuccess: true });
+        resolve();
       }
     });
   });
@@ -41,39 +41,26 @@ const promiseLogout = () =>
     });
   });
 
-function* login(payload) {
+function* login({ payload }) {
   try {
-    const username = payload.payload.username.replace("@", "AtSign");
+    const username = payload.username.replace("@", "AtSign");
 
-    let status = null;
+    yield promiseLogin(username, payload.password);
 
-    yield promiseLogin((user = username), (password = payload.payload.password))
-      .then((result) => (status = result))
-      .catch((error) => (status = error));
+    const user = Meteor.user();
 
-    if (status.isSuccess) {
-      let user = {};
-
-      yield call("auth.findUser", { username })
-        .then((result) => (user = result))
-        .catch((error) => (user = error));
-
-      if (user._id) {
-        const auth = {
+    if (user) {
+      yield put(
+        loginSuccess({
+          userId: user._id,
           username: user.username,
           fullName: user.profile.fullName,
-          userId: user._id,
           isAdmin: user.profile.isAdmin,
-        };
-        yield put(loginSuccess(auth));
-      } else {
-        yield put(loginFailed("Can't find user"));
-      }
-    } else {
-      yield put(loginFailed(status.error));
+        })
+      );
     }
   } catch (err) {
-    yield put(loginFailed(err));
+    yield put(loginFailed(err.reason));
   }
 }
 
@@ -91,11 +78,11 @@ function* logout() {
 }
 
 function* watchLogin() {
-  yield takeEvery(LOGIN_REQUEST, login);
+  yield takeLatest(LOGIN_REQUEST, login);
 }
 
 function* watchLogout() {
-  yield takeEvery(LOGOUT_REQUEST, logout);
+  yield takeLatest(LOGOUT_REQUEST, logout);
 }
 
 export default function* authSaga() {

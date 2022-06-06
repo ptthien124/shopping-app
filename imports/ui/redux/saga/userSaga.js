@@ -1,6 +1,6 @@
 import { Meteor } from "meteor/meteor";
-import { fork, put, takeEvery } from "redux-saga/effects";
-import { loginFailed, loginSuccess } from "../actions/authAction";
+import { fork, put, takeLatest } from "redux-saga/effects";
+import { loginSuccess } from "../actions/authAction";
 import {
   signUpFailed,
   signUpSuccess,
@@ -29,72 +29,56 @@ const promiseLogin = (user, password) =>
     });
   });
 
-function* signUp(payload) {
+function* signUp({ payload }) {
   try {
-    const username = payload.payload.username.replace("@", "AtSign");
+    const username = payload.username.replace("@", "AtSign");
 
     const data = {
       username,
-      password: payload.payload.password,
-      fullName: payload.payload.fullName,
-      gender: payload.payload.gender,
+      password: payload.password,
+      fullName: payload.fullName,
+      gender: payload.gender,
     };
 
-    const isUserExisted = yield call("user.isUserNameExisted", {
-      username: data.username,
-      password: data.password,
-    });
+    let status = {};
 
-    if (isUserExisted) {
-      yield put(signUpFailed("Username existed"));
+    yield call("user.signUp", { ...data })
+      .then((result) => (user = result))
+      .catch((error) => (user = error));
+
+    if (!status.isSuccess) {
+      yield put(signUpFailed(status.error));
     } else {
-      const newUser = yield call("user.signUp", { ...data });
+      yield put(
+        signUpSuccess({
+          username: status.username,
+          fullName: status.fullName,
+          gender: status.gender,
+        })
+      );
 
-      if (newUser._id) {
-        yield put(signUpSuccess({ userId: newUser.userId }));
+      yield promiseLogin(username, payload.password);
 
-        let status = null;
+      const user = Meteor.user();
 
-        yield promiseLogin(
-          (user = username),
-          (password = payload.payload.password)
-        )
-          .then((result) => (status = result))
-          .catch((error) => (status = error));
-
-        if (status.isSuccess) {
-          // sign up success => login
-          let user = {};
-
-          yield call("auth.findUser", { username })
-            .then((result) => (user = result))
-            .catch((error) => (user = error));
-
-          if (user._id) {
-            const data = {
-              username: user.username,
-              fullName: user.profile.fullName,
-              userId: user._id,
-              isAdmin: user.profile.isAdmin,
-            };
-            yield put(loginSuccess(data));
-          } else {
-            yield put(loginFailed("Can't find user"));
-          }
-        } else {
-          yield put(loginFailed(status.error));
-        }
-      } else {
-        console.log("sign up failed");
+      if (auth) {
+        yield put(
+          loginSuccess({
+            userId: user._id,
+            username: user.username,
+            fullName: user.profile.fullName,
+            isAdmin: user.profile.isAdmin,
+          })
+        );
       }
     }
   } catch (error) {
-    yield put(signUpFailed(error));
+    yield put(signUpFailed(error?.reason));
   }
 }
 
 function* watchSignUp() {
-  yield takeEvery(SIGN_UP_REQUEST, signUp);
+  yield takeLatest(SIGN_UP_REQUEST, signUp);
 }
 
 export default function* userSaga() {

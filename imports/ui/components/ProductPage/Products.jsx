@@ -14,13 +14,6 @@ function Products({ sortBy, products, currentPage }) {
     setRender(!render);
   }, [products]);
 
-  // useEffect(() => {
-  //   let list = products();
-  //   list.forEach((product) => (product.createAt = new Date()));
-  //   setProd([...list]);
-  //   setDefaultProd([...list]);
-  // }, [currentPage]);
-
   useEffect(() => {
     if (sortBy === "price")
       setProd((prev) => [...prev.sort((a, b) => a.price - b.price)]);

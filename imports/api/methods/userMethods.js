@@ -1,7 +1,6 @@
 import { Accounts } from "meteor/accounts-base";
 import { Meteor } from "meteor/meteor";
 
-
 Meteor.methods({
   "user.isUserNameExisted": function (args) {
     const user = Accounts.findUserByUsername(args.username);
@@ -13,6 +12,12 @@ Meteor.methods({
   },
 
   "user.signUp": function (args) {
+    const isUserExisted = Accounts.findUserByUsername(args.username);
+
+    if (isUserExisted) {
+      return { isSuccess: false, error: "Username existed!" };
+    }
+
     Meteor.users.insert({
       username: args.username,
       profile: {
@@ -26,9 +31,9 @@ Meteor.methods({
 
     const findUser = Accounts.findUserByUsername(args.username);
 
-    Accounts.setPassword(findUser._id, args.password);
-
     if (findUser._id) {
+      Accounts.setPassword(findUser._id, args.password);
+
       user = {
         username: findUser.username,
         fullName: findUser.profile.fullName,
@@ -38,6 +43,6 @@ Meteor.methods({
       };
     }
 
-    return user;
+    return { isSuccess: true, user };
   },
 });

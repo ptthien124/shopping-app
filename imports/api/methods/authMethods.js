@@ -2,10 +2,15 @@ import { Accounts } from "meteor/accounts-base";
 import { Meteor } from "meteor/meteor";
 
 Meteor.methods({
-  "auth.findUser": function (args) {
-    let user = {};
+  "auth.login": function (args) {
+    const { username, password } = args;
 
-    user = Accounts.findUserByUsername(args.username);
+    let user = {};
+    user = Accounts.findUserByUsername(username);
+
+    if (!user._id) {
+      return { isSuccess: false, error: "Wrong username!" };
+    }
 
     return user;
   },

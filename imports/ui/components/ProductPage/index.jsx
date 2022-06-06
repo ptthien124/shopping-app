@@ -17,7 +17,11 @@ function ProductPage() {
       return ProductsCollection.find().fetch();
     }
     return [];
-  });
+  }, []);
+
+  cOnst products = useTracker(() => {
+    const prods = Meteor.subscribe("")
+  })
 
   const searchInput = useRef();
 
@@ -42,7 +46,11 @@ function ProductPage() {
     if (filterList.length > 0) jump(1);
   }, [filterList]);
 
-  useEffect(() => {
+  useEffect(() => {}, [debounced]);
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+
     if (search !== "") {
       const value = search.trim().toLowerCase();
       setFilterList([]);
@@ -56,7 +64,7 @@ function ProductPage() {
         }
       });
     }
-  }, [debounced]);
+  };
 
   //style pages button
   const currentPageStyles = (index) => {
@@ -81,6 +89,7 @@ function ProductPage() {
               type="text"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
+              onSubmit={onSubmit}
             />
           </div>
           <div className="sortWrapper">

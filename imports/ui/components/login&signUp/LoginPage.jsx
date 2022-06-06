@@ -60,7 +60,7 @@ function LoginPage() {
           </Button>,
         ]}
       >
-        <p>Wrong username or password.</p>
+        <p>{user.loginFailedReason}</p>
       </Modal>
     </div>
   );

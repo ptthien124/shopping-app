@@ -137,7 +137,6 @@ function Form({ title, login, signUp }) {
       )}
 
       {/* gender */}
-
       {signUp && (
         <div className="wrapper">
           <div className="container">
