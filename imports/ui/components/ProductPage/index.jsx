@@ -3,12 +3,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Spin } from "antd";
 import { Meteor } from "meteor/meteor";
 import { useTracker } from "meteor/react-meteor-data";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import ProductsCollection from "../../../api/ProductsCollection";
 import useDebounce from "../../hooks/useDebounce";
-import usePagination from "../../hooks/usePagination";
 import "../../styles/css/productPage.css";
 import Products from "./Products";
+import SearchDropDown from "./SearchDropDown";
 
 const PRODUCTS_PER_PAGE = 12;
 
@@ -53,38 +53,66 @@ function ProductPage() {
     setProducts(prods);
   }, [prods]);
 
-  // useEffect(() => {
-  //   const title = search.trim();
-  //   if (title.length > 0) {
-  //     products.forEach((product) => {
-  //       const index = title.indexOf(title);
-  //       if (index !== -1) {
-  //         setFilterList((prev) => [...prev, product]);
-  //       }
-  //     });
-  //   }
-  // }, [debounced]);
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    if (search.trim() === "") {
-      setProducts(prods);
-      return;
+  useEffect(() => {
+    const title = search.trim();
+    if (title.length > 0) {
+      setFilterList([]);
+      products.forEach((product) => {
+        const index = title.indexOf(title);
+        if (index !== -1) {
+          setFilterList((prev) => [...prev, product]);
+        }
+      });
     }
+  }, [debounced]);
 
-    const value = search.trim().toLowerCase();
-    setProducts([]);
+  const handleSubmit = useCallback(
+    (e) => {
+      e.preventDefault();
 
-    products.forEach((product) => {
-      const title = product.title.toLowerCase();
-      const index = title.indexOf(value);
-
-      if (index !== -1) {
-        setProducts((prev) => [...prev, product]);
+      if (search.trim() === "") {
+        setProducts(prods);
+        return;
       }
-    });
-  };
+
+      const value = search.trim().toLowerCase();
+      setProducts([]);
+
+      prods.forEach((product) => {
+        const title = product.title.toLowerCase();
+        const index = title.indexOf(value);
+
+        if (index !== -1) {
+          setProducts((prev) => [...prev, product]);
+        }
+      });
+    },
+    [search, prods]
+  );
+
+  // search drop down
+  const dropDownClick = useCallback(
+    (searchValue) => {
+      setSearch(searchValue);
+      if (searchValue.trim() === "") {
+        setProducts(prods);
+        return;
+      }
+
+      const value = searchValue.trim().toLowerCase();
+      setProducts([]);
+
+      prods.forEach((product) => {
+        const title = product.title.toLowerCase();
+        const index = title.indexOf(value);
+
+        if (index !== -1) {
+          setProducts((prev) => [...prev, product]);
+        }
+      });
+    },
+    [prods]
+  );
 
   //style pages button
   const currentPageStyles = (index) => {
@@ -95,22 +123,29 @@ function ProductPage() {
     <div className="productPage">
       <div className="wrapper">
         <div className="searchWrapper grid wide">
-          <form className="searchContainer" onSubmit={handleSubmit}>
-            <button
-              className="searchButton"
-              // onClick={() => searchInput.current.focus()}
-            >
-              <FontAwesomeIcon icon={faMagnifyingGlass} />
-            </button>
-            <input
-              className="search"
-              placeholder="Search"
-              ref={searchInput}
-              type="text"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
+          <div className="searchContainer">
+            <form className="searchForm" onSubmit={handleSubmit}>
+              <button
+                className="searchButton"
+                // onClick={() => searchInput.current.focus()}
+              >
+                <FontAwesomeIcon icon={faMagnifyingGlass} />
+              </button>
+              <input
+                className="search"
+                placeholder="Search"
+                ref={searchInput}
+                type="text"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+              />
+            </form>
+            <SearchDropDown
+              searchValue={debounced}
+              input={searchInput}
+              setState={dropDownClick}
             />
-          </form>
+          </div>
           <div className="sortWrapper">
             <span>Sort by</span>
             <select id="productsPageSortSelect" onChange={sortOptionSelected}>
