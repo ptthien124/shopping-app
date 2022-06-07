@@ -3,7 +3,7 @@ import "antd/dist/antd.css";
 import React, { useEffect, useState } from "react";
 import Product from "./Product";
 
-function Products({ sortBy, products, currentPage }) {
+function Products({ sortBy, products }) {
   const [prod, setProd] = useState(products);
   const [defaultProd, setDefaultProd] = useState(products);
 
@@ -13,13 +13,15 @@ function Products({ sortBy, products, currentPage }) {
   }, [products]);
 
   useEffect(() => {
-    if (sortBy === "price")
+    if (sortBy === "price") {
       setProd((prev) => [...prev.sort((a, b) => a.price - b.price)]);
-    else if (sortBy === "date")
+    } else if (sortBy === "date") {
       setProd((prev) => [
         ...prev.sort((a, b) => new Date(b.createAt) - new Date(a.createAt)),
       ]);
-    else setProd([...defaultProd]);
+    } else {
+      setProd([...defaultProd]);
+    }
   }, [sortBy]);
 
   return (

@@ -93,8 +93,8 @@ function ProductPage() {
     [search, filterProds]
   );
 
-  // search drop down
-  const dropDownClick = useCallback(
+  // search's drop down
+  const handleDropDownClick = useCallback(
     (searchValue) => {
       setSearch(searchValue);
       if (searchValue.trim() === "") {
@@ -105,7 +105,7 @@ function ProductPage() {
       const value = searchValue.trim().toLowerCase();
       setProducts([]);
 
-      prods.forEach((product) => {
+      filterProds.forEach((product) => {
         const title = product.title.toLowerCase();
         const index = title.indexOf(value);
 
@@ -114,7 +114,7 @@ function ProductPage() {
         }
       });
     },
-    [prods]
+    [filterProds]
   );
 
   //style pages button
@@ -147,7 +147,7 @@ function ProductPage() {
               searchValue={debounced}
               input={searchInput}
               products={filterProds}
-              setState={dropDownClick}
+              setState={handleDropDownClick}
             />
           </div>
           <div className="sortWrapper">
@@ -169,10 +169,15 @@ function ProductPage() {
             <Spin />
           </div>
         )}
-        {(filterList.length > 0 || products.length > 0) && (
+        {products.length > 0 && (
           <div className="flex">
             {productsCount > 0 &&
-              Array(Math.ceil(productsCount / PRODUCTS_PER_PAGE))
+              Array(
+                Math.ceil(
+                  (search === "" ? productsCount : filterList.length) /
+                    PRODUCTS_PER_PAGE
+                )
+              )
                 .fill()
                 .map((_, index) => (
                   <button

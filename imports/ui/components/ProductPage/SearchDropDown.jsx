@@ -1,7 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { useTracker } from "meteor/react-meteor-data";
-import { Meteor } from "meteor/meteor";
-import ProductsCollection from "../../../api/ProductsCollection";
+import React, { useCallback, useEffect, useState } from "react";
 
 function SearchDropDown({ searchValue, input, products, setState }) {
   const [show, setShow] = useState(false);
