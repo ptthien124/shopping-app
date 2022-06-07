@@ -16,8 +16,8 @@ function ProductPage() {
   const searchInput = useRef();
 
   const [products, setProducts] = useState([]);
-  const [debounced] = useDebounce(search, 700);
   const [search, setSearch] = useState("");
+  const [debounced] = useDebounce(search, 700);
   const [sort, setSort] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [filterList, setFilterList] = useState([]);
@@ -31,15 +31,6 @@ function ProductPage() {
   const prods = useTracker(() => {
     const temp = Meteor.subscribe("products");
     if (temp.ready()) {
-      setProducts(
-        ProductsCollection.find(
-          {},
-          {
-            skip: (currentPage - 1) * PRODUCTS_PER_PAGE,
-            limit: PRODUCTS_PER_PAGE,
-          }
-        ).fetch()
-      );
       return ProductsCollection.find(
         {},
         {
@@ -58,24 +49,41 @@ function ProductPage() {
     }
   }, []);
 
-  useEffect(() => {}, [debounced]);
+  useEffect(() => {
+    setProducts(prods);
+  }, [prods]);
+
+  // useEffect(() => {
+  //   const title = search.trim();
+  //   if (title.length > 0) {
+  //     products.forEach((product) => {
+  //       const index = title.indexOf(title);
+  //       if (index !== -1) {
+  //         setFilterList((prev) => [...prev, product]);
+  //       }
+  //     });
+  //   }
+  // }, [debounced]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (search.trim() !== "") {
-      const value = search.trim().toLowerCase();
-      setFilterList([]);
-
-      products.forEach((product) => {
-        const title = product.title.toLowerCase();
-        const index = title.indexOf(value);
-
-        if (index !== -1) {
-          setFilterList((prev) => [...prev, product]);
-        }
-      });
+    if (search.trim() === "") {
+      setProducts(prods);
+      return;
     }
+
+    const value = search.trim().toLowerCase();
+    setProducts([]);
+
+    products.forEach((product) => {
+      const title = product.title.toLowerCase();
+      const index = title.indexOf(value);
+
+      if (index !== -1) {
+        setProducts((prev) => [...prev, product]);
+      }
+    });
   };
 
   //style pages button

@@ -10,5 +10,10 @@
   a {
     text-decoration: underline;
     color: var(--primary);
+
+    &:hover {
+      color: #40a9ff;
+      text-decoration: nones;
+    }
   }
 }
