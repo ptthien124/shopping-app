@@ -42,6 +42,19 @@ function ProductPage() {
     return [];
   }, [currentPage]);
 
+  const filterProds = useTracker(() => {
+    const temp = Meteor.subscribe("products");
+    if (temp.ready()) {
+      return ProductsCollection.find(
+        { title: { $regex: search } },
+        {
+          limit: PRODUCTS_PER_PAGE,
+        }
+      ).fetch();
+    }
+    return [];
+  }, [debounced]);
+
   const productsCount = useTracker(() => {
     const count = Meteor.subscribe("products");
     if (count.ready()) {
@@ -75,19 +88,9 @@ function ProductPage() {
         return;
       }
 
-      const value = search.trim().toLowerCase();
-      setProducts([]);
-
-      prods.forEach((product) => {
-        const title = product.title.toLowerCase();
-        const index = title.indexOf(value);
-
-        if (index !== -1) {
-          setProducts((prev) => [...prev, product]);
-        }
-      });
+      setProducts(filterProds);
     },
-    [search, prods]
+    [search, filterProds]
   );
 
   // search drop down
@@ -143,6 +146,7 @@ function ProductPage() {
             <SearchDropDown
               searchValue={debounced}
               input={searchInput}
+              products={filterProds}
               setState={dropDownClick}
             />
           </div>
