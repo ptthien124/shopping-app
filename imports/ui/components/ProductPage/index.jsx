@@ -130,7 +130,7 @@ function ProductPage() {
             <form className="searchForm" onSubmit={handleSubmit}>
               <button
                 className="searchButton"
-                // onClick={() => searchInput.current.focus()}
+                onClick={() => searchInput.current.focus()}
               >
                 <FontAwesomeIcon icon={faMagnifyingGlass} />
               </button>
