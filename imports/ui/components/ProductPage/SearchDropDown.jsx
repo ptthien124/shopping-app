@@ -1,24 +1,36 @@
 import React, { useCallback, useEffect, useState } from "react";
+import { useTracker } from "meteor/react-meteor-data";
+import ProductsCollection from "../../../api/ProductsCollection";
 
-function SearchDropDown({ searchValue, input, products, setState }) {
+function SearchDropDown({ value, input, handleSubmit }) {
   const [show, setShow] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
 
-  const handleShow = useCallback(() => {
+  // fetch products
+  const products = useTracker(() => {
+    const temp = Meteor.subscribe("products");
+    if (temp.ready()) {
+      return ProductsCollection.find({ title: { $regex: value } }).fetch();
+    }
+    return [];
+  }, [value]);
+
+  // show drop down
+  const handleShow = () => {
     if (document.activeElement === input.current) {
       setIsFocused(true);
     } else {
       setIsFocused(false);
     }
-  }, []);
+  };
 
   useEffect(() => {
-    if (isFocused && searchValue.length > 0) {
+    if (isFocused && value.length > 0) {
       setShow(true);
     } else {
       setShow(false);
     }
-  }, [isFocused, searchValue]);
+  }, [isFocused, value]);
 
   useEffect(() => {
     document.addEventListener("click", handleShow);
@@ -31,14 +43,17 @@ function SearchDropDown({ searchValue, input, products, setState }) {
       {show && (
         <div className="searchDropDown">
           {products &&
-            searchValue.length > 0 &&
+            value.length > 0 &&
             products.map((product) => (
-              <div onClick={() => setState(product.title)} key={product._id}>
+              <div
+                onClick={() => handleSubmit(product.title)}
+                key={product._id}
+              >
                 {product.title}
               </div>
             ))}
 
-          {searchValue && products && products.length <= 0 && (
+          {value.length > 0 && products && products.length <= 0 && (
             <span
               style={{
                 display: "flex",

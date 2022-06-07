@@ -1,36 +1,74 @@
-import { Row } from "antd";
+import { Row, Spin } from "antd";
 import "antd/dist/antd.css";
-import React, { useEffect, useState } from "react";
+import { Meteor } from "meteor/meteor";
+import { useTracker } from "meteor/react-meteor-data";
+import React, { useCallback, useEffect, useState } from "react";
+import ProductsCollection from "../../../api/ProductsCollection";
 import Product from "./Product";
 
-function Products({ sortBy, products }) {
-  const [prod, setProd] = useState(products);
-  const [defaultProd, setDefaultProd] = useState(products);
+function Products({ sortBy, searchValue, currentPage, productsPerPage }) {
+  const [products, setProducts] = useState([]);
+
+  const prods = useTracker(() => {
+    const subscribe = Meteor.subscribe("products");
+
+    if (searchValue.trim() === "") {
+      if (subscribe.ready()) {
+        return ProductsCollection.find(
+          {},
+          {
+            skip: (currentPage - 1) * productsPerPage,
+            limit: productsPerPage,
+          }
+        ).fetch();
+      }
+      return [];
+    }
+
+    if (subscribe.ready()) {
+      return ProductsCollection.find(
+        { title: { $regex: searchValue } },
+        {
+          skip: (currentPage - 1) * productsPerPage,
+          limit: productsPerPage,
+        }
+      ).fetch();
+    }
+
+    return [];
+  }, [searchValue, currentPage]);
 
   useEffect(() => {
-    setProd(products);
-    setDefaultProd(products);
-  }, [products]);
+    setProducts(prods);
 
-  useEffect(() => {
     if (sortBy === "price") {
-      setProd((prev) => [...prev.sort((a, b) => a.price - b.price)]);
+      setProducts((prev) => [...prev.sort((a, b) => a.price - b.price)]);
     } else if (sortBy === "date") {
-      setProd((prev) => [
+      setProducts((prev) => [
         ...prev.sort((a, b) => new Date(b.createAt) - new Date(a.createAt)),
       ]);
-    } else {
-      setProd([...defaultProd]);
     }
-  }, [sortBy]);
+  }, [sortBy, prods]);
 
   return (
     <div className="grid wide">
       <Row gutter={16}>
-        {prod.map((item) => (
+        {products.map((item) => (
           <Product key={item._id} {...item} />
         ))}
       </Row>
+
+      {products.length === 0 && (
+        <div className="flex" style={{ height: "500px" }}>
+          {searchValue.trim() === "" ? (
+            <Spin />
+          ) : (
+            <span style={{ fontSize: "3rem" }}>
+              Couldn't find the product you wanted!
+            </span>
+          )}
+        </div>
+      )}
     </div>
   );
 }
