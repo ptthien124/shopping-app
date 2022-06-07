@@ -2,6 +2,7 @@ import { Spin } from "antd";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import { loginRequest } from "../../redux/actions/authAction";
 import { signUpRequest } from "../../redux/actions/userAction";
 import "../../styles/css/form.css";
@@ -176,6 +177,18 @@ function Form({ title, login, signUp }) {
           ></Button>
         )}
       </div>
+
+      <Link
+        to={login ? "/signUp" : "/login"}
+        style={{
+          paddingLeft: "150px",
+          textAlign: "center",
+          fontSize: "2rem",
+          marginTop: "12px",
+        }}
+      >
+        {login ? "Create new account." : "Already have an account, Login."}
+      </Link>
     </form>
   );
 }

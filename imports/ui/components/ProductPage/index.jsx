@@ -33,18 +33,9 @@ function ProductPage() {
     }
   }, [submitSearch]);
 
-  // useEffect(() => {
-  //   const title = search.trim();
-  //   if (title.length > 0) {
-  //     setFilterList([]);
-  //     products.forEach((product) => {
-  //       const index = title.indexOf(title);
-  //       if (index !== -1) {
-  //         setFilterList((prev) => [...prev, product]);
-  //       }
-  //     });
-  //   }
-  // }, [debounced]);
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [productsCount]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -57,8 +48,7 @@ function ProductPage() {
     setSort(value);
   };
 
-  //style pages button
-  const currentPageStyles = (index) => {
+  const currentPageButtonStyles = (index) => {
     if (currentPage === index + 1) return { color: "var(--primary)" };
   };
 
@@ -113,7 +103,7 @@ function ProductPage() {
               .map((_, index) => (
                 <button
                   className="pageButton"
-                  style={currentPageStyles(index)}
+                  style={currentPageButtonStyles(index)}
                   key={index}
                   onClick={() => {
                     setCurrentPage(index + 1);
