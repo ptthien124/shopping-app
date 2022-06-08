@@ -178,17 +178,32 @@ function Form({ title, login, signUp }) {
         )}
       </div>
 
-      <Link
-        to={login ? "/signUp" : "/login"}
-        style={{
-          paddingLeft: "150px",
-          textAlign: "center",
-          fontSize: "2rem",
-          marginTop: "12px",
-        }}
-      >
-        {login ? "Create new account." : "Already have an account, Login."}
-      </Link>
+      {login ? (
+        <span
+          style={{
+            paddingLeft: "150px",
+            textAlign: "center",
+            fontSize: "2rem",
+            marginTop: "12px",
+            color: "#333",
+          }}
+        >
+          <p style={{ margin: "0" }}> Not registered yet?</p>{" "}
+          <Link to="/signUp">Create new account.</Link>
+        </span>
+      ) : (
+        <span
+          style={{
+            paddingLeft: "150px",
+            textAlign: "center",
+            fontSize: "2rem",
+            marginTop: "12px",
+            color: "#333",
+          }}
+        >
+          Already have an account, <Link to="/login">Login.</Link>
+        </span>
+      )}
     </form>
   );
 }

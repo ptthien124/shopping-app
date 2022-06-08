@@ -104,7 +104,6 @@ body .productPage {
 
     width: 100%;
     max-height: 500px;
-    padding: 10px 0;
     border-radius: 8px;
 
     background-color: white;
@@ -112,12 +111,12 @@ body .productPage {
     overflow-y: scroll;
 
     div {
-      margin: 8px 0;
-      padding: 0 8px;
+      margin: 12px 0;
+      padding: 0 8px 0 24px;
       background-color: white;
 
       font-size: 1.6rem;
-      line-height: 3.2rem;
+      line-height: 3rem;
 
       display: -webkit-box;
       -webkit-line-clamp: 2;
@@ -125,7 +124,7 @@ body .productPage {
       overflow: hidden;
 
       &:hover {
-        background-color: lightgray;
+        background-color: rgba(211, 211, 211, 0.3);
         cursor: pointer;
       }
     }

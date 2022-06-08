@@ -49,7 +49,7 @@
       cursor: pointer; }
     .form .gender > input {
       position: relative;
-      margin-right: 12px;
+      margin-right: 24px;
       cursor: pointer; }
       .form .gender > input::before {
         content: "";

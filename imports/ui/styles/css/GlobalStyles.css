@@ -57,9 +57,15 @@ body img {
   margin: 0 auto;
 }
 
-@media (min-width: 740px) and (max-width: 1023px) {
+@media (min-width: 740px) and (max-width: 992px) {
   .wide {
     width: 644px;
+  }
+}
+
+@media (min-width: 992px) and (max-width: 1023px) {
+  .wide {
+    width: 860px;
   }
 }
 

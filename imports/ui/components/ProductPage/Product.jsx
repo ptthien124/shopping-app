@@ -42,13 +42,13 @@ function Product({ _id, image, title, price, createAt }) {
 
   return (
     <Col
-      style={{ marginBottom: "16px" }}
       xs={24}
       sm={12}
       md={8}
       lg={6}
       xl={6}
       xxl={4}
+      style={{ marginBottom: "16px" }}
     >
       <div className="product">
         {showSkeleton && <div className="skeleton"></div>}

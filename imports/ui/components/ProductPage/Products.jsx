@@ -1,4 +1,4 @@
-import { Row, Spin } from "antd";
+import { Col, Grid, Row, Spin } from "antd";
 import "antd/dist/antd.css";
 import { Meteor } from "meteor/meteor";
 import { useTracker } from "meteor/react-meteor-data";
@@ -10,6 +10,7 @@ function Products({ sortBy, value, currentPage, productsPerPage }) {
   const [products, setProducts] = useState([]);
 
   const prods = useTracker(() => {
+    setProducts([]);
     const subscribe = Meteor.subscribe("products");
 
     if (value.trim() === "") {
@@ -53,6 +54,15 @@ function Products({ sortBy, value, currentPage, productsPerPage }) {
 
   return (
     <div className="grid wide">
+      {/*  <Col
+      xs={24}
+       sm={24}
+       md={22}
+       lg={22}
+       xl={22}
+       xxl={18}
+       style={{ margin: "0 auto" }}
+     > */}
       <Row gutter={16}>
         {products.map((item) => (
           <Product key={item._id} {...item} />
@@ -70,6 +80,7 @@ function Products({ sortBy, value, currentPage, productsPerPage }) {
           )}
         </div>
       )}
+      {/* </Col> */}
     </div>
   );
 }

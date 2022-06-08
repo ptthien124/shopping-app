@@ -13,7 +13,7 @@ body .product {
     box-shadow: 0 1px 10px gray; }
   body .product .skeleton {
     width: 80%;
-    height: 200px;
+    padding-top: 80%;
     animation: skeleton-loading 1s linear infinite alternate; }
   body .product img {
     width: 80%;
