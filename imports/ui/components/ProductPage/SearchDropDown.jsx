@@ -1,5 +1,5 @@
-import React, { useCallback, useEffect, useState } from "react";
 import { useTracker } from "meteor/react-meteor-data";
+import React, { useEffect, useState } from "react";
 import ProductsCollection from "../../../api/ProductsCollection";
 
 function SearchDropDown({ value, input, handleSubmit, setSearch }) {

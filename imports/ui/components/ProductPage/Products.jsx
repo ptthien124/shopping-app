@@ -2,7 +2,7 @@ import { Row, Spin } from "antd";
 import "antd/dist/antd.css";
 import { Meteor } from "meteor/meteor";
 import { useTracker } from "meteor/react-meteor-data";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import ProductsCollection from "../../../api/ProductsCollection";
 import Product from "./Product";
 
@@ -19,6 +19,7 @@ function Products({ sortBy, value, currentPage, productsPerPage }) {
           {
             skip: (currentPage - 1) * productsPerPage,
             limit: productsPerPage,
+            createdAt: -1,
           }
         ).fetch();
       }
@@ -39,13 +40,13 @@ function Products({ sortBy, value, currentPage, productsPerPage }) {
   }, [value, currentPage]);
 
   useEffect(() => {
-    setProducts(prods);
+    setProducts([...prods]);
 
     if (sortBy === "price") {
       setProducts((prev) => [...prev.sort((a, b) => a.price - b.price)]);
     } else if (sortBy === "date") {
       setProducts((prev) => [
-        ...prev.sort((a, b) => new Date(b.createAt) - new Date(a.createAt)),
+        ...prev.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)),
       ]);
     }
   }, [sortBy, prods]);
