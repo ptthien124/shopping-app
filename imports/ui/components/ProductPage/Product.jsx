@@ -7,7 +7,7 @@ import { addToCart } from "../../redux/actions/cartAction";
 import "../../styles/css/product.css";
 import Button from "../Button";
 
-function Product({ _id, image, title, price, createAt }) {
+function Product({ _id, image, title, price, createdAt }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth);
@@ -34,7 +34,7 @@ function Product({ _id, image, title, price, createAt }) {
         title,
         price,
         quantity: 1,
-        createAt,
+        createdAt,
         userId: user.userId,
         // createAt: new Date(),
       };

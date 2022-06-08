@@ -64,8 +64,8 @@ function Products({ sortBy, value, currentPage, productsPerPage }) {
        style={{ margin: "0 auto" }}
      > */}
       <Row gutter={16}>
-        {products.map((item) => (
-          <Product key={item._id} {...item} />
+        {products.map((product) => (
+          <Product key={product._id} {...product} />
         ))}
       </Row>
 
