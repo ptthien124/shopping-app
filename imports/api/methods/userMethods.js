@@ -6,6 +6,7 @@ Meteor.methods({
     const isUserExisted = Accounts.findUserByUsername(args.username);
 
     if (isUserExisted) {
+      console.log('here');
       return { isSuccess: false, error: "Username existed!" };
     }
 

@@ -179,7 +179,7 @@ function Form({ title, login, signUp }) {
       </div>
 
       {login ? (
-        <span
+        <div
           style={{
             paddingLeft: "150px",
             textAlign: "center",
@@ -190,9 +190,9 @@ function Form({ title, login, signUp }) {
         >
           <p style={{ margin: "0" }}> Not registered yet?</p>{" "}
           <Link to="/signUp">Create new account.</Link>
-        </span>
+        </div>
       ) : (
-        <span
+        <div
           style={{
             paddingLeft: "150px",
             textAlign: "center",
@@ -202,7 +202,7 @@ function Form({ title, login, signUp }) {
           }}
         >
           Already have an account, <Link to="/login">Login.</Link>
-        </span>
+        </div>
       )}
     </form>
   );

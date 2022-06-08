@@ -43,8 +43,8 @@ function* signUp({ payload }) {
     let status = {};
 
     yield call("user.signUp", { ...data })
-      .then((result) => (user = result))
-      .catch((error) => (user = error));
+      .then((result) => (status = result))
+      .catch((error) => (status = error));
 
     if (!status.isSuccess) {
       yield put(signUpFailed(status.error));
@@ -62,7 +62,7 @@ function* signUp({ payload }) {
 
       const user = Meteor.user();
 
-      if (auth) {
+      if (user) {
         yield put(
           loginSuccess({
             userId: user._id,
@@ -74,7 +74,7 @@ function* signUp({ payload }) {
       }
     }
   } catch (error) {
-    yield put(signUpFailed(error?.reason));
+    yield put(signUpFailed(error));
   }
 }
 

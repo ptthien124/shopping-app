@@ -6,7 +6,6 @@
   width: 100%;
   height: 80px;
   padding: 2px 20px;
-  padding-right: 30px;
   z-index: 99;
   background-color: var(--primary);
   font-size: 2.4rem;
