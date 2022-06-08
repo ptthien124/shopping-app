@@ -184,7 +184,7 @@ function Form({ title, login, signUp }) {
             paddingLeft: "150px",
             textAlign: "center",
             fontSize: "2rem",
-            marginTop: "12px",
+            margin: "12px 0",
             color: "#333",
           }}
         >
@@ -197,7 +197,7 @@ function Form({ title, login, signUp }) {
             paddingLeft: "150px",
             textAlign: "center",
             fontSize: "2rem",
-            marginTop: "12px",
+            margin: "12px 0 24px",
             color: "#333",
           }}
         >

@@ -14,7 +14,7 @@ function Button({
 }) {
   const handleClick = (e) => {
     e.stopPropagation();
-    onClick();
+    onClick(e);
   };
 
   const styles = {

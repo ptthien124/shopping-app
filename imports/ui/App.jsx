@@ -1,8 +1,8 @@
-import React, { Fragment } from "react";
+import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import ProductPage from "./components/ProductPage";
+import "./styles/css/antd.css";
+import "./styles/css/GlobalStyles.css";
 import ProtectedRoute from "./components/ProtectedRoute";
-import { DefaultLayout } from "./layouts";
 import { adminRoutes, privateRoutes, publicRoutes } from "./routes";
 
 function App() {

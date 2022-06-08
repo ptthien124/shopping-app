@@ -2,11 +2,13 @@ import { Col, notification } from "antd";
 import "antd/dist/antd.css";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
 import { addToCart } from "../../redux/actions/cartAction";
 import "../../styles/css/product.css";
 import Button from "../Button";
 
 function Product({ _id, image, title, price, createAt }) {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth);
 
@@ -24,7 +26,7 @@ function Product({ _id, image, title, price, createAt }) {
     });
   };
 
-  const handleAddToCartClick = () => {
+  const handleAddToCartClick = (e) => {
     if (user.isLoggedIn) {
       const newCartProduct = {
         _id,
@@ -50,7 +52,7 @@ function Product({ _id, image, title, price, createAt }) {
       xxl={4}
       style={{ marginBottom: "16px" }}
     >
-      <div className="product">
+      <div className="product" onClick={() => navigate(`/${_id}`)}>
         {showSkeleton && <div className="skeleton"></div>}
         <img src={image} alt="" onLoad={() => setShowSkeleton(false)} />
         <h3>{title}</h3>
@@ -58,7 +60,8 @@ function Product({ _id, image, title, price, createAt }) {
 
         {user.isLoggedIn ? (
           <Button
-            onClick={() => {
+            onClick={(e) => {
+              e.preventDefault();
               handleAddToCartClick();
               openNotification();
             }}

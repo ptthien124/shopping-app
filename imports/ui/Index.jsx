@@ -9,9 +9,9 @@ function Index() {
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
-        <GlobalStyles>
-          <App />
-        </GlobalStyles>
+        {/* <GlobalStyles> */}
+        <App />
+        {/* </GlobalStyles> */}
       </PersistGate>
     </Provider>
   );

@@ -3,12 +3,18 @@ import CartPage from "../components/CartPage";
 import LoginPage from "../components/login&signUp/LoginPage";
 import SignUpPage from "../components/login&signUp/SignUpPage";
 import ProductPage from "../components/ProductPage";
+import DetailProduct from "../components/ProductPage/DetailProduct";
 import { PureLayout } from "../layouts";
 
 const publicRoutes = [
   {
     path: "/",
     component: ProductPage,
+    layout: null,
+  },
+  {
+    path: "/:id",
+    component: DetailProduct,
     layout: null,
   },
   { path: "/login", component: LoginPage, layout: PureLayout },
