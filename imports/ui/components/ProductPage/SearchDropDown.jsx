@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import { useTracker } from "meteor/react-meteor-data";
 import ProductsCollection from "../../../api/ProductsCollection";
 
-function SearchDropDown({ value, input, handleSubmit }) {
+function SearchDropDown({ value, input, handleSubmit, setSearch }) {
   const [show, setShow] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
 
@@ -10,7 +10,9 @@ function SearchDropDown({ value, input, handleSubmit }) {
   const products = useTracker(() => {
     const temp = Meteor.subscribe("products");
     if (temp.ready()) {
-      return ProductsCollection.find({ title: { $regex: value } }).fetch();
+      return ProductsCollection.find({
+        title: { $regex: value, $options: "i" },
+      }).fetch();
     }
     return [];
   }, [value]);
@@ -46,7 +48,10 @@ function SearchDropDown({ value, input, handleSubmit }) {
             value.length > 0 &&
             products.map((product) => (
               <div
-                onClick={() => handleSubmit(product.title)}
+                onClick={() => {
+                  handleSubmit(product.title);
+                  setSearch(product.title);
+                }}
                 key={product._id}
               >
                 {product.title}

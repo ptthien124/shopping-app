@@ -1,9 +1,8 @@
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Spin } from "antd";
 import { Meteor } from "meteor/meteor";
 import { useTracker } from "meteor/react-meteor-data";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import ProductsCollection from "../../../api/ProductsCollection";
 import useDebounce from "../../hooks/useDebounce";
 import "../../styles/css/productPage.css";
@@ -76,6 +75,7 @@ function ProductPage() {
               value={debounced}
               input={searchRef}
               handleSubmit={setSubmitSearch}
+              setSearch={setSearch}
             />
           </div>
 
@@ -92,7 +92,7 @@ function ProductPage() {
         <Products
           sortBy={sort}
           currentPage={currentPage}
-          searchValue={submitSearch}
+          value={submitSearch}
           productsPerPage={PRODUCTS_PER_PAGE}
         />
 

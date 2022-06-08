@@ -6,13 +6,13 @@ import React, { useCallback, useEffect, useState } from "react";
 import ProductsCollection from "../../../api/ProductsCollection";
 import Product from "./Product";
 
-function Products({ sortBy, searchValue, currentPage, productsPerPage }) {
+function Products({ sortBy, value, currentPage, productsPerPage }) {
   const [products, setProducts] = useState([]);
 
   const prods = useTracker(() => {
     const subscribe = Meteor.subscribe("products");
 
-    if (searchValue.trim() === "") {
+    if (value.trim() === "") {
       if (subscribe.ready()) {
         return ProductsCollection.find(
           {},
@@ -27,7 +27,7 @@ function Products({ sortBy, searchValue, currentPage, productsPerPage }) {
 
     if (subscribe.ready()) {
       return ProductsCollection.find(
-        { title: { $regex: searchValue } },
+        { title: { $regex: value, $options: "i" } },
         {
           skip: (currentPage - 1) * productsPerPage,
           limit: productsPerPage,
@@ -36,7 +36,7 @@ function Products({ sortBy, searchValue, currentPage, productsPerPage }) {
     }
 
     return [];
-  }, [searchValue, currentPage]);
+  }, [value, currentPage]);
 
   useEffect(() => {
     setProducts(prods);
@@ -60,7 +60,7 @@ function Products({ sortBy, searchValue, currentPage, productsPerPage }) {
 
       {products.length === 0 && (
         <div className="flex" style={{ height: "500px" }}>
-          {searchValue.trim() === "" ? (
+          {value.trim() === "" ? (
             <Spin />
           ) : (
             <span style={{ fontSize: "3rem" }}>
