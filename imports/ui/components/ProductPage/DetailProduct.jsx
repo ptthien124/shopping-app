@@ -7,7 +7,7 @@ import "../../styles/css/detailProduct.css";
 import Button from "../Button";
 import { useDispatch, useSelector } from "react-redux";
 import { Modal, notification, Spin } from "antd";
-import { addToCart } from "../../redux/actions/cartAction";
+// import { addToCart } from "../../redux/actions/cartAction";
 
 function DetailProduct() {
   const dispatch = useDispatch();
@@ -61,7 +61,7 @@ function DetailProduct() {
         createAt: product.createdAt,
         userId: user.userId,
       };
-      dispatch(addToCart(newCartProduct));
+      // dispatch(addToCart(newCartProduct));
       openNotification();
     } else {
       showModal();

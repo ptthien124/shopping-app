@@ -3,8 +3,7 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { loginRequest } from "../../redux/actions/authAction";
-import { signUpRequest } from "../../redux/actions/userAction";
+import { ACTIONS } from "../../redux/actions/auth";
 import "../../styles/css/form.css";
 import Button from "../Button";
 
@@ -12,7 +11,6 @@ function Form({ title, login, signUp }) {
   const dispatch = useDispatch();
 
   const auth = useSelector((state) => state.auth);
-  const user = useSelector((state) => state.user);
 
   const [gender, setGender] = useState("");
   const [genderChecked, setGenderChecked] = useState(false);
@@ -30,18 +28,20 @@ function Form({ title, login, signUp }) {
   } = useForm();
 
   const onSubmit = (data) => {
-    if (!auth.isLoggedIn && !user.signingUp && data) {
+    if (!auth.isLoggedIn && data) {
       if (signUp && gender !== "") {
-        const signUpData = {
-          username: data.email,
+        const payload = {
+          email: data.email,
           password: data.password,
           fullName: data.fullName,
           gender: gender,
         };
-        dispatch(signUpRequest(signUpData));
+
+        dispatch(ACTIONS.SIGN_UP.REQUEST(payload));
       } else if (login) {
-        const loginData = { username: data.email, password: data.password };
-        dispatch(loginRequest(loginData));
+        const loginData = { email: data.email, password: data.password };
+        
+        dispatch(ACTIONS.LOGIN.REQUEST(loginData));
       }
     }
   };
@@ -168,7 +168,7 @@ function Form({ title, login, signUp }) {
 
       <div className="container">
         <div style={{ width: "150px" }}></div>
-        {auth.logging || user.signingUp ? (
+        {auth.logging ? (
           <Spin style={{ margin: "0 auto" }} />
         ) : (
           <Button

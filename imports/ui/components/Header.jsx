@@ -4,7 +4,7 @@ import { Dropdown, Menu, Modal, Space } from "antd";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { logoutRequest } from "../redux/actions/authAction";
+import { ACTIONS } from "../redux/actions/auth";
 import "../styles/css/header.css";
 
 function Header() {
@@ -15,7 +15,7 @@ function Header() {
 
   const handleLogout = (e) => {
     e.preventDefault();
-    dispatch(logoutRequest());
+    dispatch(ACTIONS.LOGOUT.REQUEST());
     navigate("/login");
   };
 

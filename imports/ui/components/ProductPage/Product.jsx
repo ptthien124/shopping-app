@@ -3,7 +3,7 @@ import "antd/dist/antd.css";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { addToCart } from "../../redux/actions/cartAction";
+// import { addToCart } from "../../redux/actions/cart";
 import "../../styles/css/product.css";
 import Button from "../Button";
 
@@ -38,7 +38,7 @@ function Product({ _id, image, title, price, createdAt }) {
         userId: user.userId,
         // createAt: new Date(),
       };
-      dispatch(addToCart(newCartProduct));
+      // dispatch(addToCart(newCartProduct));
     }
   };
 

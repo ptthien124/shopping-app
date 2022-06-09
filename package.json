@@ -38,6 +38,7 @@
     "testModule": "tests/main.js"
   },
   "devDependencies": {
-    "node-sass": "^7.0.1"
+    "node-sass": "^7.0.1",
+    "redux-devtools-extension": "^2.13.9"
   }
 }

@@ -1,6 +1,6 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addToCart, removeFromCart } from "../../redux/actions/cartAction";
+// import { addToCart, removeFromCart } from "../../redux/actions/cart";
 import "../../styles/css/cartProduct.css";
 
 function CartProduct({ _id, image, title, price, createAt, quantity = 1 }) {
@@ -17,11 +17,11 @@ function CartProduct({ _id, image, title, price, createAt, quantity = 1 }) {
       createAt,
       userId: user.userId,
     };
-    dispatch(addToCart(newCartProduct));
+    // dispatch(addToCart(newCartProduct));
   };
 
   const handleReduce = () => {
-    dispatch(removeFromCart({ _id, quantity, userId: user.userId }));
+    // dispatch(removeFromCart({ _id, quantity, userId: user.userId }));
   };
 
   return (

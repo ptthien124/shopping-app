@@ -1,7 +1,13 @@
-const initialState = [];
+import { CONSTANTS } from "../actions/cart";
+
+const initialState = {
+
+};
+
+// @Todo Need to update like auth
 const cartReducer = (state = initialState, action) => {
   switch (action.type) {
-    case "ADD_TO_CART": {
+    case CONSTANTS.ADD_TO_CART.REQUEST: {
       const newState = [...state];
       let existed = -1;
       for (let i = 0; i < newState.length; i++) {

@@ -2,7 +2,7 @@ import { Button, Modal } from "antd";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { logoutAuth } from "../../redux/actions/authAction";
+import { ACTIONS } from "../../redux/actions/auth";
 import "../../styles/css/formPage.css";
 import Form from "./Form";
 import SharedPage from "./SharedPage";
@@ -30,7 +30,7 @@ function LoginPage() {
   }, [user]);
 
   const handleOk = () => {
-    dispatch(logoutAuth());
+    dispatch(ACTIONS.LOGOUT.REQUEST());
     setConfirmLoading(true);
   };
 
