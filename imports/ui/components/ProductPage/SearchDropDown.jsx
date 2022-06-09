@@ -65,7 +65,7 @@ function SearchDropDown({ value, input, handleSubmit, setSearch }) {
                 flex: "1",
                 justifyItems: "center",
                 textAlign: "center",
-                padding: "24px 8px",
+                padding: "24px 8px 24px 24px",
                 textJustify: "center",
               }}
             >
