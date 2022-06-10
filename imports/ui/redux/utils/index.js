@@ -4,14 +4,14 @@
  * @export
  * @param {String} reducerName
  * @param {String} actionName
- * @return {{ REQUEST: String, SUCCESS: String, FAIL: String }} 
+ * @return {{ REQUEST: String, SUCCESS: String, FAIL: String }}
  */
-export function factoryConstant (reducerName, actionName) {
-  return ({
+export function factoryConstant(reducerName, actionName) {
+  return {
     REQUEST: `${reducerName}/${actionName.toUpperCase()}_REQUEST`,
     SUCCESS: `${reducerName}/${actionName.toUpperCase()}_SUCCESS`,
     FAIL: `${reducerName}/${actionName.toUpperCase()}_FAIL`,
-  });
+  };
 }
 
 /**
@@ -19,9 +19,9 @@ export function factoryConstant (reducerName, actionName) {
  *
  * @export
  * @param {{ REQUEST: String, SUCCESS: String, FAIL: String }} actionConstant
- * @return {{ REQUEST: Function, SUCCESS: Function, FAIL: Function }} 
+ * @return {{ REQUEST: Function, SUCCESS: Function, FAIL: Function }}
  */
-export function factoryAction (actionConstant) {
+export function factoryAction(actionConstant) {
   const constantKeys = Object.keys(actionConstant);
 
   return constantKeys.reduce((obj, curr, index) => {
@@ -29,20 +29,20 @@ export function factoryAction (actionConstant) {
 
     obj[key] = (data = {}) => ({
       type: actionConstant[key],
-      payload: data
+      payload: data,
     });
-    
+
     return obj;
   }, {});
 }
 
-
-export const meteorCall = (methodName, args = {}) => new Promise((resolve, reject) => {
-  Meteor.call(methodName, { ...args }, (error, result) => {
-    if (error) {
-      reject(error);
-    } else {
-      resolve(result);
-    }
+export const meteorCall = (methodName, args = {}) =>
+  new Promise((resolve, reject) => {
+    Meteor.call(methodName, { ...args }, (error, result) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve(result);
+      }
+    });
   });
-});

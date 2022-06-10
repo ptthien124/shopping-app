@@ -5,8 +5,10 @@ import { useTracker } from "meteor/react-meteor-data";
 import React, { useEffect, useState } from "react";
 import ProductsCollection from "../../../api/ProductsCollection";
 import Product from "./Product";
+import { useSelector } from "react-redux";
 
 function Products({ sortBy, value, currentPage, productsPerPage }) {
+  const auth = useSelector((state) => state.auth).userData;
   const [products, setProducts] = useState([]);
 
   const prods = useTracker(() => {
@@ -65,7 +67,11 @@ function Products({ sortBy, value, currentPage, productsPerPage }) {
      > */}
       <Row gutter={16}>
         {products.map((product) => (
-          <Product key={product._id} {...product} />
+          <Product
+            key={product._id}
+            {...product}
+            userId={auth._id || undefined}
+          />
         ))}
       </Row>
 

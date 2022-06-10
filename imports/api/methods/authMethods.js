@@ -6,8 +6,8 @@ Meteor.methods({
     const { username, password } = args;
 
     let user = {};
-    
-    user = Accounts.findUserByUsername(username);
+
+    user = Accounts.findUserByEmail(username);
 
     if (!user._id) {
       return { isSuccess: false, error: "Wrong username!" };

@@ -3,14 +3,14 @@ import "antd/dist/antd.css";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
+import { ACTIONS } from "../../redux/actions/cart";
 // import { addToCart } from "../../redux/actions/cart";
 import "../../styles/css/product.css";
 import Button from "../Button";
 
-function Product({ _id, image, title, price, createdAt }) {
+function Product({ _id, image, title, price, createdAt, userId }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.auth);
 
   const [showSkeleton, setShowSkeleton] = useState(true);
 
@@ -27,7 +27,7 @@ function Product({ _id, image, title, price, createdAt }) {
   };
 
   const handleAddToCartClick = (e) => {
-    if (user.isLoggedIn) {
+    if (userId) {
       const newCartProduct = {
         _id,
         image,
@@ -35,10 +35,10 @@ function Product({ _id, image, title, price, createdAt }) {
         price,
         quantity: 1,
         createdAt,
-        userId: user.userId,
+        userId,
         // createAt: new Date(),
       };
-      // dispatch(addToCart(newCartProduct));
+      dispatch(ACTIONS.ADD_TO_CART.REQUEST(newCartProduct));
     }
   };
 
@@ -58,7 +58,7 @@ function Product({ _id, image, title, price, createdAt }) {
         <h3>{title}</h3>
         <strong>{price}$</strong>
 
-        {user.isLoggedIn ? (
+        {userId ? (
           <Button
             onClick={(e) => {
               e.preventDefault();

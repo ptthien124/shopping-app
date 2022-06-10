@@ -11,7 +11,7 @@ function Header() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const user = useSelector((state) => state.auth);
+  const auth = useSelector((state) => state.auth).userData;
 
   const handleLogout = (e) => {
     e.preventDefault();
@@ -45,7 +45,7 @@ function Header() {
           label: "Setting",
           key: "1",
         },
-        user.isAdmin && {
+        auth?.profile?.isAdmin && {
           label: <Link to="/admin">Admin</Link>,
         },
         {
@@ -71,7 +71,7 @@ function Header() {
           Products
         </Link>
 
-        {user.isLoggedIn ? (
+        {auth._id ? (
           <Link className="link" to="/cart">
             Cart
           </Link>
@@ -86,7 +86,7 @@ function Header() {
         )}
       </div>
       <div className="right">
-        {user.isLoggedIn ? (
+        {auth._id ? (
           <Dropdown
             overlay={menu}
             trigger={["click"]}
@@ -99,7 +99,7 @@ function Header() {
                 <div className="avatarWrapper">
                   <FontAwesomeIcon className="avatar" icon={faCircleUser} />
                 </div>
-                <h2 className="name">{user?.fullName}</h2>
+                <h2 className="name">{auth.profile.fullName}</h2>
               </Space>
             </a>
           </Dropdown>

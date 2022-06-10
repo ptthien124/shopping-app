@@ -3,34 +3,40 @@ import { Meteor } from "meteor/meteor";
 import SimpleSchema from "simpl-schema";
 import uniqueId from "lodash/uniqueId";
 
+const emailsSchema = new SimpleSchema({
+  email: {
+    type: String,
+  },
+});
+
 const Schema = {
   SignUpDTO: new SimpleSchema({
     email: {
       type: String,
       required: true,
-      regEx: SimpleSchema.RegEx.Email
+      regEx: SimpleSchema.RegEx.Email,
     },
     password: {
       type: String,
       required: true,
       min: 8,
-      max: 20
+      max: 20,
     },
     fullName: {
       type: String,
       required: true,
-      max: 100
+      max: 100,
     },
     gender: {
       type: String,
       required: true,
-      max: 100
+      max: 100,
     },
   }),
   LoginDTO: new SimpleSchema({
     email: String,
     password: String,
-  })
+  }),
 };
 
 Meteor.methods({
@@ -40,16 +46,17 @@ Meteor.methods({
     const { email, password, fullName, gender } = payload;
 
     const user = {
-      username: uniqueId('usr_'),
-      email: email,
+      username: uniqueId("usr_"),
+      email,
       password: password,
       profile: {
         fullName,
-        gender
-      }
-    }
+        gender,
+        isAdmin: false,
+      },
+    };
 
-    console.log('create user: ', user);
+    console.log("create user: ", user);
 
     Accounts.createUser(user);
   },

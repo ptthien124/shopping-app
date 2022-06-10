@@ -2,6 +2,7 @@ import { Button, Modal } from "antd";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { ACTIONS } from "../../redux/actions/auth";
 import "../../styles/css/formPage.css";
 import Form from "./Form";
 import SharedPage from "./SharedPage";
@@ -13,31 +14,29 @@ function SignUpPage() {
   const auth = useSelector((state) => state.auth);
 
   useEffect(() => {
-    if (auth.isLoggedIn) navigate("/");
+    if (auth.userData._id) navigate("/");
   }, [auth]);
 
   const [visible, setVisible] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
-  const [modalText, setModalText] = useState("");
 
-  // useEffect(() => {
-  //   if (user.isSignUpFailed) {
-  //     setModalText(user.error);
-  //     setVisible(true);
-  //   } else {
-  //     setVisible(false);
-  //     setConfirmLoading(false);
-  //   }
-  // }, [user]);
+  useEffect(() => {
+    if (!auth.userData._id && auth.error !== "") {
+      setVisible(true);
+    } else {
+      setVisible(false);
+      setConfirmLoading(false);
+    }
+  }, [auth]);
 
   const handleOk = () => {
-    dispatch(signUpDefault());
+    dispatch(ACTIONS.LOGOUT.REQUEST());
     setConfirmLoading(true);
   };
 
   const handleCancel = () => {
     setVisible(false);
-    handleOk();
+    dispatch(ACTIONS.LOGOUT.REQUEST());
   };
 
   return (
@@ -61,7 +60,7 @@ function SignUpPage() {
           </Button>,
         ]}
       >
-        <p>{modalText}</p>
+        <p>{auth.error}</p>
       </Modal>
     </div>
   );

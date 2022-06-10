@@ -15,10 +15,10 @@ function ProtectedRoute({
   const Component = component;
 
   if (!publicRoute) {
-    const user = useSelector((state) => state.auth);
-    let isAuthenticated = user.isLoggedIn;
+    const user = useSelector((state) => state.auth).userData;
+    let isAuthenticated = !!user._id;
 
-    if (admin && !user.isAdmin) {
+    if (admin && !user.profile.isAdmin) {
       isAuthenticated = false;
     }
 

@@ -1,10 +1,9 @@
 import { CONSTANTS } from "../actions/auth";
 
 const initialState = {
-  _id: "",
   userData: {},
   loading: false,
-  error: ""
+  error: "",
 };
 
 const authReducer = (state = initialState, action) => {
@@ -13,6 +12,7 @@ const authReducer = (state = initialState, action) => {
       return {
         ...state,
         loading: true,
+        error: "",
       };
     }
     case CONSTANTS.LOGIN.SUCCESS: {
@@ -29,12 +29,35 @@ const authReducer = (state = initialState, action) => {
       return {
         ...initialState,
         loading: false,
-        error: action.payload.error
+        error: action.payload.error,
       };
     }
 
     case CONSTANTS.LOGOUT.REQUEST:
-      return {...initialState};
+      return { ...state, loading: true, error: "" };
+
+    case CONSTANTS.LOGOUT.SUCCESS:
+      return { ...initialState, loading: false, error: "" };
+
+    case CONSTANTS.LOGOUT.FAIL:
+      return { ...state, loading: false, error: action.payload.error };
+
+    case CONSTANTS.SIGN_UP.REQUEST:
+      return { ...state, loading: true, error: "" };
+
+    case CONSTANTS.SIGN_UP.SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        error: "",
+      };
+
+    case CONSTANTS.SIGN_UP.FAIL:
+      return {
+        ...initialState,
+        loading: false,
+        error: action.payload.error,
+      };
 
     default:
       return state;

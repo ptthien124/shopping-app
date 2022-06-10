@@ -11,6 +11,7 @@ function Form({ title, login, signUp }) {
   const dispatch = useDispatch();
 
   const auth = useSelector((state) => state.auth);
+  const authData = auth.userData;
 
   const [gender, setGender] = useState("");
   const [genderChecked, setGenderChecked] = useState(false);
@@ -28,7 +29,7 @@ function Form({ title, login, signUp }) {
   } = useForm();
 
   const onSubmit = (data) => {
-    if (!auth.isLoggedIn && data) {
+    if (!authData._id && data) {
       if (signUp && gender !== "") {
         const payload = {
           email: data.email,
@@ -40,7 +41,7 @@ function Form({ title, login, signUp }) {
         dispatch(ACTIONS.SIGN_UP.REQUEST(payload));
       } else if (login) {
         const loginData = { email: data.email, password: data.password };
-        
+
         dispatch(ACTIONS.LOGIN.REQUEST(loginData));
       }
     }
@@ -168,7 +169,7 @@ function Form({ title, login, signUp }) {
 
       <div className="container">
         <div style={{ width: "150px" }}></div>
-        {auth.logging ? (
+        {auth.loading ? (
           <Spin style={{ margin: "0 auto" }} />
         ) : (
           <Button

@@ -11,23 +11,23 @@ function LoginPage() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const user = useSelector((state) => state.auth);
+  const auth = useSelector((state) => state.auth);
 
   useEffect(() => {
-    if (user.isLoggedIn) navigate("/");
-  }, [user]);
+    if (auth.userData._id) navigate("/");
+  }, [auth]);
 
   const [visible, setVisible] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
 
   useEffect(() => {
-    if (user.loginFailed) {
+    if (auth.error !== "") {
       setVisible(true);
     } else {
       setVisible(false);
       setConfirmLoading(false);
     }
-  }, [user]);
+  }, [auth]);
 
   const handleOk = () => {
     dispatch(ACTIONS.LOGOUT.REQUEST());
@@ -60,7 +60,7 @@ function LoginPage() {
           </Button>,
         ]}
       >
-        <p>{user.loginFailedReason}</p>
+        <p>{auth.error}</p>
       </Modal>
     </div>
   );
