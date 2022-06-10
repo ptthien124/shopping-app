@@ -1,13 +1,13 @@
-import React, { useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { useTracker } from "meteor/react-meteor-data";
+import { Modal, notification, Spin } from "antd";
 import { Meteor } from "meteor/meteor";
+import { useTracker } from "meteor/react-meteor-data";
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate, useParams } from "react-router-dom";
 import ProductsCollection from "../../../api/ProductsCollection";
+import { addToCart } from "../../redux/actions/cartAction";
 import "../../styles/css/detailProduct.css";
 import Button from "../Button";
-import { useDispatch, useSelector } from "react-redux";
-import { Modal, notification, Spin } from "antd";
-import { addToCart } from "../../redux/actions/cartAction";
 
 function DetailProduct() {
   const dispatch = useDispatch();

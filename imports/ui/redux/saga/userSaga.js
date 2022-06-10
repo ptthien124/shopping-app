@@ -60,7 +60,9 @@ function* signUp({ payload }) {
       // login
       yield promiseLogin(username, payload.password);
 
-      const user = Meteor.user();
+      // const user = Meteor.user()
+
+      const user = yield call("auth.user");
 
       if (user) {
         yield put(

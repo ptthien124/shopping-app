@@ -2,7 +2,7 @@ import { Col, notification } from "antd";
 import "antd/dist/antd.css";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { addToCart } from "../../redux/actions/cartAction";
 import "../../styles/css/product.css";
 import Button from "../Button";

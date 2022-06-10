@@ -6,7 +6,7 @@ Meteor.methods({
     const { username, password } = args;
 
     let user = {};
-    
+
     user = Accounts.findUserByUsername(username);
 
     if (!user._id) {
@@ -14,5 +14,13 @@ Meteor.methods({
     }
 
     return user;
+  },
+
+  "auth.user": function () {
+    const user = Meteor.user();
+
+    if (user) {
+      return user;
+    }
   },
 });
