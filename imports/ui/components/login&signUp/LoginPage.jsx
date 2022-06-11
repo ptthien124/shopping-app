@@ -1,36 +1,31 @@
 import { Button, Modal } from "antd";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { logoutAuth } from "../../redux/actions/authAction";
+import { ACTIONS } from "../../redux/actions/auth";
 import "../../styles/css/formPage.css";
 import Form from "./Form";
 import SharedPage from "./SharedPage";
+import React from "react";
 
 function LoginPage() {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const user = useSelector((state) => state.auth);
-
-  useEffect(() => {
-    if (user.isLoggedIn) navigate("/");
-  }, [user]);
+  const auth = useSelector((state) => state.auth);
 
   const [visible, setVisible] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
 
   useEffect(() => {
-    if (user.loginFailed) {
+    if (auth.error !== "") {
       setVisible(true);
     } else {
       setVisible(false);
       setConfirmLoading(false);
     }
-  }, [user]);
+  }, [auth]);
 
   const handleOk = () => {
-    dispatch(logoutAuth());
+    dispatch(ACTIONS.LOGOUT.REQUEST());
     setConfirmLoading(true);
   };
 
@@ -60,7 +55,7 @@ function LoginPage() {
           </Button>,
         ]}
       >
-        <p>{user.loginFailedReason}</p>
+        <p>{auth.error}</p>
       </Modal>
     </div>
   );

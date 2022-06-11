@@ -1,40 +1,70 @@
 import { Accounts } from "meteor/accounts-base";
 import { Meteor } from "meteor/meteor";
+import SimpleSchema from "simpl-schema";
+import uniqueId from "lodash/uniqueId";
+
+const emailsSchema = new SimpleSchema({
+  email: {
+    type: String,
+  },
+});
+
+const Schema = {
+  SignUpDTO: new SimpleSchema({
+    email: {
+      type: String,
+      required: true,
+      regEx: SimpleSchema.RegEx.Email,
+    },
+    password: {
+      type: String,
+      required: true,
+      min: 8,
+      max: 20,
+    },
+    fullName: {
+      type: String,
+      required: true,
+      max: 100,
+    },
+    gender: {
+      type: String,
+      required: true,
+      max: 100,
+    },
+  }),
+  LoginDTO: new SimpleSchema({
+    email: String,
+    password: String,
+  }),
+};
 
 Meteor.methods({
-  "user.signUp": function (args) {
-    const isUserExisted = Accounts.findUserByUsername(args.username);
+  "user.signUp": function (payload) {
+    Schema.SignUpDTO.validate(payload);
 
-    if (isUserExisted) {
-      console.log('here');
-      return { isSuccess: false, error: "Username existed!" };
-    }
+    const { email, password, fullName, gender } = payload;
 
-    Meteor.users.insert({
-      username: args.username,
+    const user = {
+      username: uniqueId("usr_"),
+      email,
+      password: password,
       profile: {
-        fullName: args.fullName,
-        gender: args.gender,
+        fullName,
+        gender,
         isAdmin: false,
       },
-    });
+    };
 
-    let user = {};
+    console.log("create user: ", user);
 
-    const findUser = Accounts.findUserByUsername(args.username);
-
-    if (findUser._id) {
-      Accounts.setPassword(findUser._id, args.password);
-
-      user = {
-        username: findUser.username,
-        fullName: findUser.profile.fullName,
-        gender: findUser.profile.gender,
-        userId: findUser._id,
-        isAdmin: findUser.profile.isAdmin,
-      };
-    }
-
-    return { isSuccess: true, user };
+    Accounts.createUser(user);
   },
+  // "user.logIn": function (payload) {
+  //   Schema.LoginDTO.validate(payload);
+
+  //   console.log('payload: ', payload);
+
+  //   Meteor.loginWithPassword(payload.email, payload.password)
+  // }
 });

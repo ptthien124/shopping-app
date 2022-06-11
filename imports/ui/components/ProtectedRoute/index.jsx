@@ -1,12 +1,11 @@
-import React from "react";
 import { useSelector } from "react-redux";
-import { Navigate, Route, Routes } from "react-router-dom";
+import { Redirect, Route } from "react-router-dom";
 import { DefaultLayout } from "../../layouts";
+import React from "react";
 
 function ProtectedRoute({
   redirectPath = "/login",
   admin,
-  publicRoute,
   path,
   layout,
   component,
@@ -14,22 +13,25 @@ function ProtectedRoute({
   const Layout = layout === null ? DefaultLayout : layout;
   const Component = component;
 
-  if (!publicRoute) {
-    const user = useSelector((state) => state.auth);
-    let isAuthenticated = user.isLoggedIn;
+  const user = useSelector((state) => state.auth).userData;
 
-    if (admin && !user.isAdmin) {
+  let isAuthenticated = !!user._id;
+
+  if (user.profile) {
+    if (admin && !user.profile.isAdmin) {
       isAuthenticated = false;
     }
+  }
 
-    if (!isAuthenticated) {
-      return <Navigate to={redirectPath} replace />;
-    }
+  if (!isAuthenticated) {
+    return <Redirect to={redirectPath} />;
   }
   return (
-    <Layout>
-      <Component />
-    </Layout>
+    <Route path={path}>
+      <Layout>
+        <Component />
+      </Layout>
+    </Route>
   );
 }
 

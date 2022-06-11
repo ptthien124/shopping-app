@@ -1,11 +1,19 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addToCart, removeFromCart } from "../../redux/actions/cartAction";
+// import { addToCart, removeFromCart } from "../../redux/actions/cart";
 import "../../styles/css/cartProduct.css";
+import { ACTIONS } from "../../redux/actions/cart";
 
-function CartProduct({ _id, image, title, price, createAt, quantity = 1 }) {
+function CartProduct({
+  _id,
+  image,
+  title,
+  price,
+  createAt,
+  quantity = 1,
+  userId,
+}) {
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.auth);
 
   const handleIncrease = () => {
     const newCartProduct = {
@@ -15,13 +23,13 @@ function CartProduct({ _id, image, title, price, createAt, quantity = 1 }) {
       price,
       quantity,
       createAt,
-      userId: user.userId,
+      userId,
     };
-    dispatch(addToCart(newCartProduct));
+    dispatch(ACTIONS.ADD_TO_CART.REQUEST(newCartProduct));
   };
 
   const handleReduce = () => {
-    dispatch(removeFromCart({ _id, quantity, userId: user.userId }));
+    dispatch(ACTIONS.REMOVE_FROM_CART.REQUEST({ _id, quantity, userId }));
   };
 
   return (

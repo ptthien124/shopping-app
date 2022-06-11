@@ -1,19 +1,20 @@
-import { Modal, notification, Spin } from "antd";
-import { Meteor } from "meteor/meteor";
-import { useTracker } from "meteor/react-meteor-data";
 import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
+import { useTracker } from "meteor/react-meteor-data";
+import { Meteor } from "meteor/meteor";
 import ProductsCollection from "../../../api/ProductsCollection";
-import { addToCart } from "../../redux/actions/cartAction";
 import "../../styles/css/detailProduct.css";
 import Button from "../Button";
+import { useDispatch, useSelector } from "react-redux";
+import { Modal, notification, Spin } from "antd";
+import { ACTIONS } from "../../redux/actions/cart";
+// import { addToCart } from "../../redux/actions/cartAction";
 
 function DetailProduct() {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const history = useHistory();
   const params = useParams().id;
-  const user = useSelector((state) => state.auth);
+  const user = useSelector((state) => state.auth).userData;
 
   const product = useTracker(() => {
     const products = Meteor.subscribe("products");
@@ -31,7 +32,7 @@ function DetailProduct() {
 
   const handleOk = () => {
     setIsModalVisible(false);
-    navigate("/login");
+    history.push("/login");
   };
 
   const handleCancel = () => {
@@ -51,7 +52,7 @@ function DetailProduct() {
   };
 
   const handleAddToCartClick = () => {
-    if (user.isLoggedIn) {
+    if (user._id) {
       const newCartProduct = {
         _id: product._id,
         image: product.image,
@@ -59,9 +60,9 @@ function DetailProduct() {
         price: product.price,
         quantity: 1,
         createAt: product.createdAt,
-        userId: user.userId,
+        userId: user._id,
       };
-      dispatch(addToCart(newCartProduct));
+      dispatch(ACTIONS.ADD_TO_CART.REQUEST(newCartProduct));
       openNotification();
     } else {
       showModal();

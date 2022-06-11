@@ -11,6 +11,22 @@ user.profile = new SimpleSchema({
 
 user.schema = new SimpleSchema({
   username: { type: String },
+  emails: {
+    optional: false,
+    type: Array,
+    label: "Email",
+  },
+  "emails.$": {
+    type: Object,
+  },
+  "emails.$.address": {
+    type: String,
+    regEx: SimpleSchema.RegEx.Email,
+  },
+  "emails.$.verified": {
+    type: Boolean,
+    optional: true,
+  },
   profile: { type: user.profile },
   services: {
     type: Object,

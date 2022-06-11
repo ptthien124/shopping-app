@@ -7,20 +7,12 @@ Meteor.methods({
 
     let user = {};
 
-    user = Accounts.findUserByUsername(username);
+    user = Accounts.findUserByEmail(username);
 
     if (!user._id) {
       return { isSuccess: false, error: "Wrong username!" };
     }
 
     return user;
-  },
-
-  "auth.user": function () {
-    const user = Meteor.user();
-
-    if (user) {
-      return user;
-    }
   },
 });

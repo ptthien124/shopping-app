@@ -2,15 +2,15 @@ import { Col, notification } from "antd";
 import "antd/dist/antd.css";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { addToCart } from "../../redux/actions/cartAction";
+import { Link, useHistory } from "react-router-dom";
+import { ACTIONS } from "../../redux/actions/cart";
+// import { addToCart } from "../../redux/actions/cart";
 import "../../styles/css/product.css";
 import Button from "../Button";
 
-function Product({ _id, image, title, price, createdAt }) {
-  const navigate = useNavigate();
+function Product({ _id, image, title, price, createdAt, userId }) {
+  const history = useHistory();
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.auth);
 
   const [showSkeleton, setShowSkeleton] = useState(true);
 
@@ -27,7 +27,7 @@ function Product({ _id, image, title, price, createdAt }) {
   };
 
   const handleAddToCartClick = (e) => {
-    if (user.isLoggedIn) {
+    if (userId) {
       const newCartProduct = {
         _id,
         image,
@@ -35,10 +35,10 @@ function Product({ _id, image, title, price, createdAt }) {
         price,
         quantity: 1,
         createdAt,
-        userId: user.userId,
+        userId,
         // createAt: new Date(),
       };
-      dispatch(addToCart(newCartProduct));
+      dispatch(ACTIONS.ADD_TO_CART.REQUEST(newCartProduct));
     }
   };
 
@@ -52,13 +52,13 @@ function Product({ _id, image, title, price, createdAt }) {
       xxl={4}
       style={{ marginBottom: "16px" }}
     >
-      <div className="product" onClick={() => navigate(`/${_id}`)}>
+      <div className="product" onClick={() => history.push(`/${_id}`)}>
         {showSkeleton && <div className="skeleton"></div>}
         <img src={image} alt="" onLoad={() => setShowSkeleton(false)} />
         <h3>{title}</h3>
         <strong>{price}$</strong>
 
-        {user.isLoggedIn ? (
+        {userId ? (
           <Button
             onClick={(e) => {
               e.preventDefault();

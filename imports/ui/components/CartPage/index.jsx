@@ -7,11 +7,13 @@ import Empty from "./Empty";
 function CartPage() {
   const [prod, setProd] = useState([]);
   const cartList = useSelector((state) => state.cart);
-  const user = useSelector((state) => state.auth);
+  const user = useSelector((state) => state.auth).userData;
 
   useEffect(() => {
-    const list = cartList.filter((item) => item.userId === user.userId);
-    setProd(list);
+    if (user._id) {
+      const list = cartList.list.filter((item) => item.userId === user._id);
+      setProd(list);
+    }
   }, [cartList]);
 
   const round = useCallback(

@@ -1,46 +1,37 @@
 import { Button, Modal } from "antd";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { signUpDefault } from "../../redux/actions/userAction";
 import "../../styles/css/formPage.css";
 import Form from "./Form";
 import SharedPage from "./SharedPage";
+import React from "react";
+import { signUpFailOk } from "../../redux/actions/auth";
 
 function SignUpPage() {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const auth = useSelector((state) => state.auth);
 
-  const user = useSelector((state) => state.user);
-
-  useEffect(() => {
-    if (auth.isLoggedIn) navigate("/");
-  }, [auth]);
-
   const [visible, setVisible] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
-  const [modalText, setModalText] = useState("");
 
   useEffect(() => {
-    if (user.isSignUpFailed) {
-      setModalText(user.error);
+    if (!auth.userData._id && auth.error !== "") {
       setVisible(true);
     } else {
       setVisible(false);
       setConfirmLoading(false);
     }
-  }, [user]);
+  }, [auth]);
 
   const handleOk = () => {
-    dispatch(signUpDefault());
     setConfirmLoading(true);
+    dispatch(signUpFailOk());
   };
 
   const handleCancel = () => {
     setVisible(false);
-    handleOk();
+    dispatch(signUpFailOk());
   };
 
   return (
@@ -64,7 +55,7 @@ function SignUpPage() {
           </Button>,
         ]}
       >
-        <p>{modalText}</p>
+        <p>{auth.error}</p>
       </Modal>
     </div>
   );

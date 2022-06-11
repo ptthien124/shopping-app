@@ -3,20 +3,20 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Dropdown, Menu, Modal, Space } from "antd";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
-import { logoutRequest } from "../redux/actions/authAction";
+import { Link, useHistory } from "react-router-dom";
+import { ACTIONS } from "../redux/actions/auth";
 import "../styles/css/header.css";
 
 function Header() {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const history = useHistory();
 
-  const user = useSelector((state) => state.auth);
+  const auth = useSelector((state) => state.auth).userData;
 
   const handleLogout = (e) => {
     e.preventDefault();
-    dispatch(logoutRequest());
-    navigate("/login");
+    dispatch(ACTIONS.LOGOUT.REQUEST());
+    history.push("/login");
   };
 
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -27,7 +27,7 @@ function Header() {
 
   const handleOk = () => {
     setIsModalVisible(false);
-    navigate("/login");
+    history.push("/login");
   };
 
   const handleCancel = () => {
@@ -45,7 +45,7 @@ function Header() {
           label: "Setting",
           key: "1",
         },
-        user.isAdmin && {
+        auth?.profile?.isAdmin && {
           label: <Link to="/admin">Admin</Link>,
         },
         {
@@ -71,7 +71,7 @@ function Header() {
           Products
         </Link>
 
-        {user.isLoggedIn ? (
+        {auth._id ? (
           <Link className="link" to="/cart">
             Cart
           </Link>
@@ -86,7 +86,7 @@ function Header() {
         )}
       </div>
       <div className="right">
-        {user.isLoggedIn ? (
+        {auth._id ? (
           <Dropdown
             overlay={menu}
             trigger={["click"]}
@@ -99,7 +99,7 @@ function Header() {
                 <div className="avatarWrapper">
                   <FontAwesomeIcon className="avatar" icon={faCircleUser} />
                 </div>
-                <h2 className="name">{user?.fullName}</h2>
+                <h2 className="name">{auth.profile.fullName}</h2>
               </Space>
             </a>
           </Dropdown>

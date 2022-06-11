@@ -1,3 +1,4 @@
+import uniqueId from "lodash/uniqueId";
 import { Accounts } from "meteor/accounts-base";
 import { Meteor } from "meteor/meteor";
 import "../imports/api/methods/authMethods";
@@ -16,21 +17,23 @@ function addProduct(data) {
   });
 }
 
-const SEED_USERNAME = "adminAtSigngmail.com";
+const SEED_EMAIL = "admin@gmail.com";
 const SEED_PASSWORD = "admintest";
 
 Meteor.startup(() => {
-  if (!Accounts.findUserByUsername(SEED_USERNAME)) {
-    var newUserId = Meteor.users.insert({
-      username: SEED_USERNAME,
+  if (!Accounts.findUserByEmail(SEED_EMAIL)) {
+    const user = {
+      username: uniqueId("usr_"),
+      email: SEED_EMAIL,
+      password: SEED_PASSWORD,
       profile: {
         fullName: "admin",
         gender: "male",
         isAdmin: true,
       },
-      createdAt: new Date(),
-    });
-    Accounts.setPassword(newUserId, SEED_PASSWORD);
+    };
+
+    Accounts.createUser(user);
   }
 
   if (ProductsCollection.find().count() === 0) {
