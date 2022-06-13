@@ -24,7 +24,7 @@ function ProtectedRoute({
   }
 
   if (!isAuthenticated) {
-    return <Redirect to={redirectPath} />;
+    return <Redirect to={redirectPath} exact />;
   }
   return (
     <Route path={path}>

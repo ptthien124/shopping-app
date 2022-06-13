@@ -6,11 +6,7 @@ import { adminRoutes, privateRoutes, publicRoutes } from "./routes";
 import "./styles/css/antd.css";
 import "./styles/css/GlobalStyles.css";
 import React from "react";
-import LoginPage from "./components/login&signUp/LoginPage";
-import Header from "./components/Header";
-import ProductPage from "./components/ProductPage";
 import { DefaultLayout } from "./layouts";
-import SignUpPage from "./components/login&signUp/SignUpPage";
 
 function App() {
   return (

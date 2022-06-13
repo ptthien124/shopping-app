@@ -8,7 +8,6 @@ import Button from "../Button";
 import { useDispatch, useSelector } from "react-redux";
 import { Modal, notification, Spin } from "antd";
 import { ACTIONS } from "../../redux/actions/cart";
-// import { addToCart } from "../../redux/actions/cartAction";
 
 function DetailProduct() {
   const dispatch = useDispatch();
@@ -23,6 +22,10 @@ function DetailProduct() {
     }
     return {};
   }, []);
+
+  if (!user._id || product === undefined) {
+    history.push("/");
+  }
 
   const [isModalVisible, setIsModalVisible] = useState(false);
 
@@ -52,7 +55,7 @@ function DetailProduct() {
   };
 
   const handleAddToCartClick = () => {
-    if (user._id) {
+    if (user?._id) {
       const newCartProduct = {
         _id: product._id,
         image: product.image,
@@ -71,7 +74,7 @@ function DetailProduct() {
 
   return (
     <div className="detailProduct">
-      {product._id ? (
+      {product?._id ? (
         <>
           <div className="img">
             <img src={product.image} />
