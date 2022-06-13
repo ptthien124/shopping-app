@@ -65,7 +65,7 @@ function* signUp({ payload }) {
 
     yield put(ACTIONS.LOGIN.REQUEST(loginData));
 
-    yield put(push("/"));
+//     yield put(push("/"));
   } catch (error) {
     yield put(ACTIONS.SIGN_UP.FAIL({ error: error.reason }));
   }
