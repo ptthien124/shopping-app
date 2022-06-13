@@ -1,13 +1,15 @@
 import React from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import ProtectedRoute from "./components/ProtectedRoute";
+import Routing from "./components/Routing";
+import { adminRoutes, privateRoutes, publicRoutes } from "./routes";
 import "./styles/css/antd.css";
 import "./styles/css/GlobalStyles.css";
-import ProtectedRoute from "./components/ProtectedRoute";
-import { adminRoutes, privateRoutes, publicRoutes } from "./routes";
 
 function App() {
   return (
-    <Router>
+    <BrowserRouter>
+      <Routing />
       <div className="app">
         <Routes>
           {publicRoutes.map((route, index) => (
@@ -53,7 +55,7 @@ function App() {
           ))}
         </Routes>
       </div>
-    </Router>
+    </BrowserRouter>
   );
 }
 

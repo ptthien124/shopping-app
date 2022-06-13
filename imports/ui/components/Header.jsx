@@ -16,7 +16,6 @@ function Header() {
   const handleLogout = (e) => {
     e.preventDefault();
     dispatch(ACTIONS.LOGOUT.REQUEST());
-    navigate("/login");
   };
 
   const [isModalVisible, setIsModalVisible] = useState(false);

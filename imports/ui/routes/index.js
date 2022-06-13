@@ -7,18 +7,19 @@ import DetailProduct from "../components/ProductPage/DetailProduct";
 import { PureLayout } from "../layouts";
 
 const publicRoutes = [
-  {
-    path: "/",
-    component: ProductPage,
-    layout: null,
-  },
+  { path: "/login", component: LoginPage, layout: PureLayout },
+  { path: "/signUp", component: SignUpPage, layout: PureLayout },
+
   {
     path: "/:id",
     component: DetailProduct,
     layout: null,
   },
-  { path: "/login", component: LoginPage, layout: PureLayout },
-  { path: "/signUp", component: SignUpPage, layout: PureLayout },
+  {
+    path: "/",
+    component: ProductPage,
+    layout: null,
+  },
 ];
 
 const privateRoutes = [

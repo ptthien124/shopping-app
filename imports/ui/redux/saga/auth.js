@@ -1,6 +1,7 @@
 import { Meteor } from "meteor/meteor";
-import { call, put, take, fork, takeLatest } from "redux-saga/effects";
-import { CONSTANTS, ACTIONS } from "../actions/auth";
+import { call, fork, put, take, takeLatest } from "redux-saga/effects";
+import { ACTIONS, CONSTANTS } from "../actions/auth";
+import { navigate } from "../actions/router";
 import { meteorCall } from "../utils";
 
 function loginWithPassword({ email, password }) {
@@ -24,6 +25,8 @@ function* login({ payload }) {
     if (!userData) throw new Error(`user data's not found`);
 
     yield put(ACTIONS.LOGIN.SUCCESS(userData));
+
+    yield put(navigate("/"));
   } catch (error) {
     yield put(ACTIONS.LOGIN.FAIL({ error: error.reason }));
   }
@@ -34,6 +37,8 @@ function* logout() {
     yield call(logoutUser);
 
     yield put(ACTIONS.LOGOUT.SUCCESS());
+
+    yield put(navigate("/login"));
   } catch (error) {
     yield put(ACTIONS.LOGOUT.FAIL({ error: error.reason }));
   }
@@ -59,9 +64,9 @@ function* signUp({ payload }) {
 
     yield put(ACTIONS.SIGN_UP.SUCCESS());
 
-    yield call(login, {
-      payload: { email: payload.email, password: payload.password },
-    });
+    const loginData = { email: payload.email, password: payload.password };
+
+    yield put(ACTIONS.LOGIN.REQUEST(loginData));
   } catch (error) {
     yield put(ACTIONS.SIGN_UP.FAIL({ error: error.reason }));
   }
