@@ -1,5 +1,7 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { Meteor } from "meteor/meteor";
+import Input from "./Input";
+import { useEffect } from "react";
 
 function UpdateProduct() {
   const [productId, setProductId] = useState("");
@@ -42,19 +44,15 @@ function UpdateProduct() {
   return (
     <form action="" className="form update" onSubmit={onSubmit}>
       <span>Update product</span>
-      <div className="inputWrapper">
-        <label htmlFor="title">Product ID</label>
-        <input
-          name="productId"
-          id="productId"
-          type="text"
-          value={productId}
-          onChange={(e) => {
-            setProductId(e.target.value);
-            setIdRequired(false);
-          }}
-        />
-      </div>
+      <Input
+        inputId="productId"
+        value={productId}
+        onChange={(e) => {
+          setProductId(e.target.value);
+          setIdRequired(false);
+        }}
+        title="Product ID"
+      />
       {idRequired && (
         <span
           style={{
@@ -66,7 +64,45 @@ function UpdateProduct() {
           Id is required!
         </span>
       )}
-      <div className="inputWrapper">
+
+      <Input
+        inputId="title"
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
+        title="Title"
+      />
+      <Input
+        inputId="desc"
+        title="Description"
+        value={description}
+        onChange={(e) => setDescription(e.target.value)}
+      />
+      <Input
+        inputId="image"
+        title="Image"
+        value={image}
+        onChange={(e) => setImage(e.target.value)}
+      />
+      <Input
+        inputId="price"
+        title="Price"
+        value={price}
+        onChange={(e) => setPrice(e.target.value)}
+      />
+      {/* <div className="inputWrapper">
+        <label htmlFor="productId">Product ID</label>
+        <input
+          name="productId"
+          id="productId"
+          type="text"
+          value={productId}
+          onChange={(e) => {
+            setProductId(e.target.value);
+            setIdRequired(false);
+          }}
+        />
+      </div> */}
+      {/* <div className="inputWrapper">
         <label htmlFor="title">Title</label>
         <input
           name="title"
@@ -105,7 +141,7 @@ function UpdateProduct() {
           value={price}
           onChange={(e) => setPrice(e.target.value)}
         />
-      </div>
+      </div> */}
       <button type="submit">update</button>
     </form>
   );

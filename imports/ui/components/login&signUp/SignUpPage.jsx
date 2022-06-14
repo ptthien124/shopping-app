@@ -6,14 +6,24 @@ import Form from "./Form";
 import SharedPage from "./SharedPage";
 import React from "react";
 import { signUpFailOk } from "../../redux/actions/auth";
+import useModal from "../../hooks/useModal";
 
 function SignUpPage() {
   const dispatch = useDispatch();
 
   const auth = useSelector((state) => state.auth);
 
-  const [visible, setVisible] = useState(false);
-  const [confirmLoading, setConfirmLoading] = useState(false);
+  // const [visible, setVisible] = useState(false);
+  // const [confirmLoading, setConfirmLoading] = useState(false);
+
+  const [
+    visible,
+    confirmLoading,
+    setVisible,
+    setConfirmLoading,
+    handleOk,
+    handleCancel,
+  ] = useModal();
 
   useEffect(() => {
     if (!auth.userData._id && auth.error !== "") {
@@ -24,15 +34,15 @@ function SignUpPage() {
     }
   }, [auth]);
 
-  const handleOk = () => {
-    setConfirmLoading(true);
-    dispatch(signUpFailOk());
-  };
+  // const handleOk = () => {
+  //   setConfirmLoading(true);
+  //   dispatch(signUpFailOk());
+  // };
 
-  const handleCancel = () => {
-    setVisible(false);
-    dispatch(signUpFailOk());
-  };
+  // const handleCancel = () => {
+  //   setVisible(false);
+  //   dispatch(signUpFailOk());
+  // };
 
   return (
     <div className="signUpPage formPage">
@@ -42,14 +52,20 @@ function SignUpPage() {
       <Modal
         title="Sign up failed!"
         visible={visible}
-        onCancel={handleCancel}
+        onCancel={() => {
+          handleCancel();
+          dispatch(signUpFailOk());
+        }}
         centered
         footer={[
           <Button
             key="submit"
             type="primary"
             loading={confirmLoading}
-            onClick={handleOk}
+            onClick={() => {
+              handleOk();
+              dispatch(signUpFailOk());
+            }}
           >
             OK
           </Button>,

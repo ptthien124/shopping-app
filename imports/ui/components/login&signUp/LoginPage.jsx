@@ -1,19 +1,29 @@
+import React from "react";
 import { Button, Modal } from "antd";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import useModal from "../../hooks/useModal";
 import { ACTIONS } from "../../redux/actions/auth";
 import "../../styles/css/formPage.css";
 import Form from "./Form";
 import SharedPage from "./SharedPage";
-import React from "react";
 
 function LoginPage() {
   const dispatch = useDispatch();
 
   const auth = useSelector((state) => state.auth);
 
-  const [visible, setVisible] = useState(false);
-  const [confirmLoading, setConfirmLoading] = useState(false);
+  // const [visible, setVisible] = useState(false);
+  // const [confirmLoading, setConfirmLoading] = useState(false);
+
+  const [
+    visible,
+    confirmLoading,
+    setVisible,
+    setConfirmLoading,
+    handleOk,
+    handleCancel,
+  ] = useModal();
 
   useEffect(() => {
     if (auth.error !== "") {
@@ -24,15 +34,15 @@ function LoginPage() {
     }
   }, [auth]);
 
-  const handleOk = () => {
-    dispatch(ACTIONS.LOGOUT.REQUEST());
-    setConfirmLoading(true);
-  };
+  // const handleOk = () => {
+  //   dispatch(ACTIONS.LOGOUT.REQUEST());
+  //   setConfirmLoading(true);
+  // };
 
-  const handleCancel = () => {
-    setVisible(false);
-    handleOk();
-  };
+  // const handleCancel = () => {
+  //   setVisible(false);
+  //   handleOk();
+  // };
 
   return (
     <div className="loginPage formPage">
@@ -42,14 +52,20 @@ function LoginPage() {
       <Modal
         title="Login failed!"
         visible={visible}
-        onCancel={handleCancel}
+        onCancel={() => {
+          handleCancel();
+          handleOk();
+        }}
         centered
         footer={[
           <Button
             key="submit"
             type="primary"
             loading={confirmLoading}
-            onClick={handleOk}
+            onClick={() => {
+              handleOk();
+              dispatch(ACTIONS.LOGOUT.REQUEST());
+            }}
           >
             OK
           </Button>,

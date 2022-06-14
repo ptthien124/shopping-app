@@ -1,21 +1,26 @@
-import { useTracker } from "meteor/react-meteor-data";
-import React, { useEffect, useState } from "react";
-import ProductsCollection from "../../../api/ProductsCollection";
+import React from "react";
+import { useEffect, useMemo, useState } from "react";
+import useFetch from "../../hooks/useFetch";
 
 function SearchDropDown({ value, input, handleSubmit, setSearch }) {
   const [show, setShow] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
 
   // fetch products
-  const products = useTracker(() => {
-    const temp = Meteor.subscribe("products");
-    if (temp.ready()) {
-      return ProductsCollection.find({
-        title: { $regex: value, $options: "i" },
-      }).fetch();
-    }
-    return [];
+  const filter = useMemo(() => {
+    return { title: { $regex: value, $options: "i" } };
   }, [value]);
+
+  const [products] = useFetch(filter);
+  // const products = useTracker(() => {
+  //   const temp = Meteor.subscribe("products");
+  //   if (temp.ready()) {
+  //     return ProductsCollection.find({
+  //       title: { $regex: value, $options: "i" },
+  //     }).fetch();
+  //   }
+  //   return [];
+  // }, [value]);
 
   // show drop down
   const handleShow = () => {

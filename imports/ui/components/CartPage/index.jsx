@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import "../../styles/css/cartPage.css";
 import CartProducts from "./CartProducts";
@@ -16,11 +16,8 @@ function CartPage() {
     }
   }, [cartList]);
 
-  const round = useCallback(
-    (value, decimals) =>
-      Number(Math.round(value + "e" + decimals) + "e-" + decimals),
-    []
-  );
+  const round = (value, decimals) =>
+    Number(Math.round(value + "e" + decimals) + "e-" + decimals);
 
   return (
     <div className="cartPage">

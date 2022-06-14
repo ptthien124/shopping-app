@@ -1,8 +1,7 @@
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
-// import { addToCart, removeFromCart } from "../../redux/actions/cart";
-import "../../styles/css/cartProduct.css";
+import { useDispatch } from "react-redux";
 import { ACTIONS } from "../../redux/actions/cart";
+import "../../styles/css/cartProduct.css";
 
 function CartProduct({
   _id,

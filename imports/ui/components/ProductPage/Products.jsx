@@ -1,46 +1,64 @@
-import { Col, Grid, Row, Spin } from "antd";
+import React from "react";
+import { Row, Spin } from "antd";
 import "antd/dist/antd.css";
-import { Meteor } from "meteor/meteor";
-import { useTracker } from "meteor/react-meteor-data";
-import React, { useEffect, useState } from "react";
-import ProductsCollection from "../../../api/ProductsCollection";
-import Product from "./Product";
+import { useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
+import useFetch from "../../hooks/useFetch";
+import Product from "./Product";
 
 function Products({ sortBy, value, currentPage, productsPerPage }) {
   const auth = useSelector((state) => state.auth).userData;
   const [products, setProducts] = useState([]);
 
-  const prods = useTracker(() => {
-    setProducts([]);
-    const subscribe = Meteor.subscribe("products");
-
-    if (value.trim() === "") {
-      if (subscribe.ready()) {
-        return ProductsCollection.find(
-          {},
-          {
-            skip: (currentPage - 1) * productsPerPage,
-            limit: productsPerPage,
-            createdAt: -1,
-          }
-        ).fetch();
-      }
-      return [];
-    }
-
-    if (subscribe.ready()) {
-      return ProductsCollection.find(
-        { title: { $regex: value, $options: "i" } },
-        {
-          skip: (currentPage - 1) * productsPerPage,
-          limit: productsPerPage,
-        }
-      ).fetch();
-    }
-
-    return [];
+  //
+  const filter = useMemo(() => {
+    if (value.trim === "") return {};
+    return { title: { $regex: value, $options: "i" } };
   }, [value, currentPage]);
+
+  const skip = useMemo(() => {
+    if (value.trim === "") return (skip = (currentPage - 1) * productsPerPage);
+    return (currentPage - 1) * productsPerPage;
+  }, [value, currentPage]);
+
+  const [prods] = useFetch(
+    filter,
+    (findOne = false),
+    skip,
+    (limit = productsPerPage)
+  );
+  //
+
+  // const prods = useTracker(() => {
+  //   setProducts([]);
+  //   const subscribe = Meteor.subscribe("products");
+
+  //   if (value.trim() === "") {
+  //     if (subscribe.ready()) {
+  //       return ProductsCollection.find(
+  //         {},
+  //         {
+  //           skip: (currentPage - 1) * productsPerPage,
+  //           limit: productsPerPage,
+  //           createdAt: -1,
+  //         }
+  //       ).fetch();
+  //     }
+  //     return [];
+  //   }
+
+  //   if (subscribe.ready()) {
+  //     return ProductsCollection.find(
+  //       { title: { $regex: value, $options: "i" } },
+  //       {
+  //         skip: (currentPage - 1) * productsPerPage,
+  //         limit: productsPerPage,
+  //       }
+  //     ).fetch();
+  //   }
+
+  //   return [];
+  // }, [value, currentPage]);
 
   useEffect(() => {
     setProducts([...prods]);
@@ -56,15 +74,6 @@ function Products({ sortBy, value, currentPage, productsPerPage }) {
 
   return (
     <div className="grid wide">
-      {/*  <Col
-      xs={24}
-       sm={24}
-       md={22}
-       lg={22}
-       xl={22}
-       xxl={18}
-       style={{ margin: "0 auto" }}
-     > */}
       <Row gutter={16}>
         {products.map((product) => (
           <Product
@@ -86,7 +95,6 @@ function Products({ sortBy, value, currentPage, productsPerPage }) {
           )}
         </div>
       )}
-      {/* </Col> */}
     </div>
   );
 }

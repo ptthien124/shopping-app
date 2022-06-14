@@ -102,7 +102,6 @@ function Form({ title, login, signUp }) {
             onBlur={() => setPasswordFocus(false)}
           />
         </div>
-
         {Object.keys(errors).length !== 0 && !passwordFocus && (
           <ul>
             {errors.password?.type === "required" && (

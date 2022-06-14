@@ -1,13 +1,14 @@
-import React, { useState } from "react";
+import React from "react";
+import { Modal, Spin } from "antd";
+import { useMemo } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
-import { useTracker } from "meteor/react-meteor-data";
-import { Meteor } from "meteor/meteor";
-import ProductsCollection from "../../../api/ProductsCollection";
+import useFetch from "../../hooks/useFetch";
+import useModal from "../../hooks/useModal";
+import useNotification from "../../hooks/useNotification";
+import { ACTIONS } from "../../redux/actions/cart";
 import "../../styles/css/detailProduct.css";
 import Button from "../Button";
-import { useDispatch, useSelector } from "react-redux";
-import { Modal, notification, Spin } from "antd";
-import { ACTIONS } from "../../redux/actions/cart";
 
 function DetailProduct() {
   const dispatch = useDispatch();
@@ -15,44 +16,42 @@ function DetailProduct() {
   const params = useParams().id;
   const user = useSelector((state) => state.auth).userData;
 
-  const product = useTracker(() => {
-    const products = Meteor.subscribe("products");
-    if (products.ready()) {
-      return ProductsCollection.find({ _id: params }).fetch()[0];
-    }
-    return {};
-  }, []);
+  const filter = useMemo(() => ({ _id: params }), [params]);
 
-  if (!user._id || product === undefined) {
-    history.push("/");
-  }
+  const [product] = useFetch(filter, (findOne = true));
 
-  const [isModalVisible, setIsModalVisible] = useState(false);
+  // const product = useTracker(() => {
+  //   const products = Meteor.subscribe("products");
+  //   if (products.ready()) {
+  //     return ProductsCollection.find({ _id: params }).fetch()[0];
+  //   }
+  //   return {};
+  // }, []);
+
+  const [
+    visible,
+    confirmLoading,
+    setVisible,
+    setConfirmLoading,
+    handleOk,
+    handleCancel,
+  ] = useModal();
 
   const showModal = () => {
-    setIsModalVisible(true);
+    setVisible(true);
   };
 
-  const handleOk = () => {
-    setIsModalVisible(false);
-    history.push("/login");
-  };
+  // const [isModalVisible, setIsModalVisible] = useState(false);
+  // const handleOk = () => {
+  //   setIsModalVisible(false);
+  //   history.push("/login");
+  // };
 
-  const handleCancel = () => {
-    setIsModalVisible(false);
-  };
+  // const handleCancel = () => {
+  //   setIsModalVisible(false);
+  // };
 
-  const openNotification = () => {
-    notification.open({
-      // message: "",
-      description: `Add ${product.title} to your cart.`,
-      className: "custom-class",
-      style: {
-        width: 300,
-      },
-      duration: 2.5,
-    });
-  };
+  const [openNotification] = useNotification(product.title);
 
   const handleAddToCartClick = () => {
     if (user?._id) {
@@ -107,8 +106,11 @@ function DetailProduct() {
 
       <Modal
         title="Not logged in yet!"
-        visible={isModalVisible}
-        onOk={handleOk}
+        visible={visible}
+        onOk={() => {
+          handleOk();
+          history.push("/login");
+        }}
         onCancel={handleCancel}
         centered
       >

@@ -1,10 +1,11 @@
-import { Col, notification } from "antd";
+import React from "react";
+import { Col } from "antd";
 import "antd/dist/antd.css";
-import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Link, useHistory } from "react-router-dom";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom";
+import useNotification from "../../hooks/useNotification";
 import { ACTIONS } from "../../redux/actions/cart";
-// import { addToCart } from "../../redux/actions/cart";
 import "../../styles/css/product.css";
 import Button from "../Button";
 
@@ -14,17 +15,7 @@ function Product({ _id, image, title, price, createdAt, userId }) {
 
   const [showSkeleton, setShowSkeleton] = useState(true);
 
-  const openNotification = () => {
-    notification.open({
-      // message: "",
-      description: `Add ${title} to your cart.`,
-      className: "custom-class",
-      style: {
-        width: 300,
-      },
-      duration: 2.5,
-    });
-  };
+  const [openNotification] = useNotification(title);
 
   const handleAddToCartClick = (e) => {
     if (userId) {
