@@ -21,7 +21,7 @@ function Products({ sortBy, value, currentPage, productsPerPage }) {
     return (currentPage - 1) * productsPerPage;
   }, [value, currentPage]);
 
-  const [prods] = useFetch(
+  const { loading, list: prods } = useFetch(
     filter,
     (findOne = false),
     skip,
@@ -84,15 +84,17 @@ function Products({ sortBy, value, currentPage, productsPerPage }) {
         ))}
       </Row>
 
-      {products.length === 0 && (
+      {loading && (
         <div className="flex" style={{ height: "500px" }}>
-          {value.trim() === "" ? (
-            <Spin />
-          ) : (
-            <span style={{ fontSize: "3rem" }}>
-              Couldn't find the product you wanted!
-            </span>
-          )}
+          <Spin />
+        </div>
+      )}
+
+      {products.length === 0 && !loading && (
+        <div className="flex" style={{ height: "500px" }}>
+          <span style={{ fontSize: "3rem" }}>
+            Couldn't find the product you wanted!
+          </span>
         </div>
       )}
     </div>

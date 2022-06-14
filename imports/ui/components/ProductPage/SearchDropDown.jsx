@@ -1,3 +1,4 @@
+import { Spin } from "antd";
 import React from "react";
 import { useEffect, useMemo, useState } from "react";
 import useFetch from "../../hooks/useFetch";
@@ -11,7 +12,7 @@ function SearchDropDown({ value, input, handleSubmit, setSearch }) {
     return { title: { $regex: value, $options: "i" } };
   }, [value]);
 
-  const [products] = useFetch(filter);
+  const { loading, list: products } = useFetch(filter);
   // const products = useTracker(() => {
   //   const temp = Meteor.subscribe("products");
   //   if (temp.ready()) {
@@ -63,19 +64,23 @@ function SearchDropDown({ value, input, handleSubmit, setSearch }) {
               </div>
             ))}
 
-          {value.length > 0 && products && products.length <= 0 && (
-            <span
-              style={{
-                display: "flex",
-                flex: "1",
-                justifyItems: "center",
-                textAlign: "center",
-                padding: "24px 8px",
-                textJustify: "center",
-              }}
-            >
-              Couldn't find the product you wanted!
-            </span>
+          {loading ? (
+            <Spin />
+          ) : (
+            products.length === 0 && (
+              <span
+                style={{
+                  display: "flex",
+                  flex: "1",
+                  justifyItems: "center",
+                  textAlign: "center",
+                  padding: "24px 8px",
+                  textJustify: "center",
+                }}
+              >
+                Couldn't find the product you wanted!
+              </span>
+            )
           )}
         </div>
       )}

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useMemo } from "react";
 import { useSelector } from "react-redux";
 import "../../styles/css/cartPage.css";
 import CartProducts from "./CartProducts";
@@ -19,6 +20,16 @@ function CartPage() {
   const round = (value, decimals) =>
     Number(Math.round(value + "e" + decimals) + "e-" + decimals);
 
+  const total = useMemo(() => {
+    return round(
+      prod.reduce(
+        (total, product) => total + product.price * product.quantity,
+        0
+      ),
+      2
+    );
+  }, [prod]);
+
   return (
     <div className="cartPage">
       {prod.length <= 0 ? (
@@ -32,19 +43,7 @@ function CartPage() {
           <CartProducts cartProducts={prod} />
           <div className="separator"></div>
           <strong className="total">
-            Total:{" "}
-            <span>
-              {prod.length > 0 &&
-                round(
-                  prod.reduce(
-                    (total, product) =>
-                      total + product.price * product.quantity,
-                    0
-                  ),
-                  2
-                )}
-              $
-            </span>
+            Total: <span>{prod.length > 0 && total}$</span>
           </strong>
         </div>
       )}

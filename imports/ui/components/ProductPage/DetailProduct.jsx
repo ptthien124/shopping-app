@@ -9,6 +9,7 @@ import useNotification from "../../hooks/useNotification";
 import { ACTIONS } from "../../redux/actions/cart";
 import "../../styles/css/detailProduct.css";
 import Button from "../Button";
+import { useEffect } from "react";
 
 function DetailProduct() {
   const dispatch = useDispatch();
@@ -18,7 +19,7 @@ function DetailProduct() {
 
   const filter = useMemo(() => ({ _id: params }), [params]);
 
-  const [product] = useFetch(filter, (findOne = true));
+  const { loading, list: product } = useFetch(filter, (findOne = true));
 
   // const product = useTracker(() => {
   //   const products = Meteor.subscribe("products");
@@ -27,6 +28,12 @@ function DetailProduct() {
   //   }
   //   return {};
   // }, []);
+
+  useEffect(() => {
+    if (!loading && (product === undefined || product.length === 0)) {
+      history.push("/");
+    }
+  }, [product]);
 
   const [
     visible,
@@ -51,7 +58,7 @@ function DetailProduct() {
   //   setIsModalVisible(false);
   // };
 
-  const [openNotification] = useNotification(product.title);
+  const [openNotification] = useNotification(product?.title);
 
   const handleAddToCartClick = () => {
     if (user?._id) {
@@ -73,25 +80,27 @@ function DetailProduct() {
 
   return (
     <div className="detailProduct">
-      {product?._id ? (
-        <>
-          <div className="img">
-            <img src={product.image} />
-          </div>
-          <div className="container">
-            <h1>{product.title}</h1>
-            <p>{product.description}</p>
-            <strong>{product.price}$</strong>
-
-            <div className="buttonContainer">
-              <Button
-                title="Add to cart"
-                primary
-                onClick={handleAddToCartClick}
-              />
+      {!loading ? (
+        product && (
+          <>
+            <div className="img">
+              <img src={product.image} />
             </div>
-          </div>
-        </>
+            <div className="container">
+              <h1>{product.title}</h1>
+              <p>{product.description}</p>
+              <strong>{product.price}$</strong>
+
+              <div className="buttonContainer">
+                <Button
+                  title="Add to cart"
+                  primary
+                  onClick={handleAddToCartClick}
+                />
+              </div>
+            </div>
+          </>
+        )
       ) : (
         <Spin
           style={{
