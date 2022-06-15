@@ -1,12 +1,10 @@
 import { Button, Modal } from "antd";
-import { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import "../../styles/css/formPage.css";
-import Form from "./Form";
-import SharedPage from "./SharedPage";
-import React from "react";
+import { useModal } from "../../hooks";
 import { signUpFailOk } from "../../redux/actions/auth";
-import useModal from "../../hooks/useModal";
+import "../../styles/css/formPage.css";
+import { Form, SharedPage } from "../login&signUp";
 
 function SignUpPage() {
   const dispatch = useDispatch();

@@ -1,7 +1,6 @@
+import React, { useEffect, useMemo, useState } from "react";
 import { Spin } from "antd";
-import React from "react";
-import { useEffect, useMemo, useState } from "react";
-import useFetch from "../../hooks/useFetch";
+import {useFetch} from "../../hooks";
 
 function SearchDropDown({ value, input, handleSubmit, setSearch }) {
   const [show, setShow] = useState(false);

@@ -1,13 +1,12 @@
-import React from "react";
 import { Col } from "antd";
 import "antd/dist/antd.css";
-import { useState } from "react";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
-import useNotification from "../../hooks/useNotification";
+import { Button } from "../../components";
+import { useNotification } from "../../hooks";
 import { ACTIONS } from "../../redux/actions/cart";
 import "../../styles/css/product.css";
-import Button from "../Button";
 
 function Product({ _id, image, title, price, createdAt, userId }) {
   const history = useHistory();

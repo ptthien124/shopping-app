@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import "../../styles/css/adminPage.css";
-import AddProduct from "./AddProduct";
-import RemoveProduct from "./RemoveProduct";
-import UpdateProduct from "./UpdateProduct";
+import { UpdateProduct, RemoveProduct, AddProduct } from "../AdminPage";
 
 function AdminPage() {
   const [action, setAction] = useState("add");

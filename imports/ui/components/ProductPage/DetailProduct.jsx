@@ -1,15 +1,11 @@
-import React from "react";
 import { Modal, Spin } from "antd";
-import { useMemo } from "react";
+import React, { useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
-import useFetch from "../../hooks/useFetch";
-import useModal from "../../hooks/useModal";
-import useNotification from "../../hooks/useNotification";
+import { Button } from "../../components";
+import { useFetch, useModal, useNotification } from "../../hooks";
 import { ACTIONS } from "../../redux/actions/cart";
 import "../../styles/css/detailProduct.css";
-import Button from "../Button";
-import { useEffect } from "react";
 
 function DetailProduct() {
   const dispatch = useDispatch();

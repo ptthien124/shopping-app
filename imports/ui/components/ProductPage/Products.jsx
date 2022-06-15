@@ -1,10 +1,9 @@
-import React from "react";
 import { Row, Spin } from "antd";
 import "antd/dist/antd.css";
-import { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
-import useFetch from "../../hooks/useFetch";
-import Product from "./Product";
+import { useFetch } from "../../hooks";
+import { Product } from "../ProductPage";
 
 function Products({ sortBy, value, currentPage, productsPerPage }) {
   const auth = useSelector((state) => state.auth).userData;

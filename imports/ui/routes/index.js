@@ -1,9 +1,7 @@
-import AdminPage from "../components/AdminPage";
-import CartPage from "../components/CartPage";
-import LoginPage from "../components/login&signUp/LoginPage";
-import SignUpPage from "../components/login&signUp/SignUpPage";
-import ProductPage from "../components/ProductPage";
-import DetailProduct from "../components/ProductPage/DetailProduct";
+import { LoginPage, SignUpPage } from "../components/login&signUp";
+import { DetailProduct, ProductPage } from "../components/ProductPage";
+import { CartPage } from "../components/CartPage";
+import { AdminPage } from "../components/AdminPage";
 import { PureLayout } from "../layouts";
 
 const publicRoutes = [

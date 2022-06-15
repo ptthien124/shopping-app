@@ -4,10 +4,9 @@ import { Meteor } from "meteor/meteor";
 import { useTracker } from "meteor/react-meteor-data";
 import React, { useEffect, useRef, useState } from "react";
 import ProductsCollection from "../../../api/ProductsCollection";
-import useDebounce from "../../hooks/useDebounce";
+import { useDebounce } from "../../hooks";
 import "../../styles/css/productPage.css";
-import Products from "./Products";
-import SearchDropDown from "./SearchDropDown";
+import { Products, SearchDropDown } from "../ProductPage";
 
 const PRODUCTS_PER_PAGE = 12;
 

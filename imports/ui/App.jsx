@@ -1,6 +1,6 @@
 import { ConnectedRouter } from "connected-react-router";
 import { Route, Switch } from "react-router-dom";
-import ProtectedRoute from "./components/ProtectedRoute";
+import { ProtectedRoute } from "./components/ProtectedRoute";
 import { history } from "./redux/store";
 import { adminRoutes, privateRoutes, publicRoutes } from "./routes";
 import "./styles/css/antd.css";

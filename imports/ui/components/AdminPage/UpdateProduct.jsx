@@ -1,7 +1,6 @@
-import React, { useMemo, useState } from "react";
 import { Meteor } from "meteor/meteor";
-import Input from "./Input";
-import { useEffect } from "react";
+import React, { useState } from "react";
+import { Input } from "../AdminPage";
 
 function UpdateProduct() {
   const [productId, setProductId] = useState("");

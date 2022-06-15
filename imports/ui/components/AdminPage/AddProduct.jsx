@@ -1,7 +1,7 @@
 import { Meteor } from "meteor/meteor";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import Input from "./Input";
+import { Input } from "../AdminPage";
 
 function AddProduct() {
   const [title, setTitle] = useState("");

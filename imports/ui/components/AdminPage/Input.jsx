@@ -1,6 +1,4 @@
 import React from "react";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
 
 function Input({ inputId, title, register, value, onChange, type = "text" }) {
   return (

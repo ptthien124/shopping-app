@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { ACTIONS } from "../../redux/actions/auth";
 import "../../styles/css/form.css";
-import Button from "../Button";
+import { Button } from "../../components";
 
 function Form({ title, login, signUp }) {
   const dispatch = useDispatch();
