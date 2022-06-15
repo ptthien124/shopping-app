@@ -7,7 +7,6 @@ import "../imports/api/methods/userMethods";
 import ProductsCollection from "../imports/api/ProductsCollection";
 import "../imports/api/publish/authPublications";
 import "../imports/api/publish/productsPublications";
-import "../imports/api/publish/userPublications";
 import "../imports/api/UsersCollection";
 import products from "../products.json";
 

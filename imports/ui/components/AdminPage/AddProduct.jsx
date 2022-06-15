@@ -35,36 +35,36 @@ function AddProduct() {
     <form action="" className="form add" onSubmit={handleSubmit(onSubmit)}>
       <span>Add product</span>
       <Input
-        inputId="add__title"
+        inputId="title"
         title="Title"
+        register={register}
         value={title}
         onChange={(e) => setTitle(e.target.value)}
-        register={{ ...register("add__title", { required: true }) }}
       />
       <Input
-        inputId="add__desc"
+        inputId="desc"
         title="Description"
+        register={register}
         value={description}
         onChange={(e) => setDescription(e.target.value)}
-        register={{ ...register("add__desc", { required: true }) }}
       />
       <Input
-        inputId="add__image"
+        inputId="image"
         title="Image"
+        register={register}
         value={image}
         onChange={(e) => setImage(e.target.value)}
-        register={{ ...register("add__image", { required: true }) }}
       />
       <Input
-        inputId="add__price"
+        inputId="price"
         title="Price"
+        register={register}
         value={price}
         onChange={(e) => setPrice(e.target.value)}
-        register={{ ...register("add__price", { required: true }) }}
       />
       {/* <div className="inputWrapper">
         <label htmlFor="title">Title</label>
-        
+
         <input
           name="title"
           id="title"
@@ -73,8 +73,8 @@ function AddProduct() {
           value={title}
           onChange={(e) => setTitle(e.target.value)}
         />
-      </div> */}
-      {/* <div className="inputWrapper">
+      </div>
+      <div className="inputWrapper">
         <label htmlFor="desc">Description</label>
         <input
           id="desc"

@@ -1,27 +1,29 @@
 import React from "react";
 import { useState } from "react";
+import { useForm } from "react-hook-form";
 
-function Input({
-  inputId,
-  title,
-  value,
-  onChange,
-  register = {},
-  type = "text",
-}) {
-  const rest = { ...register };
-
+function Input({ inputId, title, register, value, onChange, type = "text" }) {
   return (
     <div className="inputWrapper">
       <label htmlFor={inputId}>{title}</label>
-      <input
-        id={inputId}
-        name={inputId}
-        type={type}
-        {...rest}
-        value={value}
-        onChange={onChange}
-      />
+      {register ? (
+        <input
+          id={inputId}
+          name={inputId}
+          type={type}
+          {...register(inputId, { required: true })}
+          value={value}
+          onChange={onChange}
+        />
+      ) : (
+        <input
+          id={inputId}
+          name={inputId}
+          type={type}
+          value={value}
+          onChange={onChange}
+        />
+      )}
     </div>
   );
 }

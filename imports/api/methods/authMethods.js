@@ -3,6 +3,8 @@ import { Meteor } from "meteor/meteor";
 
 Meteor.methods({
   "auth.login": function (args) {
+
+    
     const { username, password } = args;
 
     let user = {};

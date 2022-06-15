@@ -8,7 +8,7 @@ const Product = {};
 Product.schema = new SimpleSchema({
   title: { type: String },
   description: { type: String },
-  image: { type: String },
+  image: { type: String, regEx: SimpleSchema.RegEx.Url },
   price: { type: Number },
   userId: { type: String, regEx: SimpleSchema.RegEx.Id, optional: true },
   createdAt: {
