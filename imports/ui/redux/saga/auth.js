@@ -22,7 +22,7 @@ function* login({ payload }) {
   try {
     const userData = yield call(loginWithPassword, payload);
 
-    if (!userData) throw new Error(`user data's not found`);
+    if (!userData) throw new Error(`User data's not found`);
 
     yield put(ACTIONS.LOGIN.SUCCESS(userData));
     yield put(push("/"));
@@ -64,8 +64,6 @@ function* signUp({ payload }) {
     const loginData = { email: payload.email, password: payload.password };
 
     yield put(ACTIONS.LOGIN.REQUEST(loginData));
-
-//     yield put(push("/"));
   } catch (error) {
     yield put(ACTIONS.SIGN_UP.FAIL({ error: error.reason }));
   }

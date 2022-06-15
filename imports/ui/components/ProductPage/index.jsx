@@ -38,7 +38,8 @@ function ProductPage() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setSubmitSearch(search);
+    setSubmitSearch(search.trim());
+    setSearch("");
   };
 
   const sortOptionSelected = () => {
@@ -72,7 +73,7 @@ function ProductPage() {
             </form>
 
             <SearchDropDown
-              value={debounced}
+              value={debounced.trim()}
               input={searchRef}
               handleSubmit={setSubmitSearch}
               setSearch={setSearch}

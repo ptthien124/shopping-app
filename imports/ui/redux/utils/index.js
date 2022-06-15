@@ -1,3 +1,5 @@
+import { CONSTANTS } from "../actions/auth";
+
 /**
  * Get Set of Constant
  *
@@ -21,14 +23,27 @@ export function factoryConstant(reducerName, actionName) {
  * @param {{ REQUEST: String, SUCCESS: String, FAIL: String }} actionConstant
  * @return {{ REQUEST: Function, SUCCESS: Function, FAIL: Function }}
  */
+// export function factoryAction(actionConstant) {
+//   const constantKeys = Object.keys(actionConstant);
+
+//   return constantKeys.reduce((obj, curr, index) => {
+//     const key = constantKeys[index];
+
+//     obj[key] = (data = {}) => ({
+//       type: actionConstant[key],
+//       payload: data,
+//     });
+
+//     return obj;
+//   }, {});
+// }
+
 export function factoryAction(actionConstant) {
   const constantKeys = Object.keys(actionConstant);
 
-  return constantKeys.reduce((obj, curr, index) => {
-    const key = constantKeys[index];
-
-    obj[key] = (data = {}) => ({
-      type: actionConstant[key],
+  return constantKeys.reduce((obj, curr) => {
+    obj[curr] = (data = {}) => ({
+      type: actionConstant[curr],
       payload: data,
     });
 

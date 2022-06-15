@@ -13,7 +13,7 @@ export const history = createBrowserHistory();
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ["auth"],
+  whitelist: ["auth", "cart"],
 };
 
 const sagaMiddleware = createSagaMiddleware();
