@@ -35,10 +35,9 @@ function ProductPage() {
     setCurrentPage(1);
   }, [productsCount]);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = () => {
     setSubmitSearch(search.trim());
-    setSearch("");
+    // setSearch("");
   };
 
   const sortOptionSelected = () => {
@@ -64,7 +63,13 @@ function ProductPage() {
       <div className="wrapper">
         <div className="searchWrapper grid wide">
           <div className="searchContainer">
-            <form className="searchForm" onSubmit={handleSubmit}>
+            <form
+              className="searchForm"
+              onSubmit={(e) => {
+                e.preventDefault();
+                handleSubmit();
+              }}
+            >
               <button className="searchButton" onClick={handleSearchBtn}>
                 <FontAwesomeIcon icon={faMagnifyingGlass} />
               </button>

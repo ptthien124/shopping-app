@@ -1,3 +1,4 @@
+import React from "react";
 import { ConnectedRouter } from "connected-react-router";
 import { Route, Switch } from "react-router-dom";
 import { ProtectedRoute } from "./components/ProtectedRoute";
@@ -5,7 +6,6 @@ import { history } from "./redux/store";
 import { adminRoutes, privateRoutes, publicRoutes } from "./routes";
 import "./styles/css/antd.css";
 import "./styles/css/GlobalStyles.css";
-import React from "react";
 import { DefaultLayout } from "./layouts";
 
 function App() {
