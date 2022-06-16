@@ -14,7 +14,7 @@ function Product({ _id, image, title, price, createdAt, userId }) {
 
   const [showSkeleton, setShowSkeleton] = useState(true);
 
-  const [openNotification] = useNotification(title);
+  const openNotification = useNotification(title);
 
   const handleAddToCartClick = (e) => {
     if (userId) {

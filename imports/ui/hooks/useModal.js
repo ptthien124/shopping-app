@@ -11,14 +11,14 @@ function useModal() {
   const handleCancel = () => {
     setVisible(false);
   };
-  return [
+  return {
     visible,
     confirmLoading,
     setVisible,
     setConfirmLoading,
     handleOk,
     handleCancel,
-  ];
+  };
 }
 
 export default useModal;

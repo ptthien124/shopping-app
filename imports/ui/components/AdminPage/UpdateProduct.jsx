@@ -7,9 +7,9 @@ function UpdateProduct() {
   const [idRequired, setIdRequired] = useState(false);
 
   const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
   const [image, setImage] = useState("");
   const [price, setPrice] = useState("");
+  const [description, setDescription] = useState("");
 
   const onSubmit = (e) => {
     e.preventDefault();

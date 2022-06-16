@@ -15,7 +15,7 @@ function ProductPage() {
 
   const [search, setSearch] = useState("");
   const [submitSearch, setSubmitSearch] = useState("");
-  const [debounced] = useDebounce(search, 700);
+  const debounced = useDebounce(search, 700);
   const [sort, setSort] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -51,13 +51,21 @@ function ProductPage() {
     if (currentPage === index + 1) return { color: "var(--primary)" };
   };
 
+  const handleSearchBtn = () => {
+    if (search.trim() === "") {
+      searchRef.current.focus();
+    } else {
+      handleSubmit();
+    }
+  };
+
   return (
     <div className="productPage">
       <div className="wrapper">
         <div className="searchWrapper grid wide">
           <div className="searchContainer">
             <form className="searchForm" onSubmit={handleSubmit}>
-              <button className="searchButton">
+              <button className="searchButton" onClick={handleSearchBtn}>
                 <FontAwesomeIcon icon={faMagnifyingGlass} />
               </button>
 

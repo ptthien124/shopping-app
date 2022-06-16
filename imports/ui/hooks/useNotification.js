@@ -14,7 +14,7 @@ function useNotification(title = "", width = 300, duration = 2.5) {
     });
   };
 
-  return [openNotification];
+  return openNotification;
 }
 
 export default useNotification;

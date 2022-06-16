@@ -15,14 +15,14 @@ function LoginPage() {
   // const [visible, setVisible] = useState(false);
   // const [confirmLoading, setConfirmLoading] = useState(false);
 
-  const [
+  const {
     visible,
     confirmLoading,
     setVisible,
     setConfirmLoading,
     handleOk,
     handleCancel,
-  ] = useModal();
+  } = useModal();
 
   useEffect(() => {
     if (auth.error !== "") {

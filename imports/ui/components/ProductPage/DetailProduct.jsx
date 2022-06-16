@@ -31,14 +31,14 @@ function DetailProduct() {
     }
   }, [product]);
 
-  const [
+  const {
     visible,
     confirmLoading,
     setVisible,
     setConfirmLoading,
     handleOk,
     handleCancel,
-  ] = useModal();
+  } = useModal();
 
   const showModal = () => {
     setVisible(true);
@@ -54,7 +54,7 @@ function DetailProduct() {
   //   setIsModalVisible(false);
   // };
 
-  const [openNotification] = useNotification(product?.title);
+  const openNotification = useNotification(product?.title);
 
   const handleAddToCartClick = () => {
     if (user?._id) {

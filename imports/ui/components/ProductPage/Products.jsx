@@ -65,8 +65,9 @@ function Products({ sortBy, value, currentPage, productsPerPage }) {
     if (sortBy === "price") {
       setProducts((prev) => [...prev.sort((a, b) => a.price - b.price)]);
     } else if (sortBy === "date") {
+      console.log('here');
       setProducts((prev) => [
-        ...prev.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)),
+        ...prev.sort((a, b) => b.createdAt - a.createdAt),
       ]);
     }
   }, [sortBy, prods]);
