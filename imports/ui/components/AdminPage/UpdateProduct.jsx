@@ -1,8 +1,13 @@
-import { Meteor } from "meteor/meteor";
-import React, { useState } from "react";
-import { Input } from "../AdminPage";
+import { Spin } from "antd";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { ACTIONS } from "../../redux/actions/product";
+import { factoryInput, Input } from "../AdminPage";
 
 function UpdateProduct() {
+  const dispatch = useDispatch();
+  const product = useSelector((state) => state.product);
+
   const [productId, setProductId] = useState("");
   const [idRequired, setIdRequired] = useState(false);
 
@@ -25,20 +30,36 @@ function UpdateProduct() {
       numbPrice = Number(price);
     }
 
-    Meteor.call("products.update", {
-      productId: productId.trim(),
-      title: title.trim(),
-      description: description.trim(),
-      image: image.trim(),
-      price: numbPrice,
-    });
-
-    setProductId("");
-    setTitle("");
-    setDescription("");
-    setImage("");
-    setPrice("");
+    dispatch(
+      ACTIONS.UPDATE.REQUEST({
+        productId: productId.trim(),
+        title: title.trim(),
+        description: description.trim(),
+        image: image.trim(),
+        price: numbPrice,
+      })
+    );
   };
+
+  useEffect(() => {
+    if (!product.loading && product.type === "update") {
+      setProductId("");
+      setTitle("");
+      setDescription("");
+      setImage("");
+      setPrice("");
+    }
+    if (!product.loading && product.error !== "") console.log(product.error);
+  }, [product]);
+
+  const inputs = [
+    factoryInput("title", "Title", title, (e) => setTitle(e.target.value)),
+    factoryInput("desc", "Description", description, (e) =>
+      setDescription(e.target.value)
+    ),
+    factoryInput("image", "Image", image, (e) => setImage(e.target.value)),
+    factoryInput("price", "Price", price, (e) => setPrice(e.target.value)),
+  ];
 
   return (
     <form action="" className="form update" onSubmit={onSubmit}>
@@ -64,84 +85,21 @@ function UpdateProduct() {
         </span>
       )}
 
-      <Input
-        inputId="title"
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-        title="Title"
-      />
-      <Input
-        inputId="desc"
-        title="Description"
-        value={description}
-        onChange={(e) => setDescription(e.target.value)}
-      />
-      <Input
-        inputId="image"
-        title="Image"
-        value={image}
-        onChange={(e) => setImage(e.target.value)}
-      />
-      <Input
-        inputId="price"
-        title="Price"
-        value={price}
-        onChange={(e) => setPrice(e.target.value)}
-      />
-      {/* <div className="inputWrapper">
-        <label htmlFor="productId">Product ID</label>
-        <input
-          name="productId"
-          id="productId"
-          type="text"
-          value={productId}
-          onChange={(e) => {
-            setProductId(e.target.value);
-            setIdRequired(false);
-          }}
+      {inputs.map((input) => (
+        <Input
+          key={input.inputId}
+          inputId={input.inputId}
+          title={input.title}
+          value={input.value}
+          onChange={input.onChange}
         />
-      </div> */}
-      {/* <div className="inputWrapper">
-        <label htmlFor="title">Title</label>
-        <input
-          name="title"
-          id="title"
-          type="text"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-        />
-      </div>
-      <div className="inputWrapper">
-        <label htmlFor="desc">Description</label>
-        <input
-          id="desc"
-          name="desc"
-          type="text"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-        />
-      </div>
-      <div className="inputWrapper">
-        <label htmlFor="image">Image</label>
-        <input
-          id="image"
-          name="image"
-          type="text"
-          value={image}
-          onChange={(e) => setImage(e.target.value)}
-        />
-      </div>
-      <div className="inputWrapper">
-        <label htmlFor="price">Price</label>
-        <input
-          id="price"
-          name="price"
-          type="text"
-          value={price}
-          onChange={(e) => setPrice(e.target.value)}
-        />
-      </div> */}
-      <button type="submit">update</button>
+      ))}
+
+      {product.loading ? (
+        <Spin style={{ marginTop: "10px" }} />
+      ) : (
+        <button type="submit">update</button>
+      )}
     </form>
   );
 }

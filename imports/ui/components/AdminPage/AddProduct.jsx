@@ -1,9 +1,14 @@
-import { Meteor } from "meteor/meteor";
-import React, { useState } from "react";
+import { Spin } from "antd";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { Input } from "../AdminPage";
+import { useDispatch, useSelector } from "react-redux";
+import { ACTIONS } from "../../redux/actions/product";
+import { factoryInput, Input } from "../AdminPage";
 
 function AddProduct() {
+  const dispatch = useDispatch();
+  const product = useSelector((state) => state.product);
+
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [image, setImage] = useState("");
@@ -18,96 +23,54 @@ function AddProduct() {
   const onSubmit = (data) => {
     const numbPrice = Number(data.price);
 
-    Meteor.call("products.insert", {
-      title: data.title,
-      description: data.desc,
-      image: data.image,
-      price: numbPrice,
-    });
-
-    setTitle("");
-    setDescription("");
-    setImage("");
-    setPrice("");
+    dispatch(
+      ACTIONS.ADD.REQUEST({
+        title: data.title,
+        description: data.desc,
+        image: data.image,
+        price: numbPrice,
+      })
+    );
   };
+
+  useEffect(() => {
+    if (!product.loading && product.type === "add") {
+      setTitle("");
+      setDescription("");
+      setImage("");
+      setPrice("");
+    }
+    if (!product.loading && product.error !== "") console.log(product.error);
+  }, [product]);
+
+  const inputs = [
+    factoryInput("title", "Title", title, (e) => setTitle(e.target.value)),
+    factoryInput("desc", "Description", description, (e) =>
+      setDescription(e.target.value)
+    ),
+    factoryInput("image", "Image", image, (e) => setImage(e.target.value)),
+    factoryInput("price", "Price", price, (e) => setPrice(e.target.value)),
+  ];
 
   return (
     <form action="" className="form add" onSubmit={handleSubmit(onSubmit)}>
       <span>Add product</span>
-      <Input
-        inputId="title"
-        title="Title"
-        register={register}
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-      />
-      <Input
-        inputId="desc"
-        title="Description"
-        register={register}
-        value={description}
-        onChange={(e) => setDescription(e.target.value)}
-      />
-      <Input
-        inputId="image"
-        title="Image"
-        register={register}
-        value={image}
-        onChange={(e) => setImage(e.target.value)}
-      />
-      <Input
-        inputId="price"
-        title="Price"
-        register={register}
-        value={price}
-        onChange={(e) => setPrice(e.target.value)}
-      />
-      {/* <div className="inputWrapper">
-        <label htmlFor="title">Title</label>
+      {inputs.map((input) => (
+        <Input
+          key={input.inputId}
+          inputId={input.inputId}
+          title={input.title}
+          register={register}
+          value={input.value}
+          onChange={input.onChange}
+        />
+      ))}
 
-        <input
-          name="title"
-          id="title"
-          type="text"
-          {...register("title", { required: true })}
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-        />
-      </div>
-      <div className="inputWrapper">
-        <label htmlFor="desc">Description</label>
-        <input
-          id="desc"
-          name="desc"
-          type="text"
-          {...register("desc", { required: true })}
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-        />
-      </div>
-      <div className="inputWrapper">
-        <label htmlFor="image">Image</label>
-        <input
-          id="image"
-          name="image"
-          type="text"
-          {...register("image", { required: true })}
-          value={image}
-          onChange={(e) => setImage(e.target.value)}
-        />
-      </div>
-      <div className="inputWrapper">
-        <label htmlFor="price">Price</label>
-        <input
-          id="price"
-          name="price"
-          type="text"
-          {...register("price", { required: true })}
-          value={price}
-          onChange={(e) => setPrice(e.target.value)}
-        />
-      </div> */}
-      <button type="submit">add</button>
+      {product.loading ? (
+        <Spin style={{ marginTop: "10px" }} />
+      ) : (
+        <button type="submit">add</button>
+      )}
     </form>
   );
 }

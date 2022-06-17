@@ -26,7 +26,6 @@ function Product({ _id, image, title, price, createdAt, userId }) {
         quantity: 1,
         createdAt,
         userId,
-        // createAt: new Date(),
       };
       dispatch(ACTIONS.ADD_TO_CART.REQUEST(newCartProduct));
     }

@@ -1,12 +1,13 @@
-import React from "react";
 import { Spin } from "antd";
-import { useState } from "react";
+import React, { useState } from "react";
+import { useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { factoryInput, Input } from ".";
+import { Button } from "../../components";
 import { ACTIONS } from "../../redux/actions/auth";
 import "../../styles/css/form.css";
-import { Button } from "../../components";
 
 function Form({ title, login, signUp }) {
   const dispatch = useDispatch();
@@ -18,10 +19,6 @@ function Form({ title, login, signUp }) {
   const [genderChecked, setGenderChecked] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
-  const [emailFocus, setEmailFocus] = useState(false);
-  const [passwordFocus, setPasswordFocus] = useState(false);
-  const [nameFocus, setNameFocus] = useState(false);
-
   //validate input
   const {
     register,
@@ -30,6 +27,7 @@ function Form({ title, login, signUp }) {
   } = useForm();
 
   const onSubmit = (data) => {
+    setSubmitted(true);
     if (!authData._id && data) {
       if (signUp && gender !== "") {
         const payload = {
@@ -59,83 +57,55 @@ function Form({ title, login, signUp }) {
     },
   ];
 
+  const inputs = useMemo(
+    () => [
+      {
+        inputId: "email",
+        title: "Email",
+        placeholder: "Your email",
+        type: "email",
+        registerFilter: { pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i },
+        errors: errors,
+      },
+      {
+        inputId: "password",
+        title: "Password",
+        registerFilter: { minLength: 6 },
+        placeholder: "Your password",
+        type: "password",
+        errors: errors,
+      },
+      signUp && {
+        inputId: "fullName",
+        title: "Full name",
+        registerFilter: {},
+        placeholder: "",
+        type: "text",
+        errors: errors,
+      },
+    ],
+    [errors]
+  );
+
   return (
     <form action="" className="form" onSubmit={handleSubmit(onSubmit)}>
       {title && <h1>{title}</h1>}
 
-      {/* email */}
-      <div className="wrapper">
-        <div className="container">
-          <label htmlFor="email">Email</label>
-          <input
-            id="email"
-            name="email"
-            type="email"
-            placeholder="Your email"
-            {...register("email", {
-              required: true,
-              pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-            })}
-            onFocus={() => setEmailFocus(true)}
-            onBlur={() => setEmailFocus(false)}
-          />
-        </div>
-        {Object.keys(errors).length !== 0 && !emailFocus && (
-          <ul>
-            {errors.email?.type === "required" && <li>Email is required</li>}
-            {errors.email?.type === "pattern" && <li>Invalid email address</li>}
-          </ul>
-        )}
-      </div>
-
-      {/* password */}
-      <div className="wrapper">
-        <div className="container">
-          <label htmlFor="password">Password</label>
-          <input
-            id="password"
-            name="password"
-            type="password"
-            placeholder="Your password"
-            {...register("password", { required: true, minLength: 6 })}
-            onFocus={() => setPasswordFocus(true)}
-            onBlur={() => setPasswordFocus(false)}
-          />
-        </div>
-        {Object.keys(errors).length !== 0 && !passwordFocus && (
-          <ul>
-            {errors.password?.type === "required" && (
-              <li>Password is required</li>
-            )}
-            {errors.password?.type === "minLength" && (
-              <li>Password must be have 6 characters long</li>
-            )}
-          </ul>
-        )}
-      </div>
-
-      {/* fullName */}
-      {signUp && (
-        <div className="wrapper">
-          <div className="container">
-            <label htmlFor="fullName">Full name</label>
-            <input
-              id="fullName"
-              name="fullName"
-              type="text"
-              {...register("fullName", { required: true })}
-              onFocus={() => setNameFocus(true)}
-              onBlur={() => setNameFocus(false)}
+      {inputs.map(
+        (input) =>
+          input && (
+            <Input
+              key={input.inputId}
+              inputId={input.inputId}
+              title={input.title}
+              register={register}
+              registerFilter={input.registerFilter}
+              placeholder={input.placeholder}
+              errors={input.errors}
+              type={input.type}
+              submitted={submitted}
             />
-          </div>
-          {!nameFocus && Object.keys(errors).length !== 0 && (
-            <ul>
-              {errors.fullName?.type === "required" && (
-                <li>Name is required</li>
-              )}
-            </ul>
-          )}
-        </div>
+          )
       )}
 
       {/* gender */}

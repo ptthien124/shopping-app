@@ -11,9 +11,6 @@ function SignUpPage() {
 
   const auth = useSelector((state) => state.auth);
 
-  // const [visible, setVisible] = useState(false);
-  // const [confirmLoading, setConfirmLoading] = useState(false);
-
   const {
     visible,
     confirmLoading,
@@ -31,16 +28,6 @@ function SignUpPage() {
       setConfirmLoading(false);
     }
   }, [auth]);
-
-  // const handleOk = () => {
-  //   setConfirmLoading(true);
-  //   dispatch(signUpFailOk());
-  // };
-
-  // const handleCancel = () => {
-  //   setVisible(false);
-  //   dispatch(signUpFailOk());
-  // };
 
   return (
     <div className="signUpPage formPage">

@@ -43,7 +43,6 @@ Meteor.methods({
     if (!Meteor.user().profile.isAdmin) {
       throw new Meteor.Error("don't have permission");
     }
-
     ProductsCollection.remove(data.productId);
   },
 });

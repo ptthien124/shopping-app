@@ -3,8 +3,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Meteor } from "meteor/meteor";
 import { useTracker } from "meteor/react-meteor-data";
 import React, { useEffect, useRef, useState } from "react";
+import { useMemo } from "react";
+import { useHistory, useParams } from "react-router-dom";
 import ProductsCollection from "../../../api/ProductsCollection";
 import { useDebounce } from "../../hooks";
+import useCountProduct from "../../hooks/useCountProduct";
 import "../../styles/css/productPage.css";
 import { Products, SearchDropDown } from "../ProductPage";
 
@@ -12,6 +15,8 @@ const PRODUCTS_PER_PAGE = 12;
 
 function ProductPage() {
   const searchRef = useRef();
+  const history = useHistory();
+  const params = useParams();
 
   const [search, setSearch] = useState("");
   const [submitSearch, setSubmitSearch] = useState("");
@@ -19,26 +24,11 @@ function ProductPage() {
   const [sort, setSort] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
 
-  const productsCount = useTracker(() => {
-    const count = Meteor.subscribe("products");
-    if (count.ready()) {
-      if (submitSearch.trim() === "") {
-        return ProductsCollection.find().count();
-      }
-      return ProductsCollection.find({
-        title: { $regex: submitSearch },
-      }).count();
-    }
-  }, [submitSearch]);
+  const productsCount = useCountProduct(submitSearch);
 
   useEffect(() => {
     setCurrentPage(1);
   }, [productsCount]);
-
-  const handleSubmit = () => {
-    setSubmitSearch(search.trim());
-    // setSearch("");
-  };
 
   const sortOptionSelected = () => {
     const select = document.getElementById("productsPageSortSelect");
@@ -50,12 +40,14 @@ function ProductPage() {
     if (currentPage === index + 1) return { color: "var(--primary)" };
   };
 
-  const handleSearchBtn = () => {
-    if (search.trim() === "") {
-      searchRef.current.focus();
-    } else {
-      handleSubmit();
-    }
+  useEffect(() => {
+    params.key && setSubmitSearch(params.key);
+  }, []);
+
+  const handleSubmit = () => {
+    setSubmitSearch(search.trim());
+    if (search.trim() !== "") history.push(`/search/${search.trim()}`);
+    else history.push("/");
   };
 
   return (
@@ -70,7 +62,7 @@ function ProductPage() {
                 handleSubmit();
               }}
             >
-              <button className="searchButton" onClick={handleSearchBtn}>
+              <button className="searchButton">
                 <FontAwesomeIcon icon={faMagnifyingGlass} />
               </button>
 

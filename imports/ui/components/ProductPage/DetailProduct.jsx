@@ -17,14 +17,6 @@ function DetailProduct() {
 
   const { loading, list: product } = useFetch(filter, (findOne = true));
 
-  // const product = useTracker(() => {
-  //   const products = Meteor.subscribe("products");
-  //   if (products.ready()) {
-  //     return ProductsCollection.find({ _id: params }).fetch()[0];
-  //   }
-  //   return {};
-  // }, []);
-
   useEffect(() => {
     if (!loading && (product === undefined || product.length === 0)) {
       history.push("/");
@@ -43,16 +35,6 @@ function DetailProduct() {
   const showModal = () => {
     setVisible(true);
   };
-
-  // const [isModalVisible, setIsModalVisible] = useState(false);
-  // const handleOk = () => {
-  //   setIsModalVisible(false);
-  //   history.push("/login");
-  // };
-
-  // const handleCancel = () => {
-  //   setIsModalVisible(false);
-  // };
 
   const openNotification = useNotification(product?.title);
 

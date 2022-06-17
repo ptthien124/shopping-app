@@ -1,15 +1,26 @@
 import React, { useState } from "react";
-import { Meteor } from "meteor/meteor";
+import { useDispatch, useSelector } from "react-redux";
+import { ACTIONS } from "../../redux/actions/product";
+import { useEffect } from "react";
+import { Spin } from "antd";
 
 function RemoveProduct() {
+  const dispatch = useDispatch();
+  const product = useSelector((state) => state.product);
   const [productId, setProductId] = useState("");
 
   const handleRemove = (e) => {
     e.preventDefault();
-    Meteor.call("products.remove", { productId: productId });
-
-    setProductId("");
+    dispatch(ACTIONS.REMOVE.REQUEST({ productId: productId }));
   };
+
+  useEffect(() => {
+    console.log(product);
+    if (!product.loading && product.type === "remove") {
+      setProductId("");
+    }
+    if (!product.loading && product.error !== "") console.log(product.error);
+  }, [product]);
 
   return (
     <form action="" className="form remove" onSubmit={handleRemove}>
@@ -19,7 +30,11 @@ function RemoveProduct() {
         value={productId}
         onChange={(e) => setProductId(e.target.value)}
       />
-      <button type="submit">remove</button>
+      {product.loading ? (
+        <Spin style={{ marginTop: "10px" }} />
+      ) : (
+        <button type="submit">remove</button>
+      )}
     </form>
   );
 }

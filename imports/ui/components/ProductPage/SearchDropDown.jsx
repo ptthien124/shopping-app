@@ -1,28 +1,17 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Spin } from "antd";
-import {useFetch} from "../../hooks";
+import { useFetch } from "../../hooks";
 
 function SearchDropDown({ value, input, handleSubmit, setSearch }) {
   const [show, setShow] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
 
-  // fetch products
   const filter = useMemo(() => {
     return { title: { $regex: value, $options: "i" } };
   }, [value]);
 
   const { loading, list: products } = useFetch(filter);
-  // const products = useTracker(() => {
-  //   const temp = Meteor.subscribe("products");
-  //   if (temp.ready()) {
-  //     return ProductsCollection.find({
-  //       title: { $regex: value, $options: "i" },
-  //     }).fetch();
-  //   }
-  //   return [];
-  // }, [value]);
 
-  // show drop down
   const handleShow = () => {
     if (document.activeElement === input.current) {
       setIsFocused(true);

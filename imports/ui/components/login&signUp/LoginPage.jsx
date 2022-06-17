@@ -12,9 +12,6 @@ function LoginPage() {
 
   const auth = useSelector((state) => state.auth);
 
-  // const [visible, setVisible] = useState(false);
-  // const [confirmLoading, setConfirmLoading] = useState(false);
-
   const {
     visible,
     confirmLoading,
@@ -32,16 +29,6 @@ function LoginPage() {
       setConfirmLoading(false);
     }
   }, [auth]);
-
-  // const handleOk = () => {
-  //   dispatch(ACTIONS.LOGOUT.REQUEST());
-  //   setConfirmLoading(true);
-  // };
-
-  // const handleCancel = () => {
-  //   setVisible(false);
-  //   handleOk();
-  // };
 
   return (
     <div className="loginPage formPage">

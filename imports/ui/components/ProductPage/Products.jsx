@@ -9,7 +9,6 @@ function Products({ sortBy, value, currentPage, productsPerPage }) {
   const auth = useSelector((state) => state.auth).userData;
   const [products, setProducts] = useState([]);
 
-  //
   const filter = useMemo(() => {
     if (value.trim === "") return {};
     return { title: { $regex: value, $options: "i" } };
@@ -26,38 +25,6 @@ function Products({ sortBy, value, currentPage, productsPerPage }) {
     skip,
     (limit = productsPerPage)
   );
-  //
-
-  // const prods = useTracker(() => {
-  //   setProducts([]);
-  //   const subscribe = Meteor.subscribe("products");
-
-  //   if (value.trim() === "") {
-  //     if (subscribe.ready()) {
-  //       return ProductsCollection.find(
-  //         {},
-  //         {
-  //           skip: (currentPage - 1) * productsPerPage,
-  //           limit: productsPerPage,
-  //           createdAt: -1,
-  //         }
-  //       ).fetch();
-  //     }
-  //     return [];
-  //   }
-
-  //   if (subscribe.ready()) {
-  //     return ProductsCollection.find(
-  //       { title: { $regex: value, $options: "i" } },
-  //       {
-  //         skip: (currentPage - 1) * productsPerPage,
-  //         limit: productsPerPage,
-  //       }
-  //     ).fetch();
-  //   }
-
-  //   return [];
-  // }, [value, currentPage]);
 
   useEffect(() => {
     setProducts([...prods]);
@@ -65,7 +32,7 @@ function Products({ sortBy, value, currentPage, productsPerPage }) {
     if (sortBy === "price") {
       setProducts((prev) => [...prev.sort((a, b) => a.price - b.price)]);
     } else if (sortBy === "date") {
-      console.log('here');
+      console.log("here");
       setProducts((prev) => [
         ...prev.sort((a, b) => b.createdAt - a.createdAt),
       ]);

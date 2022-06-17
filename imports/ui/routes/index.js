@@ -1,5 +1,9 @@
 import { LoginPage, SignUpPage } from "../components/login&signUp";
-import { DetailProduct, ProductPage } from "../components/ProductPage";
+import {
+  DetailProduct,
+  ProductPage,
+  SearchPage,
+} from "../components/ProductPage";
 import { CartPage } from "../components/CartPage";
 import { AdminPage } from "../components/AdminPage";
 import { PureLayout } from "../layouts";
@@ -7,6 +11,7 @@ import { PureLayout } from "../layouts";
 const publicRoutes = [
   { path: "/login", component: LoginPage, layout: PureLayout },
   { path: "/signUp", component: SignUpPage, layout: PureLayout },
+  { path: "/search/:key", component: ProductPage, layout: null },
   {
     path: "/:id",
     component: DetailProduct,
